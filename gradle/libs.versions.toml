@@ -21,6 +21,8 @@ koin = "4.1.0"
 kotlinx-serialization = "1.7.3"
 timber = "5.0.1"
 coroutines = "1.8.0"
+securityCryptoKtx = "1.1.0-alpha06"
+playCore = "1.10.3"
 
 # Project versions
 projectApplicationId = "com.serhiiromanchuk.spendless"
@@ -47,7 +49,10 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-security-crypto-ktx = { module = "androidx.security:security-crypto-ktx", version.ref = "securityCryptoKtx" }
 androidx-material-icons-extended = {  group = "androidx.compose.material", name = "material-icons-extended", version.ref = "icons-extended" }
+
+core = { module = "com.google.android.play:core-ktx", version.ref = "playCore" }
 
 # Json serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
