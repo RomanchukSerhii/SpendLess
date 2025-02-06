@@ -114,6 +114,7 @@ spendless-android-library = { id = "spendless.android.library", version = "unspe
 spendless-android-library-compose = { id = "spendless.android.library.compose", version = "unspecified"}
 spendless-android-feature-ui = { id = "spendless.android.feature.ui", version = "unspecified"}
 spendless-android-room = { id = "spendless.android.room", version = "unspecified"}
+spendless-jvm-library = { id = "spendless.jvm.library", version = "unspecified"}
 
 [bundles]
 compose = [
