@@ -112,3 +112,20 @@ spendless-android-application = { id = "spendless.android.application", version 
 spendless-android-application-compose = { id = "spendless.android.application.compose", version = "unspecified"}
 spendless-android-library = { id = "spendless.android.library", version = "unspecified"}
 spendless-android-library-compose = { id = "spendless.android.library.compose", version = "unspecified"}
+spendless-android-feature-ui = { id = "spendless.android.feature.ui", version = "unspecified"}
+
+[bundles]
+compose = [
+    "androidx-activity-compose",
+    "androidx-lifecycle-runtime-ktx",
+    "androidx-material3",
+    "androidx-ui",
+    "androidx-ui-graphics",
+    "androidx-ui-tooling-preview",
+]
+compose-debug = [
+    "androidx-ui-tooling",
+    "androidx-ui-test-manifest",
+]
+koin = ["koin-core", "koin-android", "koin-android-workmanager"]
+koin-compose = ["koin-core", "koin-android", "koin-android-workmanager", "koin-androidx-compose"]
