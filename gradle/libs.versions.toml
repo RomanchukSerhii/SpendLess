@@ -60,7 +60,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 
 # Room
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
-room-core = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
@@ -113,6 +113,7 @@ spendless-android-application-compose = { id = "spendless.android.application.co
 spendless-android-library = { id = "spendless.android.library", version = "unspecified"}
 spendless-android-library-compose = { id = "spendless.android.library.compose", version = "unspecified"}
 spendless-android-feature-ui = { id = "spendless.android.feature.ui", version = "unspecified"}
+spendless-android-room = { id = "spendless.android.room", version = "unspecified"}
 
 [bundles]
 compose = [
