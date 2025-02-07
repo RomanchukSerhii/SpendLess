@@ -17,12 +17,12 @@ navigation-compose = "2.8.6"
 icons-extended = "1.7.7"
 glanceAppwidget = "1.1.1"
 ktor = "3.0.3"
-koin = "4.1.0"
+koin = "4.1.0-Beta5"
 kotlinx-serialization = "1.7.3"
 timber = "5.0.1"
 coroutines = "1.8.0"
 securityCryptoKtx = "1.1.0-alpha06"
-playCore = "1.10.3"
+playCore = "1.8.1"
 androidTools = "31.8.0"
 
 # Project versions
@@ -53,6 +53,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-security-crypto-ktx = { module = "androidx.security:security-crypto-ktx", version.ref = "securityCryptoKtx" }
 androidx-material-icons-extended = {  group = "androidx.compose.material", name = "material-icons-extended", version.ref = "icons-extended" }
 
+#core = { module = "com.google.android.play:core-ktx", version.ref = "playCore" }
 core = { module = "com.google.android.play:core-ktx", version.ref = "playCore" }
 
 # Json serialization
