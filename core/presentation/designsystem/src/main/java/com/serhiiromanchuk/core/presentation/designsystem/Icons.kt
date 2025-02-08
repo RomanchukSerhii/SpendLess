@@ -8,9 +8,49 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
-val ExportIcon: ImageVector
+val DownloadIcon: ImageVector
     @Composable
-    get() = ImageVector.vectorResource(id = R.drawable.ic_export)
+    get() = ImageVector.vectorResource(id = R.drawable.download)
+
+val BackspaceIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.backspace)
+
+val FingerprintIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.fingerprint)
+
+val LockIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.lock)
+
+val LogoutIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.logout)
+
+val NotesIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.notes)
+
+val SettingsIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.settings)
+
+val TodayIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.today)
+
+val TrendingDownIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.trending_down)
+
+val TrendingUpIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.trending_up)
+
+val WalletIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.wallet)
 
 @Composable
 fun HomeIcon(
