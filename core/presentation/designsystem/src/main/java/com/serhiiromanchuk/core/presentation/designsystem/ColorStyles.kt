@@ -3,8 +3,7 @@ package com.serhiiromanchuk.core.presentation.designsystem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
+import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 
 object ExpenseIncomeColors {
     @Composable

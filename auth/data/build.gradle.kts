@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.spendless.android.library)
-    alias(libs.plugins.spendless.jvm.ktor)
 }
 
 android {

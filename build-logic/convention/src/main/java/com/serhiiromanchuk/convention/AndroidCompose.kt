@@ -16,7 +16,8 @@ internal fun Project.configureAndroidCompose(
             val bom = libs.findLibrary("androidx.compose.bom").get()
             "implementation"(platform(bom))
             "androidTestImplementation"(platform(bom))
-            "debugImplementation"(libs.findLibrary("androidx.ui.tooling.preview").get())
+            "implementation"(libs.findLibrary("androidx.material.icons.extended").get())
+            "debugImplementation"(libs.findLibrary("androidx.ui.tooling").get())
         }
     }
 }
