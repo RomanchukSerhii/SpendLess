@@ -22,7 +22,8 @@ fun AppTextField(
     label: String,
     supportingText: String,
     isError: Boolean = false,
-    isDisabled: Boolean = false
+    isDisabled: Boolean = false,
+    modifier: Modifier = Modifier
 ) {
     val colorScheme = MaterialTheme.colorScheme
     val textColor = if (isDisabled) colorScheme.onSurface.copy(alpha = 0.38f) else colorScheme.onSurface
@@ -35,7 +36,7 @@ fun AppTextField(
         isError = isError,
         shape = RoundedCornerShape(16.dp),
         colors = textFieldColors(),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         label = {
             Text(
                 text = label,

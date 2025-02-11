@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,11 +32,12 @@ import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
 fun IconButtonTemplate(
+    modifier: Modifier = Modifier,
     contentDescription: String,
     onClick: () -> Unit,
     colors: IconButtonColorsScheme,
     isEnabled: Boolean = true,
-    @DrawableRes iconResId: Int
+    @DrawableRes iconResId: Int =  R.drawable.settings
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -46,7 +48,7 @@ fun IconButtonTemplate(
     )
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(48.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(backgroundColor)
@@ -67,64 +69,78 @@ fun IconButtonTemplate(
     }
 }
 
-// Я или чего то не вижу, или эта функция ничего кроме установки стандартной иконки ничего не делает?
-// Если так, то ее можно было задать и в IconButtonTemplate. И в целом давай все таки создадим разные
-// иконки как в макете, назови FilledIconButton, StandardIconButton и т.д.
-
-/* Эта функция нужна, чтобы не повторялся код, во всех 3 кнопках когда вызываешь много параметров
-код получается длинный. А так вызов функции упрщается до 3 строк. это удобно. Из всех вариантов
-что я перепробовала он наиболее удобен. Менять не буду. В демо видно как и какие кнопки использовать */
-
 @Composable
-fun AppIconButton(
-    contentDescription: String,
-    onClick: () -> Unit,
-    colors: IconButtonColorsScheme,
-    isEnabled: Boolean = true,
-    @DrawableRes iconResId: Int = R.drawable.settings
+fun FilledIconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     IconButtonTemplate(
-        contentDescription = contentDescription,
+        modifier = modifier,
+        contentDescription = "Filled",
         onClick = onClick,
-        colors = colors,
-        isEnabled = isEnabled,
-        iconResId = iconResId
+        colors = AppIconButtonColors.Filled
+    )
+}
+@Composable
+fun StandardIconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    IconButtonTemplate(
+        modifier = modifier,
+        contentDescription = "Standard",
+        onClick = onClick,
+        colors = AppIconButtonColors.Standard
     )
 }
 
 @Composable
-fun IconButtonDemo() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        AppIconButton(
-            contentDescription = "Filled",
-            onClick = {  },
-            colors = AppIconButtonColors.Filled
-        )
-
-        AppIconButton(
-            contentDescription = "Standard",
-            onClick = {  },
-            colors = AppIconButtonColors.Standard
-        )
-
-        AppIconButton(
-            contentDescription = "Error",
-            onClick = {  },
-            colors = AppIconButtonColors.Error
-        )
-    }
+fun ErrorIconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    IconButtonTemplate(
+        modifier = modifier,
+        contentDescription = "Error",
+        onClick = onClick,
+        colors = AppIconButtonColors.Error
+    )
 }
- //  у меня превью работает без указания API
+
+@Composable
+fun OnPrimaryIconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    @DrawableRes iconResId: Int = R.drawable.settings
+) {
+    IconButtonTemplate(
+        modifier = modifier,
+        contentDescription = "On primary",
+        onClick = onClick,
+        colors = AppIconButtonColors.OnPrimary,
+        iconResId = iconResId
+    )
+}
 @Preview(showBackground = true)
 @Composable
-private fun IconButtonPrev() {
+fun IconButtonDemo() {
     SpendLessTheme {
-        IconButtonDemo()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            FilledIconButton(
+                onClick = { }
+            )
+            StandardIconButton(
+                onClick = { }
+            )
+            ErrorIconButton(
+                onClick = { }
+            )
+        }
     }
 }

@@ -25,10 +25,11 @@ import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 fun SegmentedButton(
     options: List<String>,
     selectedIndex: Int,
-    onOptionSelected: (Int) -> Unit
+    onOptionSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(16.dp))
             .background(AppColors.PrimaryContainerOpacity08)
             .padding(4.dp)
@@ -40,7 +41,7 @@ fun SegmentedButton(
                     containerColor = if (index == selectedIndex) AppColors.SurfContainerLowest else Color.Transparent,
                     contentColor = if (index == selectedIndex) MaterialTheme.colorScheme.primary else AppColors.OnPrimaryFixed
                 ),
-                modifier = Modifier
+                modifier = modifier
                     .weight(1f),
 
                 shape = RoundedCornerShape(12.dp)

@@ -42,11 +42,14 @@ import com.serhiiromanchuk.core.presentation.designsystem.SavingIcon
 import com.serhiiromanchuk.core.presentation.designsystem.TransportationIcon
 
 @Composable
-fun ExpenseIncomeList(items: List<ExpenseIncomeItem>) {
+fun ExpenseIncomeList(
+    items: List<ExpenseIncomeItem>,
+    modifier: Modifier = Modifier
+) {
     var expandedItem by remember { mutableStateOf<String?>(null) }
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(items) { item ->
@@ -56,7 +59,8 @@ fun ExpenseIncomeList(items: List<ExpenseIncomeItem>) {
                     if (!item.description.isNullOrEmpty()) {
                         expandedItem = if (expandedItem == item.title) null else item.title
                     }
-                }
+                },
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -65,10 +69,11 @@ fun ExpenseIncomeList(items: List<ExpenseIncomeItem>) {
 @Composable
 fun ExpenseIncomeCategory(
     item: ExpenseIncomeItem,
-    onExpandClick: () -> Unit
+    onExpandClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(ExpenseIncomeColors.itemBackgroundColor(item.isExpanded))
@@ -76,7 +81,7 @@ fun ExpenseIncomeCategory(
             .padding(4.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        Row (modifier = Modifier.fillMaxWidth(),
+        Row (modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ){
@@ -85,7 +90,7 @@ fun ExpenseIncomeCategory(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
-                    modifier = Modifier
+                    modifier = modifier
                         .size(44.dp)
                         .padding(end = 2.dp, bottom = 2.dp),
                     contentAlignment = Alignment.Center
@@ -93,7 +98,7 @@ fun ExpenseIncomeCategory(
                     ItemIcon(item.category, item.isIncome, backgroundSize = 44.dp)
                     if (!item.description.isNullOrEmpty()) {
                         Box(
-                            modifier = Modifier
+                            modifier = modifier
                                 .size(20.dp)
                                 .align(Alignment.BottomEnd)
                                 .offset(x = 2.dp, y = 2.dp)
@@ -103,7 +108,7 @@ fun ExpenseIncomeCategory(
                     }
                 }
 
-                Column(Modifier.weight(1f)) {
+                Column(modifier.weight(1f)) {
                     Text(text = item.title,
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurface,)
@@ -121,7 +126,7 @@ fun ExpenseIncomeCategory(
                 text = item.description,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(start = 52.dp)
+                modifier = modifier.padding(start = 52.dp)
             )
         }
     }
@@ -134,7 +139,7 @@ fun NotesIcon(
     modifier: Modifier = Modifier
 ) {
     Box(
-        Modifier
+        modifier
             .clip(RoundedCornerShape(6.dp))
             .background(ExpenseIncomeColors.notesIconBackground)
             .size(20.dp),
