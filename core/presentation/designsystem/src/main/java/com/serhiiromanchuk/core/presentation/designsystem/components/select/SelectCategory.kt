@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.DropdownItem
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.SpendCategoryItem
 
-
 @Composable
 fun SelectCategory(
     items: List<DropdownItem>,
@@ -69,6 +68,12 @@ fun SelectCategory(
     }
 }
 
+/*
+* Чтобы не городить, решил использовать стандартный дропдаун, вроде как все настроил единственное
+* нет скролл бара справа как в макете. Поискал в интернете - пока с коробки какого-то решения
+* в компоузе нет, а другие решения которые я находил - выглядят как костыли. Поэтому пока без него,
+* я еще спрошу на кампусе может кто что подскажет, а пока оставим так, чтобы не застревать.
+*/
 @Composable
 private fun SelectDropdown(
     expanded: Boolean,
