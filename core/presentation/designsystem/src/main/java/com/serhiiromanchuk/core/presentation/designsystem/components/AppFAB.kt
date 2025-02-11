@@ -16,7 +16,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
-fun SpendLessFAB(
+fun AppFAB(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -39,7 +39,7 @@ fun SpendLessFAB(
 @Composable
 fun PreviewSpendLessFAB() {
     SpendLessTheme {
-        SpendLessFAB(
+        AppFAB(
             onClick = {},
         )
     }

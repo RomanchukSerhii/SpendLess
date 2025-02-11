@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,14 +33,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
+import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
-fun SelectDropdown(
-    categories: List<SpendCategoryItem>,
-    selectedCategory: SpendCategoryItem,
-    onCategorySelected: (SpendCategoryItem) -> Unit
+fun <T> SelectDropdown(
+    items: List<T>,
+    selectedItem: T,
+    onItemSelected: (T) -> Unit,
+    itemContent: @Composable (T) -> Unit,
+    selectedItemContent: @Composable (T) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -61,10 +68,10 @@ fun SelectDropdown(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(1f)
                 ) {
-                    CategoryCard(selectedCategory, isIncome = false)
+                    selectedItemContent(selectedItem)
                 }
                 Icon(
-                    imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.ArrowDropDown,
+                    painter = if (expanded) painterResource(R.drawable.arrow_drop_up) else painterResource(R.drawable.arrow_drop_down),
                     contentDescription = "Expand",
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(end = 12.dp)
@@ -78,23 +85,25 @@ fun SelectDropdown(
             exit = shrinkVertically() + fadeOut()
         ) {
             SelectList(
-                categories = categories,
-                selectedCategory = selectedCategory,
-                onCategorySelected = {
-                    onCategorySelected(it)
+                items = items,
+                selectedItem = selectedItem,
+                onItemSelected = {
+                    onItemSelected(it)
                     expanded = false
                 },
-                modifier = Modifier.padding(top = 8.dp)
+                itemContent = itemContent,
+                modifier = Modifier.padding(top = 4.dp)
             )
         }
     }
 }
 
 @Composable
-fun SelectList(
-    categories: List<SpendCategoryItem>,
-    selectedCategory: SpendCategoryItem,
-    onCategorySelected: (SpendCategoryItem) -> Unit,
+fun <T> SelectList(
+    items: List<T>,
+    selectedItem: T,
+    onItemSelected: (T) -> Unit,
+    itemContent: @Composable (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -103,15 +112,15 @@ fun SelectList(
             .height(240.dp)
             .shadow(8.dp, shape = RoundedCornerShape(16.dp))
             .clip(RoundedCornerShape(16.dp))
-            .background(AppColors.SurfContainerLowest)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
     ) {
         LazyColumn {
-            items(categories) { category ->
+            items(items) { item ->
                 SelectableItem(
-                    isSelected = category == selectedCategory,
-                    onSelect = { onCategorySelected(category) }
+                    isSelected = item == selectedItem,
+                    onSelect = { onItemSelected(item) }
                 ) {
-                    CategoryCard(category, isIncome = false, iconSize = 40.dp)
+                    itemContent(item)
                 }
             }
         }
@@ -142,5 +151,22 @@ fun SelectableItem(
                 tint = MaterialTheme.colorScheme.primary
             )
         }
+    }
+}
+@Preview(showBackground = true,
+    backgroundColor = 0xFFB5B0B9)
+@Composable
+private fun SelectDropdownPrev() {
+    SpendLessTheme {
+        val items = listOf("Option 1", "Option 2", "Option 3")
+        var selectedItem by remember { mutableStateOf(items.first()) }
+
+        SelectDropdown(
+            items = items,
+            selectedItem = selectedItem,
+            onItemSelected = { selectedItem = it },
+            itemContent = { Text(it, modifier = Modifier.padding(16.dp)) },
+            selectedItemContent = { Text(it, modifier = Modifier.padding(16.dp)) }
+        )
     }
 }

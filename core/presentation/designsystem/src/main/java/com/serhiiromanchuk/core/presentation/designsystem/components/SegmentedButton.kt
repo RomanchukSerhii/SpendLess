@@ -19,15 +19,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
+import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
 fun SegmentedButton(
     options: List<String>,
     selectedIndex: Int,
-    onOptionSelected: (Int) -> Unit
+    onOptionSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(16.dp))
             .background(AppColors.PrimaryContainerOpacity08)
             .padding(4.dp)
@@ -39,7 +41,7 @@ fun SegmentedButton(
                     containerColor = if (index == selectedIndex) AppColors.SurfContainerLowest else Color.Transparent,
                     contentColor = if (index == selectedIndex) MaterialTheme.colorScheme.primary else AppColors.OnPrimaryFixed
                 ),
-                modifier = Modifier
+                modifier = modifier
                     .weight(1f),
 
                 shape = RoundedCornerShape(12.dp)
@@ -50,14 +52,16 @@ fun SegmentedButton(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewSegmentedButton() {
     var selectedIndex by remember { mutableIntStateOf(0) }
+    SpendLessTheme {
+        SegmentedButton(
+            options = listOf("Label", "Label", "Label"),
+            selectedIndex = selectedIndex,
+            onOptionSelected = { selectedIndex = it }
+        )
+    }
 
-    SegmentedButton(
-        options = listOf("Label", "Label", "Label"),
-        selectedIndex = selectedIndex,
-        onOptionSelected = { selectedIndex = it }
-    )
 }

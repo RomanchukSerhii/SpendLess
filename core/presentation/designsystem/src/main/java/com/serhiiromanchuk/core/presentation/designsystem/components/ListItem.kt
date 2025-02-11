@@ -23,11 +23,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.ExpenseIncomeColors
 
-// Старайся добавлять модифаер по умолчанию в компоненты, чтобы можно было удобнее настраивать
-// элементы снаружи. И еще я добавил Card чтобы сделать скругленные углы, потому что скорей всего
-// элемент будет кликабельным и при клике эти углы будут видны.
 @Composable
-fun CategoryCard(
+fun ListItem(
     category: SpendCategoryItem,
     isIncome: Boolean,
     modifier: Modifier = Modifier,
@@ -41,13 +38,13 @@ fun CategoryCard(
         )
     ) {
         Row(
-            modifier = Modifier.padding(4.dp),
+            modifier = modifier.padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CategoryIcon(category, isIncome, iconSize)
-            Column(Modifier.weight(1f)) {
-                CategoryName(
+            ItemIcon(category, isIncome, iconSize)
+            Column(modifier.weight(1f)) {
+                ItemName(
                     category.title,
                     MaterialTheme.typography.labelMedium,
                     MaterialTheme.colorScheme.onSurface
@@ -59,7 +56,7 @@ fun CategoryCard(
 }
 
 @Composable
-fun CategoryIcon(
+fun ItemIcon(
     item: SpendCategoryItem,
     isIncome: Boolean,
     backgroundSize: Dp = 40.dp,
@@ -76,7 +73,7 @@ fun CategoryIcon(
 }
 
 @Composable
-fun CategoryName(
+fun ItemName(
     name: String,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     color: Color = MaterialTheme.colorScheme.onSurface
@@ -96,7 +93,7 @@ fun CategoryName(
 @Composable
 fun PreviewCategoryCard() {
     MaterialTheme {
-        CategoryCard(
+        ListItem(
             category = SpendCategoryItem.FOOD,
             isIncome = false,
         )

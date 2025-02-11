@@ -16,46 +16,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomTextField(
+fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
     supportingText: String,
     isError: Boolean = false,
-    isDisabled: Boolean = false
+    isDisabled: Boolean = false,
+    modifier: Modifier = Modifier
 ) {
     val colorScheme = MaterialTheme.colorScheme
     val textColor = if (isDisabled) colorScheme.onSurface.copy(alpha = 0.38f) else colorScheme.onSurface
-    val supportingTextColor = if (isError) colorScheme.error else colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
 
-    Column (
-        verticalArrangement = Arrangement.spacedBy(7.dp)
-    ){
-        Text(
-            text = label,
-            color = textColor,
-            style = MaterialTheme.typography.labelSmall
-        )
-        // На будущее у OutlinedTextField есть в параметрах label и supporting text, чтобы не лепить
-        // с Column. Если ты его использовала для отступов, то их можно было бы отригулировать паддингом.
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            // У тебя здесь было просто TextStyle(color = textColor), так ты просто задаешь цвет, но не
-            // задаешь стиль.
-            textStyle = MaterialTheme.typography.bodyMedium.copy(color = textColor),
-            enabled = !isDisabled,
-            isError = isError,
-            shape = RoundedCornerShape(16.dp),
-            colors = textFieldColors(),
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(
-            text = supportingText,
-            color = supportingTextColor,
-            style = MaterialTheme.typography.bodySmall
-        )
-    }
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        textStyle = MaterialTheme.typography.bodyMedium.copy(color = textColor),
+        enabled = !isDisabled,
+        isError = isError,
+        shape = RoundedCornerShape(16.dp),
+        colors = textFieldColors(),
+        modifier = modifier.fillMaxWidth(),
+        label = {
+            Text(
+                text = label,
+                color = if (isDisabled) colorScheme.onSurface.copy(alpha = 0.38f) else colorScheme.onSurface
+            )
+        },
+        supportingText = {
+            Text(
+                text = supportingText,
+                color = when {
+                    isError -> colorScheme.error
+                    isDisabled -> colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                    else -> colorScheme.onSurfaceVariant
+                }
+            )
+        }
+    )
 }
  // цвета надо настроить
 @Composable
@@ -89,27 +87,27 @@ fun textFieldColors(): TextFieldColors {
     showBackground = true
 )
 @Composable
-fun CustomTextFieldPreview() {
+fun AppTextFieldPreview() {
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        CustomTextField(
+        AppTextField(
             value = "Input",
             onValueChange = {},
             label = "Label",
             supportingText = "Supporting text",
         )
-        CustomTextField(
+        AppTextField(
             value = "Input",
             onValueChange = {},
             label = "Label",
             supportingText = "Supporting text",
             isError = true
         )
-        CustomTextField(
+        AppTextField(
             value = "Input",
             onValueChange = {},
             label = "Label",
