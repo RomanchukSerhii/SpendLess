@@ -2,6 +2,7 @@ package com.serhiiromanchuk.core.presentation.designsystem.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,10 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.AppIconButtonColors
 import com.serhiiromanchuk.core.presentation.designsystem.IconButtonColorsScheme
 import com.serhiiromanchuk.core.presentation.designsystem.R
+import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
 fun IconButtonTemplate(
@@ -50,9 +52,7 @@ fun IconButtonTemplate(
             .background(backgroundColor)
             .clickable(
                 interactionSource = interactionSource,
- // Обрати внимание что данная функция устарела и если ее разкоментить то будет подсвечиваться ошибка
-//                indication = rememberRipple(bounded = true),
-                indication = null,
+                indication = LocalIndication.current,
                 enabled = isEnabled,
                 onClick = onClick
             ),
@@ -70,8 +70,13 @@ fun IconButtonTemplate(
 // Я или чего то не вижу, или эта функция ничего кроме установки стандартной иконки ничего не делает?
 // Если так, то ее можно было задать и в IconButtonTemplate. И в целом давай все таки создадим разные
 // иконки как в макете, назови FilledIconButton, StandardIconButton и т.д.
+
+/* Эта функция нужна, чтобы не повторялся код, во всех 3 кнопках когда вызываешь много параметров
+код получается длинный. А так вызов функции упрщается до 3 строк. это удобно. Из всех вариантов
+что я перепробовала он наиболее удобен. Менять не буду. В демо видно как и какие кнопки использовать */
+
 @Composable
-fun IconButtonVariant(
+fun AppIconButton(
     contentDescription: String,
     onClick: () -> Unit,
     colors: IconButtonColorsScheme,
@@ -96,22 +101,30 @@ fun IconButtonDemo() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        IconButtonVariant(
+        AppIconButton(
             contentDescription = "Filled",
             onClick = {  },
             colors = AppIconButtonColors.Filled
         )
 
-        IconButtonVariant(
+        AppIconButton(
             contentDescription = "Standard",
             onClick = {  },
             colors = AppIconButtonColors.Standard
         )
 
-        IconButtonVariant(
+        AppIconButton(
             contentDescription = "Error",
             onClick = {  },
             colors = AppIconButtonColors.Error
         )
+    }
+}
+ //  у меня превью работает без указания API
+@Preview(showBackground = true)
+@Composable
+private fun IconButtonPrev() {
+    SpendLessTheme {
+        IconButtonDemo()
     }
 }

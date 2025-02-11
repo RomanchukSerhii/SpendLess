@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.ClothingIcon
 import com.serhiiromanchuk.core.presentation.designsystem.EducationIcon
@@ -89,7 +90,7 @@ fun ExpenseIncomeCategory(
                         .padding(end = 2.dp, bottom = 2.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    CategoryIcon(item.category, item.isIncome, backgroundSize = 44.dp)
+                    ItemIcon(item.category, item.isIncome, backgroundSize = 44.dp)
                     if (!item.description.isNullOrEmpty()) {
                         Box(
                             modifier = Modifier
@@ -106,7 +107,7 @@ fun ExpenseIncomeCategory(
                     Text(text = item.title,
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurface,)
-                    CategoryName(item.category.name)
+                    ItemName(item.category.name)
                 }
                 Text(
                     text = item.amount,
@@ -125,7 +126,6 @@ fun ExpenseIncomeCategory(
         }
     }
 }
-
 
 @Composable
 fun NotesIcon(
@@ -158,7 +158,6 @@ data class ExpenseIncomeItem(
     var isExpanded: Boolean = false
 )
 
-// Заменил твой CategoryItem, так будет проще работать. Иконки поставил текстовые, чтобы ты уже не игралась.
 // Если нужна будет иконка прсто обращаешся item.Icon()
 enum class SpendCategoryItem(val title: String) {
     HOME("Home") {
@@ -204,4 +203,36 @@ enum class SpendCategoryItem(val title: String) {
 
     @Composable
     abstract fun Icon()
+}
+@Preview(showBackground = true)
+@Composable
+fun PreviewExpenseIncomeList() {
+    val sampleItems = listOf(
+        ExpenseIncomeItem(
+            title = "Salary",
+            category = SpendCategoryItem.SAVING,
+            amount = "$3000",
+            isIncome = true,
+            description = "Monthly salary from work",
+            isExpanded = true
+        ),
+        ExpenseIncomeItem(
+            title = "Groceries",
+            category = SpendCategoryItem.FOOD,
+            amount = "$250",
+            isIncome = false,
+            description = "Weekly grocery shopping",
+            isExpanded = true
+        ),
+        ExpenseIncomeItem(
+            title = "Transport",
+            category = SpendCategoryItem.TRANSPORTATION,
+            amount = "$50",
+            isIncome = false,
+            description = "Public transport expenses",
+            isExpanded = false
+        )
+    )
+
+    ExpenseIncomeList(items = sampleItems)
 }

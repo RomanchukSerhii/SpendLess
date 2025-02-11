@@ -27,13 +27,13 @@ fun TopBar(
         actions = {
             Row (modifier = Modifier.padding(end = 14.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)){
-                IconButtonVariant(
+                AppIconButton(
                     contentDescription = "OnPrimary",
                     onClick = { onExportClick() },
                     colors = AppIconButtonColors.OnPrimary,
                     iconResId = R.drawable.download
                 )
-                IconButtonVariant(
+                AppIconButton(
                     contentDescription = "OnPrimary",
                     onClick = { onSettingsClick() },
                     colors = AppIconButtonColors.OnPrimary

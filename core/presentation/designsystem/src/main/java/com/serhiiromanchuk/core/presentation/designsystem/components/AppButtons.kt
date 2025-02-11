@@ -21,8 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.theme.ButtonColors
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
-// Переименовал названия кнопок, давай такие общие элементы именовать как в макете, чтобы потом
-// не путаться. По возможности переименуй все остальные элементы.
 @Composable
 fun FilledButton(
     text: String,
@@ -41,10 +39,8 @@ fun FilledButton(
     }
 }
 
-// Если названия элемента совпадают со стандартными компонентами, как в данном случае, то давай
-// договоримся перед началом ставить названия нашего приложения
 @Composable
-fun SpendLessTextButton(
+fun AppTextButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -70,18 +66,16 @@ fun ButtonExamples() {
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        FilledButton(text = "Filled Button", onClick = { /* TODO */ })
+        FilledButton(text = "Filled Button", onClick = {  })
         FilledButton(text = "Disabled Button", onClick = {}, enabled = false)
 
-        SpendLessTextButton(text = "Text Button", onClick = { /* TODO */ })
-        SpendLessTextButton(text = "Disabled Text Button", onClick = {}, enabled = false)
+        AppTextButton(text = "Text Button", onClick = {  })
+        AppTextButton(text = "Disabled Text Button", onClick = {}, enabled = false)
     }
 }
 
-// Обрати внимание я под АПИ нашего приложения до 35го, но превью почему-то пока на нем не работает,
-// поэтому указывай АПИ ниже в самом превью как тут. И чтобы видеть как корректно отображаются цвета
-// не забывай оборачивать компонент в тему SpendLessTheme.
-@Preview(apiLevel = 34)
+@Preview(apiLevel = 34,
+    showBackground = true)
 @Composable
 fun PreviewButtons() {
     SpendLessTheme {
