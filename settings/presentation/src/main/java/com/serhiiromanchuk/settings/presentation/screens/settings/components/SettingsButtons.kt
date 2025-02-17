@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.LockIcon
@@ -28,6 +29,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.LogoutIcon
 import com.serhiiromanchuk.core.presentation.designsystem.SettingsIcon
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
+import com.serhiiromanchuk.settings.presentation.R
 
 @Composable
 fun PreferencesButton(
@@ -36,7 +38,7 @@ fun PreferencesButton(
 ) {
     SettingsButton(
         icon = { RoundedIcon(SettingsIcon) },
-        text = "Preferences",
+        text = stringResource(R.string.preferences),
         onClick = onClick,
         modifier = modifier
     )
@@ -49,7 +51,7 @@ fun SecurityButton(
 ) {
     SettingsButton(
         icon = { RoundedIcon(LockIcon) },
-        text = "Security",
+        text = stringResource(R.string.settings),
         onClick = onClick,
         modifier = modifier
     )
@@ -62,7 +64,7 @@ fun LogoutButton(
 ) {
     SettingsButton(
         icon = { LogoutRoundedIcon() },
-        text = "Log out",
+        text = stringResource(R.string.log_out),
         onClick = onClick,
         modifier = modifier,
         textColor = MaterialTheme.colorScheme.error
@@ -136,7 +138,6 @@ private fun LogoutRoundedIcon(modifier: Modifier = Modifier) {
 }
 
 @Preview(
-    apiLevel = 34,
     showBackground = true,
     backgroundColor = 0xFFFFFFFF
 )
@@ -155,7 +156,6 @@ private fun PreviewSettingsIcon() {
 }
 
 @Preview(
-    apiLevel = 34,
     showBackground = true,
     backgroundColor = 0xFFD9D9D9
 )

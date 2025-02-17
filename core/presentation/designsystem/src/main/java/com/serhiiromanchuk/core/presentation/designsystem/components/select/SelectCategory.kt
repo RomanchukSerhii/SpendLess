@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -62,7 +63,10 @@ fun SelectCategory(
             onDismissRequest = { expanded = !expanded },
             items = items,
             selectedItem = selectedItem,
-            onItemSelected = onItemSelected,
+            onItemSelected = {
+                onItemSelected(it)
+                expanded = !expanded
+            },
             dropdownWidth = categoryWidth
         )
     }
@@ -99,6 +103,7 @@ private fun SelectDropdown(
                 text = {
                     Text(
                         text = categoryItem.title,
+                        modifier = Modifier.offset(x = (-4).dp),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -124,7 +129,6 @@ private fun SelectDropdown(
 }
 
 @Preview(
-    apiLevel = 34,
     showBackground = true,
     backgroundColor = 0xFFF6F3F3
 )

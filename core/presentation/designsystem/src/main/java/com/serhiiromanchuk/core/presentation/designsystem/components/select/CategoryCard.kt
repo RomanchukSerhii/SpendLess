@@ -3,6 +3,7 @@ package com.serhiiromanchuk.core.presentation.designsystem.components.select
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -40,7 +41,7 @@ fun CategoryCard(
         )
     ) {
         Row(
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier.height(48.dp).padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -48,7 +49,7 @@ fun CategoryCard(
 
             Text(
                 text = category.title,
-                modifier = Modifier.weight(1f).padding(start = 4.dp),
+                modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -68,7 +69,6 @@ fun CategoryCard(
 }
 
 @Preview(
-    apiLevel = 34,
     showBackground = true,
     backgroundColor = 0xFFF6F3F3
 )
@@ -85,7 +85,6 @@ fun PreviewSpendCategoryCard() {
 }
 
 @Preview(
-    apiLevel = 34,
     showBackground = true,
     backgroundColor = 0xFFF6F3F3
 )

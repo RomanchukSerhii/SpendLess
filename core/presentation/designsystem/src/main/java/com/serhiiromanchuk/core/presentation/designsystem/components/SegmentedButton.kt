@@ -2,6 +2,8 @@ package com.serhiiromanchuk.core.presentation.designsystem.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -50,6 +52,41 @@ fun SegmentedButton(
             }
         }
     }
+}
+
+@Composable
+fun SegmentedButton(
+    segmentOptions: List<SegmentOption>,
+    selectedOption: SegmentOption,
+    onOptionClick: (SegmentOption) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(AppColors.PrimaryContainerOpacity08)
+            .padding(4.dp)
+    ) {
+        segmentOptions.forEach { option ->
+            Button(
+                onClick = { onOptionClick(option) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (option == selectedOption) AppColors.SurfContainerLowest else Color.Transparent,
+                    contentColor = if (option == selectedOption) MaterialTheme.colorScheme.primary else AppColors.OnPrimaryFixed
+                ),
+                modifier = modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(text = option.label)
+            }
+        }
+    }
+}
+
+interface SegmentOption {
+    val label: String
 }
 
 @Preview(showBackground = true)
