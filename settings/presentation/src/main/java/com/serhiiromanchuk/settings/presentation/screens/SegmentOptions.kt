@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.settings.presentation.screens.preferences.components
+package com.serhiiromanchuk.settings.presentation.screens
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -66,6 +66,25 @@ enum class ThousandsSeparator(override val label: String, val separator: String)
     POINT("1.000", "."),
     COMMA("1,000", ","),
     SPACE("1 000", " ")
+}
+
+enum class BiometricsPrompt(override val label: String) : SegmentOption {
+    ENABLE("Enable"),
+    DISABLE("Disable"),
+}
+
+enum class SessionExpiryDuration(override val label: String) : SegmentOption {
+    FIVE_MIN("5 min"),
+    FIFTEEN_MIN("15 min"),
+    THIRTY_MIN("30 min"),
+    HOUR("1 hour")
+}
+
+enum class LockedOutDuration(override val label: String) : SegmentOption {
+    FIFTEEN_SEC("15s"),
+    THIRTY_SEC("30s"),
+    ONE_MIN("1 min"),
+    FIVE_MIN("5 min")
 }
 
 @Composable

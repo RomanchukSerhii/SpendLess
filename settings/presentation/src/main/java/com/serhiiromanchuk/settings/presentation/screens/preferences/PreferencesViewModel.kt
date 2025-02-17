@@ -4,10 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.serhiiromanchuk.settings.presentation.screens.preferences.components.CurrencyCategoryItem
-import com.serhiiromanchuk.settings.presentation.screens.preferences.components.DecimalSeparator
-import com.serhiiromanchuk.settings.presentation.screens.preferences.components.ExpensesFormat
-import com.serhiiromanchuk.settings.presentation.screens.preferences.components.ThousandsSeparator
+import com.serhiiromanchuk.settings.presentation.screens.CurrencyCategoryItem
+import com.serhiiromanchuk.settings.presentation.screens.DecimalSeparator
+import com.serhiiromanchuk.settings.presentation.screens.ExpensesFormat
+import com.serhiiromanchuk.settings.presentation.screens.ThousandsSeparator
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.CurrencyClicked
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.DecimalSeparatorClicked

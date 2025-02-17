@@ -12,6 +12,11 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentedBu
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.SelectCategory
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.settings.presentation.R
+import com.serhiiromanchuk.settings.presentation.screens.CurrencyCategoryItem
+import com.serhiiromanchuk.settings.presentation.screens.DecimalSeparator
+import com.serhiiromanchuk.settings.presentation.screens.ExpensesFormat
+import com.serhiiromanchuk.settings.presentation.screens.SettingItem
+import com.serhiiromanchuk.settings.presentation.screens.ThousandsSeparator
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiState
 
@@ -105,7 +110,7 @@ private fun ThousandsSeparatorSettings(
     modifier: Modifier = Modifier
 ) {
     SettingItem(
-        title = "Thousands separator",
+        title = stringResource(R.string.thousands_separator),
         modifier = modifier
     ) {
         SegmentedButton(
