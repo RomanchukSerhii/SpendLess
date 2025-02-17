@@ -17,6 +17,7 @@ internal fun Project.configureAndroidCompose(
             "implementation"(platform(bom))
             "androidTestImplementation"(platform(bom))
             "implementation"(libs.findLibrary("androidx.material.icons.extended").get())
+            "implementation"(libs.findLibrary("androidx.activity.compose").get())
             "debugImplementation"(libs.findLibrary("androidx.ui.tooling").get())
         }
     }

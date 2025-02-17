@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.serhiiromanchuk.settings.presentation.screens.preferences.PreferencesScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.settings.SettingsScreen
 import com.serhiiromanchuk.spendless.navigation.routes.Feature
 import com.serhiiromanchuk.spendless.navigation.routes.Screen
@@ -72,7 +73,9 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
         composable(
             route = Screen.Preferences.route
         ) {
-
+            PreferencesScreenRoot(
+                onBackClick = { navController.popBackStack() }
+            )
         }
         composable(
             route = Screen.Security.route
