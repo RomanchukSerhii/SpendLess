@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.settings.presentation.screens.preferences.components
+package com.serhiiromanchuk.settings.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
