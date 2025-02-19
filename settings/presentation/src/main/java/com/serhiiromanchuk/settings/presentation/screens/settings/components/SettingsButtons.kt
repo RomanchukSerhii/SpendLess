@@ -105,7 +105,7 @@ private fun SettingsButton(
 private fun RoundedIcon(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
-    background: Color = AppColors.SurfContainerLow,
+    background: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     iconColor: Color = MaterialTheme.colorScheme.onSurfaceVariant
 ) {
     Surface(

@@ -2,9 +2,11 @@ package com.serhiiromanchuk.core.presentation.designsystem.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -15,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -79,14 +82,36 @@ fun SegmentedButton(
                 modifier = modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text(text = option.label)
+                option.label()
             }
         }
     }
 }
 
 interface SegmentOption {
-    val label: String
+    val label: @Composable () -> Unit
+}
+
+@Composable
+fun OptionText(
+    text: String,
+    modifier: Modifier = Modifier,
+    leadingIcon: @Composable (() -> Unit)? = null
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (leadingIcon != null) {
+            leadingIcon()
+            Spacer(modifier = Modifier.width(6.dp))
+        }
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleMedium
+        )
+    }
+
 }
 
 @Preview(showBackground = true)
