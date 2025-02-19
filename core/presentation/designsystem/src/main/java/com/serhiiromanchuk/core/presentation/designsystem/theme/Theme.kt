@@ -20,13 +20,14 @@ val LightColorScheme = lightColorScheme(
     background = SpendLessWhitePinkish,
     onBackground = SpendLessBlackPurple,
     surface = SpendLessWhiteSoft,
+    surfaceContainerLow = SpendLessWhiteGrayish,
     onSurface = SpendLessBlackSoft,
     onSurfaceVariant = SpendLessGrayDark,
     outline = SpendLessGrayMedium,
     inverseSurface = SpendLessGrayDarker,
     inverseOnSurface = SpendLessWhiteLight,
     error = SpendLessRedDark,
-    onError = SpendLessWhite,
+    onError = SpendLessWhite
 )
 
 @Composable

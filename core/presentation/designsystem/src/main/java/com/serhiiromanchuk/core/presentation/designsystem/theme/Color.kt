@@ -43,7 +43,6 @@ object AppColors {
     val OnPrimaryFixed = SpendLessPurpleDeepest
     val OnPrimaryFixedVariant = SpendLessPurpleDeep
     val SurfContainerLowest = SpendLessWhite
-    val SurfContainerLow = SpendLessWhiteGrayish
     val SurfContainer = SpendLessWhiteWarm
     val SurfContainerHighest = SpendLessWhiteNeutral
     val PrimaryOpacity12 = SpendLessPurpleDark.copy(alpha = 0.12f)

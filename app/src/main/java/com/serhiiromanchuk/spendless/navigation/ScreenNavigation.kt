@@ -9,6 +9,7 @@ import com.serhiiromanchuk.settings.presentation.screens.security.SecurityScreen
 import com.serhiiromanchuk.settings.presentation.screens.settings.SettingsScreen
 import com.serhiiromanchuk.spendless.navigation.routes.Feature
 import com.serhiiromanchuk.spendless.navigation.routes.Screen
+import com.serhiiromanchuk.transactions.screens.dashboard.DashboardScreenRoot
 
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
     navigation(
@@ -46,7 +47,9 @@ fun NavGraphBuilder.transactionsGraph(navController: NavHostController) {
         composable(
             route = Screen.Dashboard.route
         ) {
-
+            DashboardScreenRoot(
+                onSettingsClick = { navController.navigate(Feature.Settings.route) }
+            )
         }
         composable(
             route = Screen.AllTransactions.route
