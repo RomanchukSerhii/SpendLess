@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.serhiiromanchuk.auth.presentation.screens.login.LoginScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.preferences.PreferencesScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.security.SecurityScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.settings.SettingsScreen
@@ -17,6 +18,15 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         route = Feature.Auth.route
     ) {
         composable(
+            route = Screen.Login.route
+        ) {
+            LoginScreenRoot(
+                onLogInClick = { navController.navigate(Screen.PINPrompt.route) },
+                onRegistrationClick = { navController.navigate(Screen.Registration.route) }
+            )
+        }
+
+        composable(
             route = Screen.Registration.route
         ) {
 
@@ -26,11 +36,13 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         ) {
 
         }
+
         composable(
             route = Screen.OnboardingPreferences.route
         ) {
 
         }
+
         composable(
             route = Screen.PINPrompt.route
         ) {
