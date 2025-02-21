@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -19,45 +20,36 @@ import androidx.compose.ui.unit.dp
 fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    label: String,
-    supportingText: String,
+    modifier: Modifier = Modifier,
+    label: @Composable (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    isDisabled: Boolean = false,
-    modifier: Modifier = Modifier
+    isDisabled: Boolean = false
 ) {
-    val colorScheme = MaterialTheme.colorScheme
-    val textColor = if (isDisabled) colorScheme.onSurface.copy(alpha = 0.38f) else colorScheme.onSurface
-
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        textStyle = MaterialTheme.typography.bodyMedium.copy(color = textColor),
-        enabled = !isDisabled,
-        isError = isError,
-        shape = RoundedCornerShape(16.dp),
-        colors = textFieldColors(),
-        modifier = modifier.fillMaxWidth(),
-        label = {
-            Text(
-                text = label,
-                color = if (isDisabled) colorScheme.onSurface.copy(alpha = 0.38f) else colorScheme.onSurface
-            )
-        },
-        supportingText = {
-            Text(
-                text = supportingText,
-                color = when {
-                    isError -> colorScheme.error
-                    isDisabled -> colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-                    else -> colorScheme.onSurfaceVariant
-                }
-            )
-        }
-    )
+    AppCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        )
+    ) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            textStyle = MaterialTheme.typography.bodyMedium,
+            enabled = !isDisabled,
+            isError = isError,
+            shape = RoundedCornerShape(16.dp),
+            colors = textFieldColors(),
+            modifier = modifier.fillMaxWidth(),
+            label = label,
+            supportingText = supportingText,
+            placeholder = placeholder
+        )
+    }
 }
- // цвета надо настроить
+
 @Composable
-fun textFieldColors(): TextFieldColors {
+private fun textFieldColors(): TextFieldColors {
     val colorScheme = MaterialTheme.colorScheme
 
     return OutlinedTextFieldDefaults.colors(
@@ -68,13 +60,12 @@ fun textFieldColors(): TextFieldColors {
         cursorColor = colorScheme.primary,
         errorCursorColor = colorScheme.error,
         focusedBorderColor = colorScheme.primary,
-        unfocusedBorderColor = colorScheme.outline,
+        unfocusedBorderColor = Color.Transparent,
         disabledBorderColor = colorScheme.onSurface.copy(alpha = 0.38f),
         errorBorderColor = colorScheme.error,
-        focusedLabelColor = colorScheme.primary,
-        unfocusedLabelColor = colorScheme.onSurface,
-        disabledLabelColor = colorScheme.onSurface.copy(alpha = 0.38f),
-        errorLabelColor = colorScheme.error,
+        focusedPlaceholderColor = colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
+        unfocusedPlaceholderColor = colorScheme.onSurfaceVariant,
+        errorPlaceholderColor = colorScheme.error,
         focusedSupportingTextColor = colorScheme.onSurfaceVariant,
         unfocusedSupportingTextColor = colorScheme.onSurfaceVariant,
         disabledSupportingTextColor = colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
@@ -83,11 +74,11 @@ fun textFieldColors(): TextFieldColors {
 }
 
 @Preview(
-    apiLevel = 34,
-    showBackground = true
+    showBackground = true,
+    backgroundColor = 0xFFFEF7FF
 )
 @Composable
-fun AppTextFieldPreview() {
+private fun AppTextFieldPreview() {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -97,22 +88,27 @@ fun AppTextFieldPreview() {
         AppTextField(
             value = "Input",
             onValueChange = {},
-            label = "Label",
-            supportingText = "Supporting text",
-        )
-        AppTextField(
-            value = "Input",
-            onValueChange = {},
-            label = "Label",
-            supportingText = "Supporting text",
-            isError = true
-        )
-        AppTextField(
-            value = "Input",
-            onValueChange = {},
-            label = "Label",
-            supportingText = "Supporting text",
-            isDisabled = true
         )
     }
+//        AppTextField(
+//            value = "Input",
+//            onValueChange = {},
+//            label = "Label",
+//            supportingText = "Supporting text",
+//        )
+//        AppTextField(
+//            value = "Input",
+//            onValueChange = {},
+//            label = "Label",
+//            supportingText = "Supporting text",
+//            isError = true
+//        )
+//        AppTextField(
+//            value = "Input",
+//            onValueChange = {},
+//            label = "Label",
+//            supportingText = "Supporting text",
+//            isDisabled = true
+//        )
+//    }
 }

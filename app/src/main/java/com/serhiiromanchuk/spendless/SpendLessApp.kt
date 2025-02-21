@@ -1,6 +1,7 @@
 package com.serhiiromanchuk.spendless
 
 import android.app.Application
+import com.serhiiromanchuk.auth.presentation.di.authenticationViewModelModule
 import com.serhiiromanchuk.settings.presentation.di.settingsViewModelModule
 import com.serhiiromanchuk.spendless.di.appModule
 import com.serhiiromanchuk.transactions.di.transactionsViewModelModule
@@ -22,6 +23,7 @@ class SpendLessApp : Application() {
             androidContext(this@SpendLessApp)
             modules(
                 appModule,
+                authenticationViewModelModule,
                 settingsViewModelModule,
                 transactionsViewModelModule
             )
