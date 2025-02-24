@@ -6,4 +6,9 @@
     <string name="new_to_spendless">New to SpendLess?</string>
     <string name="username">Username</string>
     <string name="pin">PIN</string>
+    <string name="registration_title">Welcome to SpendLess! \nHow can we address you?</string>
+    <string name="registration_description">Create unique username</string>
+    <string name="username_placeholder">username</string>
+    <string name="next">Next</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>

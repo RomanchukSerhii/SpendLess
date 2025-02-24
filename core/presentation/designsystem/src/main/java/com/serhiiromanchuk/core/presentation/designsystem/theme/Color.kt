@@ -70,14 +70,15 @@ object GradientScheme {
         radius = 500f
     )
 }
+
 object ButtonColors {
     @Composable
     fun filled(): ButtonColors {
         return ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            disabledContainerColor = AppColors.OnSurfaceOpacity12,
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
         )
     }
 

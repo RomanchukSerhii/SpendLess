@@ -1,9 +1,11 @@
 package com.serhiiromanchuk.auth.presentation.di
 
 import com.serhiiromanchuk.auth.presentation.screens.login.LoginViewModel
+import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val authenticationViewModelModule = module {
+val authViewModelModule = module {
     viewModelOf(::LoginViewModel)
+    viewModelOf(::RegistrationViewModel)
 }
