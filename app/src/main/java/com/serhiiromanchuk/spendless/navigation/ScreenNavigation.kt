@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.serhiiromanchuk.auth.presentation.screens.login.LoginScreenRoot
+import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.preferences.PreferencesScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.security.SecurityScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.settings.SettingsScreen
@@ -14,7 +15,7 @@ import com.serhiiromanchuk.transactions.screens.dashboard.DashboardScreenRoot
 
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
     navigation(
-        startDestination = Screen.Login.route,
+        startDestination = Screen.Registration.route,
         route = Feature.Auth.route
     ) {
         composable(
@@ -29,7 +30,10 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(
             route = Screen.Registration.route
         ) {
-
+            RegistrationScreenRoot(
+                onNextClick = { navController.navigate(Screen.CreatePIN.route) },
+                onLogInClick = { navController.navigate(Screen.Login.route) }
+            )
         }
         composable(
             route = Screen.CreatePIN.route
