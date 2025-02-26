@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.settings.presentation.screens
+package com.serhiiromanchuk.core.presentation.designsystem.components.currency_format
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.components.OptionText
 import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentOption
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.DropdownItem
-import com.serhiiromanchuk.settings.presentation.R
 
 enum class ExpensesFormat(override val label: @Composable () -> Unit) : SegmentOption {
     MINUS(
@@ -99,33 +99,6 @@ enum class ThousandsSeparator(override val label: @Composable () -> Unit, val se
     POINT(label = { OptionText("1.000") }, "."),
     COMMA(label = { OptionText("1,000") }, ","),
     SPACE(label = { OptionText("1 000") }, " ")
-}
-
-enum class BiometricsPrompt(override val label: @Composable () -> Unit) : SegmentOption {
-    ENABLE(
-        label = {
-            OptionText(text = stringResource(R.string.enable))
-        }
-    ),
-    DISABLE(
-        label = {
-            OptionText(text = stringResource(R.string.disable))
-        }
-    )
-}
-
-enum class SessionExpiryDuration(override val label: @Composable () -> Unit) : SegmentOption {
-    FIVE_MIN(label = { OptionText("5 min") }),
-    FIFTEEN_MIN(label = { OptionText("15 min") }),
-    THIRTY_MIN(label = { OptionText("30 min") }),
-    HOUR(label = { OptionText("1 hour") })
-}
-
-enum class LockedOutDuration(override val label: @Composable () -> Unit) : SegmentOption {
-    FIFTEEN_SEC(label = { OptionText("15s") }),
-    THIRTY_SEC(label = { OptionText("30s") }),
-    ONE_MIN(label = { OptionText("1 min") }),
-    FIVE_MIN(label = { OptionText("5 min") })
 }
 
 @Composable

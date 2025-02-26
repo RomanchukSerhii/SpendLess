@@ -2,4 +2,12 @@
 <resources>
     <string name="create_new_transaction">Create new transaction</string>
     <string name="go_back">Go back</string>
+    <string name="_10">-$10</string>
+    <string name="parentheses_10">($10)</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
+    <string name="expenses_format">Expenses format</string>
+    <string name="decimal_separator">Decimal separator</string>
+    <string name="currency">Currency</string>
+    <string name="thousands_separator">Thousands separator</string>
 </resources>
