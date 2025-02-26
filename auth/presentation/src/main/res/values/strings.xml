@@ -11,4 +11,12 @@
     <string name="username_placeholder">username</string>
     <string name="next">Next</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="create_pin">Create PIN</string>
+    <string name="create_pin_description">Use PIN to login to your account</string>
+    <string name="repeat_you_pin">Repeat You PIN</string>
+    <string name="repeat_pin_description">Enter you PIN again</string>
+    <string name="use_biometric_authentication">Use biometric authentication</string>
+    <string name="delete_the_last_digit">Delete the last digit</string>
+    <string name="navigate_back">Navigate back</string>
+    <string name="error_message">PINs don\'t match. Try again</string>
 </resources>
