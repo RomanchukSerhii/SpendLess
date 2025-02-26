@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.auth.presentation.R
-import com.serhiiromanchuk.auth.presentation.screens.login.components.AuthHeader
+import com.serhiiromanchuk.auth.presentation.components.AuthHeader
 import com.serhiiromanchuk.auth.presentation.screens.registration.components.RegistrationForm
 import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationAction
 import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationUiEvent
@@ -23,19 +23,19 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RegistrationScreenRoot(
-    onNextClick: () -> Unit,
-    onLogInClick: () -> Unit,
+    navigateToLogIn: () -> Unit,
+    navigateNext: () -> Unit,
     viewModel: RegistrationViewModel = koinViewModel()
 ) {
     ObserveAsActions(viewModel.actions) { action ->
         when (action) {
-            RegistrationAction.NavigateToCreatePinScreen -> onNextClick()
+            RegistrationAction.NavigateToCreatePinScreen -> navigateNext()
         }
     }
     RegistrationScreen(
         state = viewModel.state,
         onEvent = viewModel::onEvent,
-        onLogInClick = onLogInClick
+        onLogInClick = navigateToLogIn
     )
 }
 

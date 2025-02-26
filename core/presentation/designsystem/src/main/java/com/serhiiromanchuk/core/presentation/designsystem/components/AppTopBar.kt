@@ -22,9 +22,9 @@ import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 @Composable
 fun AppTopBar(
     title: String,
+    modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null,
-    onDownloadClick: (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    onDownloadClick: (() -> Unit)? = null
 ) {
     TopAppBar(
         title = {
@@ -69,7 +69,6 @@ fun AppTopBar(
 }
 
 @Preview(
-    apiLevel = 34,
     showBackground = true
 )
 @Composable

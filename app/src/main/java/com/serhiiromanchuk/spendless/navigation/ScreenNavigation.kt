@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.serhiiromanchuk.auth.presentation.screens.create_pin.CreatePinScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.login.LoginScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.preferences.PreferencesScreenRoot
@@ -22,8 +23,8 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
             route = Screen.Login.route
         ) {
             LoginScreenRoot(
-                onLogInClick = { navController.navigate(Screen.PINPrompt.route) },
-                onRegistrationClick = { navController.navigate(Screen.Registration.route) }
+                navigateToLogIn = { navController.navigate(Screen.PINPrompt.route) },
+                navigateToRegistration = { navController.navigate(Screen.Registration.route) }
             )
         }
 
@@ -31,14 +32,17 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
             route = Screen.Registration.route
         ) {
             RegistrationScreenRoot(
-                onNextClick = { navController.navigate(Screen.CreatePIN.route) },
-                onLogInClick = { navController.navigate(Screen.Login.route) }
+                navigateToLogIn = { navController.navigate(Screen.Login.route) },
+                navigateNext = { navController.navigate(Screen.CreatePIN.route) }
             )
         }
         composable(
             route = Screen.CreatePIN.route
         ) {
-
+            CreatePinScreenRoot(
+                navigateBack = { navController.popBackStack() },
+                navigateNext = { navController.navigate(Screen.OnboardingPreferences.route) }
+            )
         }
 
         composable(
