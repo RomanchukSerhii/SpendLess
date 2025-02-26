@@ -18,8 +18,8 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.SettingItem
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.SelectCategory
 
 @Composable
-internal fun CurrencyFormatSettings(
-    state: CurrencyFormatUiState,
+fun CurrencyFormatSettings(
+    currencyFormatState: CurrencyFormatState,
     onExpensesFormatClick: (ExpensesFormat) -> Unit,
     onCurrencySelected: (CurrencyCategoryItem) -> Unit,
     onDecimalSeparatorClick: (DecimalSeparator) -> Unit,
@@ -31,27 +31,27 @@ internal fun CurrencyFormatSettings(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         FormattingExample(
-            formattingValue = state.formattingExample,
+            formattingValue = currencyFormatState.formattingExample,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
         ExpensesFormatSettings(
-            selectedFormat = state.expensesFormat,
+            selectedFormat = currencyFormatState.expensesFormat,
             onOptionClick = onExpensesFormatClick
         )
 
         CurrencySettings(
-            selectedCurrency = state.currency,
+            selectedCurrency = currencyFormatState.currency,
             onOptionClick = onCurrencySelected
         )
 
         DecimalSeparatorSettings(
-            selectedDecimal = state.decimalSeparator,
+            selectedDecimal = currencyFormatState.decimalSeparator,
             onOptionClick = onDecimalSeparatorClick
         )
 
         ThousandsSeparatorSettings(
-            selectedThousands = state.thousandsSeparator,
+            selectedThousands = currencyFormatState.thousandsSeparator,
             onOptionClick = onThousandsSeparator
         )
     }

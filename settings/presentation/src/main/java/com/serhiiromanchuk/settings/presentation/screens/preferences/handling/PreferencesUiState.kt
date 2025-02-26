@@ -1,27 +1,14 @@
 package com.serhiiromanchuk.settings.presentation.screens.preferences.handling
 
-import com.serhiiromanchuk.settings.presentation.screens.CurrencyCategoryItem
-import com.serhiiromanchuk.settings.presentation.screens.DecimalSeparator
-import com.serhiiromanchuk.settings.presentation.screens.ExpensesFormat
-import com.serhiiromanchuk.settings.presentation.screens.ThousandsSeparator
+import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatState
 
 data class PreferencesUiState(
-    val expensesFormat: ExpensesFormat = ExpensesFormat.MINUS,
-    val currency: CurrencyCategoryItem = CurrencyCategoryItem.USD,
-    val decimalSeparator: DecimalSeparator = DecimalSeparator.POINT,
-    val thousandsSeparator: ThousandsSeparator = ThousandsSeparator.POINT
+    val currencyFormatState: CurrencyFormatState = CurrencyFormatState()
 ) {
-    val formattingExample: String
-        get() {
-            val example = "${currency.symbol}10${thousandsSeparator.separator}382${decimalSeparator.separator}45"
-            return when (expensesFormat) {
-                ExpensesFormat.MINUS -> "-$example"
-                ExpensesFormat.PARENTHESES -> "($example)"
-            }
-        }
-
     val isSaveButtonEnabled: Boolean
         get() {
-            return decimalSeparator.separator != thousandsSeparator.separator
+            val decimalSeparator = currencyFormatState.decimalSeparator.separator
+            val thousandsSeparator = currencyFormatState.thousandsSeparator.separator
+            return decimalSeparator != thousandsSeparator
         }
 }

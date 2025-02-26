@@ -1,6 +1,6 @@
 package com.serhiiromanchuk.core.presentation.designsystem.components.currency_format
 
-data class CurrencyFormatUiState(
+data class CurrencyFormatState(
     val expensesFormat: ExpensesFormat = ExpensesFormat.MINUS,
     val currency: CurrencyCategoryItem = CurrencyCategoryItem.USD,
     val decimalSeparator: DecimalSeparator = DecimalSeparator.POINT,

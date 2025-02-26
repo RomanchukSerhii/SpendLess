@@ -10,9 +10,8 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTopBar
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
+import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatSettings
 import com.serhiiromanchuk.settings.presentation.R
-import com.serhiiromanchuk.settings.presentation.screens.preferences.components.FormattingExample
-import com.serhiiromanchuk.settings.presentation.screens.preferences.components.PreferencesContent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiState
 import org.koin.androidx.compose.koinViewModel
@@ -45,13 +44,12 @@ private fun PreferencesScreen(
     Column(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        FormattingExample(
-            formattingValue = state.formattingExample
-        )
-
-        PreferencesContent(
-            state = state,
-            onEvent = onEvent
+        CurrencyFormatSettings(
+            currencyFormatState = state.currencyFormatState,
+            onExpensesFormatClick = { onEvent(PreferencesUiEvent.ExpensesFormatClicked(it)) },
+            onCurrencySelected = { onEvent(PreferencesUiEvent.CurrencyClicked(it)) },
+            onDecimalSeparatorClick = { onEvent(PreferencesUiEvent.DecimalSeparatorClicked(it)) },
+            onThousandsSeparator = { onEvent(PreferencesUiEvent.ThousandsSeparatorClicked(it)) }
         )
 
         FilledButton(
