@@ -18,6 +18,8 @@
     <string name="use_biometric_authentication">Use biometric authentication</string>
     <string name="delete_the_last_digit">Delete the last digit</string>
     <string name="navigate_back">Navigate back</string>
-    <string name="error_message">PINs don\'t match. Try again</string>
+    <string name="error_pins_dont_match">PINs don\'t match. Try again</string>
     <string name="start_tracking">Start Tracking!</string>
+    <string name="error_wrong_pin">Wrong PIN</string>
+    <string name="log_out">Log out</string>
 </resources>

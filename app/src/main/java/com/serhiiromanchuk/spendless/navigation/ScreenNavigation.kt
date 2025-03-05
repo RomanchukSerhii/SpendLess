@@ -7,17 +7,20 @@ import androidx.navigation.compose.navigation
 import com.serhiiromanchuk.auth.presentation.screens.create_pin.CreatePinScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.login.LoginScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.OnboardingPrefScreenRoot
+import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.PinPromptScreenRoot
+import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.PinPromptViewModel
 import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.preferences.PreferencesScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.security.SecurityScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.settings.SettingsScreen
+import com.serhiiromanchuk.settings.presentation.screens.settings.components.LogoutButton
 import com.serhiiromanchuk.spendless.navigation.routes.Feature
 import com.serhiiromanchuk.spendless.navigation.routes.Screen
 import com.serhiiromanchuk.transactions.screens.dashboard.DashboardScreenRoot
 
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
     navigation(
-        startDestination = Screen.Registration.route,
+        startDestination = Screen.Login.route,
         route = Feature.Auth.route
     ) {
         composable(
@@ -57,7 +60,9 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(
             route = Screen.PINPrompt.route
         ) {
-
+            PinPromptScreenRoot(
+                onLogOutClick = { navController.navigate(Screen.Registration.route)}
+            )
         }
     }
 }
