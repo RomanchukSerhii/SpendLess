@@ -21,9 +21,9 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.select.Sele
 fun CurrencyFormatSettings(
     currencyFormatState: CurrencyFormatState,
     onExpensesFormatClick: (ExpensesFormat) -> Unit,
-    onCurrencySelected: (CurrencyCategoryItem) -> Unit,
+    onCurrencyClick: (CurrencyCategoryItem) -> Unit,
     onDecimalSeparatorClick: (DecimalSeparator) -> Unit,
-    onThousandsSeparator: (ThousandsSeparator) -> Unit,
+    onThousandsSeparatorClick: (ThousandsSeparator) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -42,7 +42,7 @@ fun CurrencyFormatSettings(
 
         CurrencySettings(
             selectedCurrency = currencyFormatState.currency,
-            onOptionClick = onCurrencySelected
+            onOptionClick = onCurrencyClick
         )
 
         DecimalSeparatorSettings(
@@ -52,7 +52,7 @@ fun CurrencyFormatSettings(
 
         ThousandsSeparatorSettings(
             selectedThousands = currencyFormatState.thousandsSeparator,
-            onOptionClick = onThousandsSeparator
+            onOptionClick = onThousandsSeparatorClick
         )
     }
 }

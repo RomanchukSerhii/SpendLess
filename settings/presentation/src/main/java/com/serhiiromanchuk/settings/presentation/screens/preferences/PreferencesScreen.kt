@@ -47,9 +47,9 @@ private fun PreferencesScreen(
         CurrencyFormatSettings(
             currencyFormatState = state.currencyFormatState,
             onExpensesFormatClick = { onEvent(PreferencesUiEvent.ExpensesFormatClicked(it)) },
-            onCurrencySelected = { onEvent(PreferencesUiEvent.CurrencyClicked(it)) },
+            onCurrencyClick = { onEvent(PreferencesUiEvent.CurrencyClicked(it)) },
             onDecimalSeparatorClick = { onEvent(PreferencesUiEvent.DecimalSeparatorClicked(it)) },
-            onThousandsSeparator = { onEvent(PreferencesUiEvent.ThousandsSeparatorClicked(it)) }
+            onThousandsSeparatorClick = { onEvent(PreferencesUiEvent.ThousandsSeparatorClicked(it)) }
         )
 
         FilledButton(

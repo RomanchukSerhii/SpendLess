@@ -88,14 +88,16 @@ enum class CurrencyCategoryItem(override val title: String, val symbol: String) 
     },
 }
 
-enum class DecimalSeparator(override val label: @Composable () -> Unit, val separator: String) :
-    SegmentOption {
+enum class DecimalSeparator(
+    override val label: @Composable () -> Unit, val separator: String
+) : SegmentOption {
     POINT(label = { OptionText("1.00") }, "."),
     COMMA(label = { OptionText("1,00") }, ",")
 }
 
-enum class ThousandsSeparator(override val label: @Composable () -> Unit, val separator: String) :
-    SegmentOption {
+enum class ThousandsSeparator(
+    override val label: @Composable () -> Unit, val separator: String
+) : SegmentOption {
     POINT(label = { OptionText("1.000") }, "."),
     COMMA(label = { OptionText("1,000") }, ","),
     SPACE(label = { OptionText("1 000") }, " ")

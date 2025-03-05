@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.serhiiromanchuk.auth.presentation.screens.create_pin.CreatePinScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.login.LoginScreenRoot
+import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.OnboardingPrefScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.preferences.PreferencesScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.security.SecurityScreenRoot
@@ -48,7 +49,9 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(
             route = Screen.OnboardingPreferences.route
         ) {
-
+            OnboardingPrefScreenRoot(
+                navigateBack = { navController.popBackStack() }
+            )
         }
 
         composable(
