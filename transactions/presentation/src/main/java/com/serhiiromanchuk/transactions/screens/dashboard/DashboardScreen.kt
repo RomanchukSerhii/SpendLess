@@ -5,6 +5,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.AppFAB
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionViewModel
 import com.serhiiromanchuk.transactions.screens.dashboard.components.CreateTransactionBottomSheet
+import com.serhiiromanchuk.transactions.screens.dashboard.components.DashboardBackground
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import org.koin.androidx.compose.koinViewModel
@@ -22,7 +23,8 @@ fun DashboardScreenRoot(
                     dashboardViewModel.onEvent(DashboardUiEvent.CreateTransactionSheetToggled)
                 }
             )
-        }
+        },
+        background = { DashboardBackground() }
     ) {
         DashboardScreen(
             state = dashboardViewModel.state,
