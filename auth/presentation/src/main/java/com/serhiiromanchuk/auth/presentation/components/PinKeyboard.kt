@@ -29,7 +29,8 @@ internal fun PinKeyboard(
     onNumberClick: (Int) -> Unit,
     onBackspaceClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onFingerprintClick: (() -> Unit)? = null
+    onFingerprintClick: (() -> Unit)? = null,
+    enabled: Boolean = true
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -41,14 +42,24 @@ internal fun PinKeyboard(
             when (index) {
                 in 0..8 -> PinKey(
                     number = index + 1,
-                    onClick = onNumberClick
+                    onClick = onNumberClick,
+                    enabled = enabled
                 )
-                9 -> FingerprintKey(onClick = onFingerprintClick)
+
+                9 -> FingerprintKey(
+                    onClick = onFingerprintClick,
+                    enabled = enabled
+                )
                 10 -> PinKey(
                     number = 0,
-                    onClick = onNumberClick
+                    onClick = onNumberClick,
+                    enabled = enabled
                 )
-                else -> BackSpaceKey(onClick = onBackspaceClick)
+
+                else -> BackSpaceKey(
+                    onClick = onBackspaceClick,
+                    enabled = enabled
+                )
             }
         }
     }
@@ -57,6 +68,7 @@ internal fun PinKeyboard(
 @Composable
 private fun FingerprintKey(
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     onClick: (() -> Unit)? = null,
 ) {
     Box(
@@ -64,12 +76,13 @@ private fun FingerprintKey(
     ) {
         onClick?.let {
             SpecialKey(
-                onClick = onClick
+                onClick = onClick,
+                enabled = enabled
             ) {
                 Icon(
                     imageVector = FingerprintIcon,
                     contentDescription = stringResource(R.string.use_biometric_authentication),
-                    tint = AppColors.OnPrimaryFixed
+                    tint = if (enabled) AppColors.OnPrimaryFixed else AppColors.OnPrimaryFixed.copy(0.3f)
                 )
             }
         }
@@ -79,16 +92,18 @@ private fun FingerprintKey(
 @Composable
 private fun BackSpaceKey(
     onClick: () -> Unit,
+    enabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     SpecialKey(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.Backspace,
             contentDescription = stringResource(R.string.delete_the_last_digit),
-            tint = AppColors.OnPrimaryFixed
+            tint = if (enabled) AppColors.OnPrimaryFixed else AppColors.OnPrimaryFixed.copy(0.3f)
         )
     }
 }
@@ -97,17 +112,18 @@ private fun BackSpaceKey(
 private fun PinKey(
     number: Int,
     onClick: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     KeyButton(
         modifier = modifier,
         onClick = { onClick(number) },
-        color = AppColors.PrimaryFixed
+        color = if (enabled) AppColors.PrimaryFixed else AppColors.PrimaryFixed.copy(alpha = 0.3f)
     ) {
         Text(
             text = number.toString(),
             style = MaterialTheme.typography.headlineLarge,
-            color = AppColors.OnPrimaryFixed
+            color = if (enabled) AppColors.OnPrimaryFixed else AppColors.OnPrimaryFixed.copy(alpha = 0.3f)
         )
     }
 }
@@ -116,10 +132,15 @@ private fun PinKey(
 private fun SpecialKey(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean,
     icon: @Composable () -> Unit
 ) {
     KeyButton(
-        color = AppColors.PrimaryFixed.copy(alpha = 0.3f),
+        color = if (enabled) {
+            AppColors.PrimaryFixed.copy(alpha = 0.3f)
+        } else {
+            AppColors.PrimaryFixed.copy(alpha = 0.1f)
+        }            ,
         onClick = onClick,
         modifier = modifier
     ) {

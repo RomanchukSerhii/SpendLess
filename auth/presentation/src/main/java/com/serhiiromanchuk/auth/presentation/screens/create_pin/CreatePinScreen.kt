@@ -57,7 +57,7 @@ private fun CreatePinScreen(
     ) {
         BaseContentLayout(
             onBackPressed = { onEvent(CreatePinUiEvent.BackButtonClicked) },
-            errorMessage = if (state.showError) stringResource(R.string.error_message) else null
+            errorMessage = if (state.showError) stringResource(R.string.error_pins_dont_match) else null
         ) {
             Box {
                 BackButton(
