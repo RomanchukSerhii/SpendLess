@@ -54,6 +54,7 @@ fun BaseContentLayout(
     contentColor: Color = contentColorFor(containerColor),
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     errorMessage: String? = null,
+    background: (@Composable () -> Unit)? = null,
     content: @Composable (BoxScope.() -> Unit)
 ) {
     val view = LocalView.current
@@ -79,6 +80,8 @@ fun BaseContentLayout(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
+            if (background != null) background()
+
             Scaffold(
                 modifier = Modifier
                     .windowInsetsPadding(WindowInsets.safeDrawing)
@@ -93,7 +96,7 @@ fun BaseContentLayout(
                 snackbarHost = snackbarHost,
                 floatingActionButton = floatingActionButton,
                 floatingActionButtonPosition = floatingActionButtonPosition,
-                containerColor = containerColor,
+                containerColor = if (background != null) Color.Transparent else containerColor,
                 contentColor = contentColor,
                 contentWindowInsets = contentWindowInsets,
             ) { paddingValues ->
