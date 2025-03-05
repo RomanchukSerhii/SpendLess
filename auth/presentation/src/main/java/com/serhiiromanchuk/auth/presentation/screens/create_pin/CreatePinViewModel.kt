@@ -82,6 +82,7 @@ class CreatePinViewModel : ViewModel() {
             ScreenMode.CreatePin -> if (isCreatedPinLengthValid) toggleScreenMode()
             ScreenMode.RepeatPin -> if (isRepeatedPinLengthValid) {
                 if (state.createdPin == state.repeatedPin) {
+                    state = CreatePinUiState()
                     viewModelScope.launch {
                         _actions.send(CreatePinAction.NavigateNext)
                     }

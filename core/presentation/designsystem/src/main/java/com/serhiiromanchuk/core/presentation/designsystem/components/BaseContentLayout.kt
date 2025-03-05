@@ -22,7 +22,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +32,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+
+data class SystemIconsUiController(
+    val isStatusBarIconsDark: Boolean = true,
+    val isNavigationBarIconsDark: Boolean = true
+)
+
+val LocalSystemIconsUiController = compositionLocalOf { SystemIconsUiController() }
 
 @Composable
 fun BaseContentLayout(
@@ -49,11 +57,14 @@ fun BaseContentLayout(
     content: @Composable (BoxScope.() -> Unit)
 ) {
     val view = LocalView.current
-    val window = (view.context as Activity).window
+    val systemIconsUiController = LocalSystemIconsUiController.current
 
-    LaunchedEffect(errorMessage) {
-        WindowCompat.getInsetsController(window, window.decorView)
-            .isAppearanceLightNavigationBars = errorMessage == null
+    SideEffect {
+        val window = (view.context as Activity).window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars = systemIconsUiController.isStatusBarIconsDark
+        insetsController.isAppearanceLightNavigationBars = systemIconsUiController.isNavigationBarIconsDark
     }
 
     BackHandler(

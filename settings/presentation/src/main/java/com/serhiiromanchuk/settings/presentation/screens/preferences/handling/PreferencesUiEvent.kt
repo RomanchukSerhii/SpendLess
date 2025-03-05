@@ -1,9 +1,9 @@
 package com.serhiiromanchuk.settings.presentation.screens.preferences.handling
 
-import com.serhiiromanchuk.settings.presentation.screens.CurrencyCategoryItem
-import com.serhiiromanchuk.settings.presentation.screens.DecimalSeparator
-import com.serhiiromanchuk.settings.presentation.screens.ExpensesFormat
-import com.serhiiromanchuk.settings.presentation.screens.ThousandsSeparator
+import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyCategoryItem
+import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.DecimalSeparator
+import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.ExpensesFormat
+import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.ThousandsSeparator
 
 sealed interface PreferencesUiEvent {
     data class ExpensesFormatClicked(val expensesFormat: ExpensesFormat) : PreferencesUiEvent

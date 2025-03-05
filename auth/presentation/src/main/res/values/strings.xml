@@ -19,4 +19,5 @@
     <string name="delete_the_last_digit">Delete the last digit</string>
     <string name="navigate_back">Navigate back</string>
     <string name="error_message">PINs don\'t match. Try again</string>
+    <string name="start_tracking">Start Tracking!</string>
 </resources>

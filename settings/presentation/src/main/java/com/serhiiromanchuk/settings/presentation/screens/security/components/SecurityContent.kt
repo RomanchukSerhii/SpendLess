@@ -14,7 +14,7 @@ import com.serhiiromanchuk.settings.presentation.R
 import com.serhiiromanchuk.settings.presentation.screens.BiometricsPrompt
 import com.serhiiromanchuk.settings.presentation.screens.LockedOutDuration
 import com.serhiiromanchuk.settings.presentation.screens.SessionExpiryDuration
-import com.serhiiromanchuk.settings.presentation.screens.SettingItem
+import com.serhiiromanchuk.core.presentation.designsystem.components.SettingItem
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiState
 
