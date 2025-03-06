@@ -35,7 +35,7 @@ fun AppTextField(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            textStyle = MaterialTheme.typography.bodyMedium,
+            textStyle = MaterialTheme.typography.bodyLarge,
             enabled = !isDisabled,
             isError = isError,
             shape = RoundedCornerShape(16.dp),

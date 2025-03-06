@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.DropdownItem
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.SpendCategoryItem
 
@@ -103,7 +104,7 @@ private fun SelectDropdown(
                     )
                 },
                 onClick = { onItemSelected(categoryItem) },
-                leadingIcon = { categoryItem.Icon() },
+                leadingIcon = { categoryItem.TextIcon(fontSize = 18.sp) },
                 trailingIcon = {
                     if (categoryItem == selectedItem) {
                         Icon(

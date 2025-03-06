@@ -6,6 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.components.OptionText
@@ -28,61 +29,61 @@ enum class ExpensesFormat(override val label: @Composable () -> Unit) : SegmentO
 enum class CurrencyCategoryItem(override val title: String, val symbol: String) : DropdownItem {
     USD("US Dollar (USD)", "\$") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("\$")
         }
     },
     EUR("Euro (EUR)", "€") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("€")
         }
     },
     GBP("British Pound Sterling (GBP)", "£") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("£")
         }
     },
     JPY("Japanese Yen (JPY)", "¥") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("¥")
         }
     },
     CNY("Chinese Yuan Renminbi (CNY)", "¥") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("¥")
         }
     },
     INR("Indian Rupee (INR)", "₹") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("₹")
         }
     },
     ZAR("South African Rand (ZAR)", "R") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("R")
         }
     },
     CAD("Canadian Dollar (CAD)", "C\$") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("C\$")
         }
     },
     AUD("Australian Dollar (AUD)", "A\$") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("A\$")
         }
     },
     CHF("Swiss Franc (CHF)", "CHF") {
         @Composable
-        override fun Icon() {
+        override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("CHF")
         }
     },
@@ -106,13 +107,15 @@ enum class ThousandsSeparator(
 @Composable
 private fun CurrencyIcon(
     currency: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = TextUnit.Unspecified
 ) {
     Text(
         text = currency,
         modifier = modifier.padding(start = 16.dp),
         style = MaterialTheme.typography.labelMedium.copy(
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = fontSize
         )
     )
 }

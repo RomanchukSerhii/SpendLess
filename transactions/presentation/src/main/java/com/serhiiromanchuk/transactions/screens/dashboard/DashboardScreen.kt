@@ -1,10 +1,14 @@
 package com.serhiiromanchuk.transactions.screens.dashboard
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppFAB
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.DashboardTopBar
+import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
+import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
 import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionViewModel
+import com.serhiiromanchuk.transactions.screens.dashboard.components.AccountInfo
 import com.serhiiromanchuk.transactions.screens.dashboard.components.CreateTransactionBottomSheet
 import com.serhiiromanchuk.transactions.screens.dashboard.components.DashboardBackground
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent
@@ -17,28 +21,12 @@ fun DashboardScreenRoot(
     dashboardViewModel: DashboardViewModel = koinViewModel(),
     createTransactionViewModel: CreateTransactionViewModel = koinViewModel()
 ) {
-    BaseContentLayout(
-        topBar = {
-            DashboardTopBar(
-                name = "rockefeller74",
-                onSettingsClick = {},
-                onExportClick = {}
-            )
-        },
-        floatingActionButton = {
-            AppFAB(
-                onClick = {
-                    dashboardViewModel.onEvent(DashboardUiEvent.CreateTransactionSheetToggled)
-                }
-            )
-        },
-        background = { DashboardBackground() }
-    ) {
-        DashboardScreen(
-            state = dashboardViewModel.state,
-            onEvent = dashboardViewModel::onEvent
-        )
-    }
+    DashboardScreen(
+        state = dashboardViewModel.state,
+        onEvent = dashboardViewModel::onEvent,
+        onFabClick = { dashboardViewModel.onEvent(DashboardUiEvent.CreateTransactionSheetToggled) }
+    )
+
     if (dashboardViewModel.state.isCreateTransactionSheetOpened) {
         CreateTransactionBottomSheet(
             viewModel = createTransactionViewModel,
@@ -52,8 +40,30 @@ fun DashboardScreenRoot(
 @Composable
 private fun DashboardScreen(
     state: DashboardUiState,
-    onEvent: (DashboardUiEvent) -> Unit
+    onEvent: (DashboardUiEvent) -> Unit,
+    onFabClick: () -> Unit
 ) {
+    CompositionLocalProvider(
+        LocalSystemIconsUiController provides SystemIconsUiController(
+            isStatusBarIconsDark = false
+        )
+    ) {
+        BaseContentLayout(
+            topBar = {
+                DashboardTopBar(
+                    name = "rockefeller74",
+                    onSettingsClick = {},
+                    onExportClick = {}
+                )
+            },
+            floatingActionButton = {
+                AppFAB(onClick = onFabClick)
+            },
+            background = { DashboardBackground() }
+        ) {
+            AccountInfo(state.accountInfoState)
+        }
+    }
 
 }
 

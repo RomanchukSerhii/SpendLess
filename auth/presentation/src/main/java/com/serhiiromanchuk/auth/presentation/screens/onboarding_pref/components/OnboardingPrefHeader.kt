@@ -26,7 +26,7 @@ internal fun OnboardingPrefHeader(
 
         Text(
             text = "You can change it at any time in Settings",
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }

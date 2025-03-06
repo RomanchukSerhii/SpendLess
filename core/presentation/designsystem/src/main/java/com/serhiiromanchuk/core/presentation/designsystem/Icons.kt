@@ -3,6 +3,7 @@ package com.serhiiromanchuk.core.presentation.designsystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -11,12 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 
 val DownloadIcon: ImageVector
     @Composable
@@ -63,107 +62,129 @@ val WalletIcon: ImageVector
     get() = ImageVector.vectorResource(id = R.drawable.wallet)
 
 @Composable
-fun HomeIcon() {
+fun HomeIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x1F3E0)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun FoodIcon() {
+fun FoodIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x1F355)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun EntertainmentIcon() {
+fun EntertainmentIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x1F4BB)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun ClothingIcon() {
+fun ClothingIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x1F454)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun HealthIcon() {
+fun HealthIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x2764)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun PersonalCareIcon() {
+fun PersonalCareIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x1F6C1)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun TransportationIcon() {
+fun TransportationIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x1F697)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun EducationIcon() {
+fun EducationIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x1F393)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun SavingIcon() {
+fun SavingIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x1F48E)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun OtherIcon() {
+fun OtherIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     ExpenseIconBackground {
         Text(
             text = String(Character.toChars(0x2699)),
-            fontSize = 20.sp
+            fontSize = fontSize
         )
     }
 }
 
 @Composable
-fun RepeatIcon() {
+fun RepeatIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
     Box(
         Modifier
             .clip(RoundedCornerShape(12.dp))
@@ -173,7 +194,7 @@ fun RepeatIcon() {
     ) {
         Text(
             text = String(Character.toChars(0x1F504)),
-            fontSize = 18.sp
+            fontSize = fontSize
         )
     }
 }
@@ -186,7 +207,7 @@ private fun ExpenseIconBackground(
         Modifier
             .clip(RoundedCornerShape(12.dp))
             .background(ExpenseIncomeColors.categoryIconBackground(isIncome = false))
-            .size(40.dp),
+            .padding(12.dp),
         contentAlignment = Alignment.Center
     ) {
         content()

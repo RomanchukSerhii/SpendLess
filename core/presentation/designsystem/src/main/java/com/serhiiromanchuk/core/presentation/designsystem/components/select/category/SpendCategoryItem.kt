@@ -1,6 +1,7 @@
 package com.serhiiromanchuk.core.presentation.designsystem.components.select.category
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.TextUnit
 import com.serhiiromanchuk.core.presentation.designsystem.ClothingIcon
 import com.serhiiromanchuk.core.presentation.designsystem.EducationIcon
 import com.serhiiromanchuk.core.presentation.designsystem.EntertainmentIcon
@@ -15,42 +16,62 @@ import com.serhiiromanchuk.core.presentation.designsystem.TransportationIcon
 enum class SpendCategoryItem(override val title: String) : DropdownItem {
     HOME("Home") {
         @Composable
-        override fun Icon() { HomeIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            HomeIcon(fontSize)
+        }
     },
     FOOD("Food & Groceries") {
         @Composable
-        override fun Icon() { FoodIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            FoodIcon(fontSize)
+        }
     },
     ENTERTAINMENT("Entertainment") {
         @Composable
-        override fun Icon() { EntertainmentIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            EntertainmentIcon(fontSize)
+        }
     },
     CLOTHING("Clothing & Accessories") {
         @Composable
-        override fun Icon() { ClothingIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            ClothingIcon(fontSize)
+        }
     },
     HEALTH("Health & Wellness") {
         @Composable
-        override fun Icon() { HealthIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            HealthIcon(fontSize)
+        }
     },
     PERSONAL_CARE("Personal Care") {
         @Composable
-        override fun Icon() { PersonalCareIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            PersonalCareIcon(fontSize)
+        }
     },
     TRANSPORTATION("Transportation") {
         @Composable
-        override fun Icon() { TransportationIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            TransportationIcon(fontSize)
+        }
     },
     EDUCATION("Education") {
         @Composable
-        override fun Icon() { EducationIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            EducationIcon(fontSize)
+        }
     },
     SAVING("Saving & Investments") {
         @Composable
-        override fun Icon() { SavingIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            SavingIcon(fontSize)
+        }
     },
     OTHER("Other") {
         @Composable
-        override fun Icon() { OtherIcon() }
+        override fun TextIcon(fontSize: TextUnit) {
+            OtherIcon(fontSize)
+        }
     };
 }
