@@ -51,11 +51,11 @@ fun DashboardBackground(modifier: Modifier = Modifier) {
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            if (isAtLeastAndroid12) primaryColor else primaryColor.copy(alpha = 0.4f),
+                            if (isAtLeastAndroid12) primaryColor.copy(alpha = 0.8f) else primaryColor.copy(alpha = 0.4f),
                             AppColors.OnPrimaryFixed
                         ),
                         center = Offset(
-                            x = screenWidthPx / 4f,
+                            x = screenWidthPx / 3f,
                             y = with(density) { 100.dp.toPx() }
                         ),
                         radius = smallDimensionPx / 2f

@@ -1,7 +1,7 @@
 package com.serhiiromanchuk.core.presentation.designsystem.theme
 
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
@@ -45,6 +45,8 @@ object AppColors {
     val SurfContainerLowest = SpendLessWhite
     val SurfContainer = SpendLessWhiteWarm
     val SurfContainerHighest = SpendLessWhiteNeutral
+    val PrimaryOpacity87 = SpendLessPurpleDark.copy(alpha = 0.87f)
+    val PrimaryOpacity76 = SpendLessPurpleDark.copy(alpha = 0.76f)
     val PrimaryOpacity12 = SpendLessPurpleDark.copy(alpha = 0.12f)
     val PrimaryOpacity8 = SpendLessPurpleDark.copy(alpha = 0.8f)
     val OnPrimaryOpacity12 = SpendLessWhite.copy(alpha = 0.12f)

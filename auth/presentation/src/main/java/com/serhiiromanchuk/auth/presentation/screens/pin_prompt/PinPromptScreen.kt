@@ -15,10 +15,11 @@ import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.AuthHeader
 import com.serhiiromanchuk.auth.presentation.components.PinKeyboard
 import com.serhiiromanchuk.auth.presentation.screens.create_pin.components.PinIndicator
-import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.components.LogOutButton
 import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.handling.PinPromptUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.handling.PinPromptUiState
+import com.serhiiromanchuk.core.presentation.designsystem.LogoutIcon
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.designsystem.components.ErrorIconButton
 import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
@@ -49,9 +50,12 @@ private fun PinPromptScreen(
             errorMessage = if (state.showError) stringResource(R.string.error_wrong_pin) else null
         ) {
             Box {
-                LogOutButton(
+                // LogOutButton
+                ErrorIconButton(
+                    icon = LogoutIcon,
+                    contentDescription = stringResource(R.string.log_out),
                     onClick = { onEvent(PinPromptUiEvent.LogOutClicked) },
-                    modifier = Modifier.align(Alignment.TopEnd)
+                    modifier = Modifier.padding(top = 16.dp).align(Alignment.TopEnd),
                 )
 
                 Column(
