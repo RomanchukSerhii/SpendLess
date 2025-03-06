@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.DropdownItem
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.RepeatingCategoryItem
@@ -45,7 +46,7 @@ fun CategoryCard(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            category.Icon()
+            category.TextIcon(fontSize = 18.sp)
 
             Text(
                 text = category.title,

@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.serhiiromanchuk.core.presentation.designsystem.theme
 
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -78,22 +81,22 @@ val Typography = Typography(
         fontSize = 14.sp,
         lineHeight = 20.sp
     ),
-    bodyMedium = TextStyle(
+    bodyLarge = TextStyle(
         fontFamily = Figtree,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp
     ),
-    bodySmall = TextStyle(
+    bodyMedium = TextStyle(
         fontFamily = Figtree,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp
     ),
-    bodyLarge = TextStyle(  //bodyXSmall
+    bodySmall = TextStyle(
         fontFamily = Figtree,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 16.sp
-    )
+    ),
 )

@@ -13,4 +13,8 @@
     <string name="add_note">Add Note</string>
     <string name="export_transactions">Export transactions</string>
     <string name="open_settings">Open settings</string>
+    <string name="account_balance">Account Balance</string>
+    <string name="most_popular_category">Most popular category</string>
+    <string name="largest_transaction">Largest transaction</string>
+    <string name="previous_week">Previous week</string>
 </resources>

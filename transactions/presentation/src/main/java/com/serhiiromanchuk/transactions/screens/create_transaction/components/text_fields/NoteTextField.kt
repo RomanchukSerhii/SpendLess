@@ -55,7 +55,7 @@ private fun NotePlaceholder() {
 
         Text(
             text = stringResource(R.string.add_note),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.outline
         )
     }
