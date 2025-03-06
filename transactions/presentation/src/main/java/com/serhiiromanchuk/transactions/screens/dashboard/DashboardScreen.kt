@@ -3,6 +3,7 @@ package com.serhiiromanchuk.transactions.screens.dashboard
 import androidx.compose.runtime.Composable
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppFAB
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.designsystem.components.DashboardTopBar
 import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionViewModel
 import com.serhiiromanchuk.transactions.screens.dashboard.components.CreateTransactionBottomSheet
 import com.serhiiromanchuk.transactions.screens.dashboard.components.DashboardBackground
@@ -17,6 +18,13 @@ fun DashboardScreenRoot(
     createTransactionViewModel: CreateTransactionViewModel = koinViewModel()
 ) {
     BaseContentLayout(
+        topBar = {
+            DashboardTopBar(
+                name = "rockefeller74",
+                onSettingsClick = {},
+                onExportClick = {}
+            )
+        },
         floatingActionButton = {
             AppFAB(
                 onClick = {

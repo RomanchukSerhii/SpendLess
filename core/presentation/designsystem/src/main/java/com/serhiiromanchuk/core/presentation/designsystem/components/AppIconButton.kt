@@ -1,126 +1,107 @@
 package com.serhiiromanchuk.core.presentation.designsystem.components
 
-import androidx.annotation.DrawableRes
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.serhiiromanchuk.core.presentation.designsystem.AppIconButtonColors
-import com.serhiiromanchuk.core.presentation.designsystem.IconButtonColorsScheme
-import com.serhiiromanchuk.core.presentation.designsystem.R
+import com.serhiiromanchuk.core.presentation.designsystem.SettingsIcon
+import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
-fun IconButtonTemplate(
-    modifier: Modifier = Modifier,
-    contentDescription: String,
+private fun SpendLessIconButton(
+    icon: ImageVector,
+    contentDescription: String?,
     onClick: () -> Unit,
-    colors: IconButtonColorsScheme,
-    isEnabled: Boolean = true,
-    @DrawableRes iconResId: Int =  R.drawable.settings
+    modifier: Modifier = Modifier,
+    colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
+    enabled: Boolean = true
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-
-    val backgroundColor by animateColorAsState(
-        targetValue = colors.containerColor(isPressed),
-        label = "buttonBackgroundColor"
-    )
-
-    Box(
-        modifier = modifier
-            .size(48.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(backgroundColor)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = LocalIndication.current,
-                enabled = isEnabled,
-                onClick = onClick
-            ),
-        contentAlignment = Alignment.Center
+    IconButton(
+        onClick = onClick,
+        modifier = modifier.size(44.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = colors,
+        enabled = enabled
     ) {
         Icon(
-            painter = painterResource(id = iconResId),
+            imageVector = icon,
             contentDescription = contentDescription,
-            modifier = Modifier.size(24.dp),
-            tint = if (isEnabled) colors.contentColor() else colors.disabledContentColor()
+            modifier = Modifier.size(24.dp)
         )
     }
 }
 
 @Composable
-fun FilledIconButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+fun OnPrimaryIconButton(
+    icon: ImageVector,
+    contentDescription: String?,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    IconButtonTemplate(
-        modifier = modifier,
-        contentDescription = "Filled",
+    SpendLessIconButton(
+        icon = icon,
+        contentDescription = contentDescription,
         onClick = onClick,
-        colors = AppIconButtonColors.Filled
+        modifier = modifier,
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f),
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        )
     )
 }
+
 @Composable
 fun StandardIconButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    icon: ImageVector,
+    contentDescription: String?,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    IconButtonTemplate(
-        modifier = modifier,
-        contentDescription = "Standard",
+    SpendLessIconButton(
+        icon = icon,
+        contentDescription = contentDescription,
         onClick = onClick,
-        colors = AppIconButtonColors.Standard
+        modifier = modifier,
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     )
 }
 
 @Composable
 fun ErrorIconButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    icon: ImageVector,
+    contentDescription: String?,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    IconButtonTemplate(
-        modifier = modifier,
-        contentDescription = "Error",
+    SpendLessIconButton(
+        icon = icon,
+        contentDescription = contentDescription,
         onClick = onClick,
-        colors = AppIconButtonColors.Error
+        modifier = modifier,
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = AppColors.ErrorOpacity08,
+            contentColor = MaterialTheme.colorScheme.error
+        )
     )
 }
 
-@Composable
-fun OnPrimaryIconButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    @DrawableRes iconResId: Int = R.drawable.settings
-) {
-    IconButtonTemplate(
-        modifier = modifier,
-        contentDescription = "On primary",
-        onClick = onClick,
-        colors = AppIconButtonColors.OnPrimary,
-        iconResId = iconResId
-    )
-}
 @Preview(showBackground = true)
 @Composable
 fun IconButtonDemo() {
@@ -132,13 +113,19 @@ fun IconButtonDemo() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            FilledIconButton(
-                onClick = { }
-            )
             StandardIconButton(
+                icon = SettingsIcon,
+                contentDescription = null,
                 onClick = { }
             )
             ErrorIconButton(
+                icon = SettingsIcon,
+                contentDescription = null,
+                onClick = { }
+            )
+            OnPrimaryIconButton(
+                icon = SettingsIcon,
+                contentDescription = null,
                 onClick = { }
             )
         }
