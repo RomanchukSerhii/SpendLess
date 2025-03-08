@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.components.OptionText
 import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentOption
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.DropdownItem
+import com.serhiiromanchuk.core.presentation.designsystem.components.select.DropdownItem
 
 enum class ExpensesFormat(override val label: @Composable () -> Unit) : SegmentOption {
     MINUS(
@@ -26,62 +26,62 @@ enum class ExpensesFormat(override val label: @Composable () -> Unit) : SegmentO
     )
 }
 
-enum class CurrencyCategoryItem(override val title: String, val symbol: String) : DropdownItem {
-    USD("US Dollar (USD)", "\$") {
+enum class CurrencyCategoryItem(override val titleRes: Int, val symbol: String) : DropdownItem {
+    USD(R.string.us_dollar_usd, "\$") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("\$")
         }
     },
-    EUR("Euro (EUR)", "€") {
+    EUR(R.string.euro_eur, "€") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("€")
         }
     },
-    GBP("British Pound Sterling (GBP)", "£") {
+    GBP(R.string.british_pound_sterling_gbp, "£") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("£")
         }
     },
-    JPY("Japanese Yen (JPY)", "¥") {
+    JPY(R.string.japanese_currency, "¥") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("¥")
         }
     },
-    CNY("Chinese Yuan Renminbi (CNY)", "¥") {
+    CNY(R.string.chinese_currency, "¥") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("¥")
         }
     },
-    INR("Indian Rupee (INR)", "₹") {
+    INR(R.string.indian_currency, "₹") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("₹")
         }
     },
-    ZAR("South African Rand (ZAR)", "R") {
+    ZAR(R.string.south_african_currency, "R") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("R")
         }
     },
-    CAD("Canadian Dollar (CAD)", "C\$") {
+    CAD(R.string.canadian_currency, "C\$") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("C\$")
         }
     },
-    AUD("Australian Dollar (AUD)", "A\$") {
+    AUD(R.string.australian_currency, "A\$") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("A\$")
         }
     },
-    CHF("Swiss Franc (CHF)", "CHF") {
+    CHF(R.string.swiss_currency, "CHF") {
         @Composable
         override fun TextIcon(fontSize: TextUnit) {
             CurrencyIcon("CHF")

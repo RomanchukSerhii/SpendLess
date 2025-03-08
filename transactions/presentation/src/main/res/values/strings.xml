@@ -17,4 +17,19 @@
     <string name="most_popular_category">Most popular category</string>
     <string name="largest_transaction">Largest transaction</string>
     <string name="previous_week">Previous week</string>
+    <string name="no_transactions_to_show">No transactions to show</string>
+    <string name="latest_transactions">Latest Transactions</string>
+    <string name="show_all">Show all</string>
+    <string name="home">Home</string>
+    <string name="food_groceries"><![CDATA[Food & Groceries]]></string>
+    <string name="entertainment">Entertainment</string>
+    <string name="clothing_accessories"><![CDATA[Clothing & Accessories]]></string>
+    <string name="health_wellness"><![CDATA[Health & Wellness]]></string>
+    <string name="personal_care">Personal Care</string>
+    <string name="transportation">Transportation</string>
+    <string name="education">Education</string>
+    <string name="saving_investments"><![CDATA[Saving & Investments]]></string>
+    <string name="other">Other</string>
+    <string name="does_not_repeat">Does not repeat</string>
+    <string name="daily">Daily</string>
 </resources>

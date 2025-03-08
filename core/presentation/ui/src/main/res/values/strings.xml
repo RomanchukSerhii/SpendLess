@@ -7,4 +7,6 @@
     <string name="error_server_error">Oops, something went wrong, please try again.</string>
     <string name="error_serialization">Oops, coldn\'t parse data.</string>
     <string name="error_unknown">An unknown error occurred</string>
+    <string name="today">TODAY</string>
+    <string name="yesterday">YESTERDAY</string>
 </resources>

@@ -10,4 +10,14 @@
     <string name="decimal_separator">Decimal separator</string>
     <string name="currency">Currency</string>
     <string name="thousands_separator">Thousands separator</string>
+    <string name="us_dollar_usd">US Dollar (USD)</string>
+    <string name="euro_eur">Euro (EUR)</string>
+    <string name="british_pound_sterling_gbp">British Pound Sterling (GBP)</string>
+    <string name="japanese_currency">Japanese Yen (JPY)</string>
+    <string name="chinese_currency">Chinese Yuan Renminbi (CNY)</string>
+    <string name="indian_currency">Indian Rupee (INR)</string>
+    <string name="south_african_currency">South African Rand (ZAR)</string>
+    <string name="canadian_currency">Canadian Dollar (CAD)</string>
+    <string name="australian_currency">Australian Dollar (AUD)</string>
+    <string name="swiss_currency">Swiss Franc (CHF)</string>
 </resources>
