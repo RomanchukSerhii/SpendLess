@@ -7,16 +7,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.SelectCategory
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.RepeatingCategoryItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.SpendCategoryItem
+import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
+import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
 
 @Composable
 fun TransactionOptions(
     isExpense: Boolean,
-    selectedSpendCategory: SpendCategoryItem,
-    selectedRepeatingCategory: RepeatingCategoryItem,
-    onSpendCategoryClick: (SpendCategoryItem) -> Unit,
-    onRepeatingCategoryClick: (RepeatingCategoryItem) -> Unit,
+    selectedSpendCategory: ExpenseCategory,
+    selectedRepeatingCategory: RepeatingCategory,
+    onSpendCategoryClick: (ExpenseCategory) -> Unit,
+    onRepeatingCategoryClick: (RepeatingCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -25,18 +25,18 @@ fun TransactionOptions(
         // Select spend category
         if (isExpense) {
             SelectCategory(
-                items = SpendCategoryItem.entries,
+                items = ExpenseCategory.entries,
                 selectedItem = selectedSpendCategory,
-                onItemSelected = { onSpendCategoryClick(it as SpendCategoryItem) },
+                onItemSelected = { onSpendCategoryClick(it as ExpenseCategory) },
                 modifier = Modifier.padding(bottom = 4.dp)
             )
         }
 
         // Select repeat category
         SelectCategory(
-            items = RepeatingCategoryItem.entries,
+            items = RepeatingCategory.entries,
             selectedItem = selectedRepeatingCategory,
-            onItemSelected = { onRepeatingCategoryClick(it as RepeatingCategoryItem)}
+            onItemSelected = { onRepeatingCategoryClick(it as RepeatingCategory)}
         )
     }
 }

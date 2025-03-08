@@ -13,7 +13,7 @@ object ExpenseIncomeColors {
 
     @Composable
     fun categoryIconBackground(isIncome: Boolean): Color {
-        return if (isIncome) AppColors.SecondaryFixed else AppColors.PrimaryFixed
+        return if (isIncome) AppColors.SecondaryFixed.copy(alpha = 0.4f) else AppColors.PrimaryFixed
     }
 
     val notesIconBackground @Composable get() = MaterialTheme.colorScheme.surfaceContainerLowest

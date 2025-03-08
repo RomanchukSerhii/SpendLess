@@ -3,6 +3,7 @@ package com.serhiiromanchuk.core.presentation.designsystem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 val DownloadIcon: ImageVector
     @Composable
@@ -60,6 +62,25 @@ val TrendingUpIcon: ImageVector
 val WalletIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.wallet)
+
+@Composable
+fun IncomeIcon(
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 20.sp
+) {
+    Box(
+        modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(ExpenseIncomeColors.categoryIconBackground(isIncome = true))
+            .padding(12.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = String(Character.toChars(0x1F4B0)),
+            fontSize = fontSize
+        )
+    }
+}
 
 @Composable
 fun HomeIcon(
@@ -139,6 +160,7 @@ fun TransportationIcon(
 ) {
     ExpenseIconBackground {
         Text(
+            modifier = Modifier.offset(y = (-4).dp),
             text = String(Character.toChars(0x1F697)),
             fontSize = fontSize
         )
@@ -179,6 +201,16 @@ fun OtherIcon(
             fontSize = fontSize
         )
     }
+}
+
+@Composable
+fun MoneyIcon(
+    fontSize: TextUnit = TextUnit.Unspecified
+) {
+    Text(
+        text = String(Character.toChars(0x1F4B8)),
+        fontSize = fontSize
+    )
 }
 
 @Composable

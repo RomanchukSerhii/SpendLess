@@ -4,13 +4,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.RepeatingCategoryItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.SpendCategoryItem
+import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
+import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
 import com.serhiiromanchuk.transactions.screens.create_transaction.components.TransactionModeOptions
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent
-import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.*
+import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.AmountTextChanged
+import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.CounterpartyTextChanged
+import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.CreateButtonClicked
+import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.NoteTextChanged
+import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.RepeatingCategorySelected
+import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.SpendCategorySelected
+import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.TransactionModeSelected
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiState
-import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiState.*
+import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiState.TransactionFieldsState
 
 class CreateTransactionViewModel : ViewModel() {
     var state by mutableStateOf(CreateTransactionUiState())
@@ -20,7 +26,7 @@ class CreateTransactionViewModel : ViewModel() {
         when (event) {
             is TransactionModeSelected -> updateTransactionMode(event.transactionMode)
             is SpendCategorySelected -> updateSpendCategory(event.spendCategory)
-            is RepeatingCategorySelected -> updateRepeatingCategory(event.repeatingCategoryItem)
+            is RepeatingCategorySelected -> updateRepeatingCategory(event.repeatingCategory)
 
             is CounterpartyTextChanged -> updateCounterpartyText(event.text)
             is AmountTextChanged -> updateAmountText(event.text)
@@ -34,11 +40,11 @@ class CreateTransactionViewModel : ViewModel() {
         state = state.copy(transactionMode = transactionMode)
     }
 
-    private fun updateSpendCategory(spendCategory: SpendCategoryItem) {
+    private fun updateSpendCategory(spendCategory: ExpenseCategory) {
         state = state.copy(spendCategory = spendCategory)
     }
 
-    private fun updateRepeatingCategory(repeatingCategory: RepeatingCategoryItem) {
+    private fun updateRepeatingCategory(repeatingCategory: RepeatingCategory) {
         state = state.copy(repeatingCategory = repeatingCategory)
     }
 

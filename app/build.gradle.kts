@@ -27,6 +27,7 @@ dependencies {
 
     // Koin
     implementation(libs.bundles.koin)
+    implementation(libs.bundles.koin.compose)
 
     api(libs.core)
 

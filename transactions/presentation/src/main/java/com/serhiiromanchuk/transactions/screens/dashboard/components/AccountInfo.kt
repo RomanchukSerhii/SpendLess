@@ -20,8 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.SpendCategoryItem
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
+import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.presentation.R
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState.AccountInfoState
 
@@ -79,7 +79,7 @@ private fun AccountBalance(
 
 @Composable
 private fun PopularCategory(
-    popularCategory: SpendCategoryItem,
+    popularCategory: ExpenseCategory,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -97,7 +97,7 @@ private fun PopularCategory(
 
             Column {
                 Text(
-                    text = popularCategory.title,
+                    text = stringResource(popularCategory.titleRes),
                     style = MaterialTheme.typography.titleLarge
                 )
                 Text(
