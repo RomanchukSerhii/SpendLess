@@ -8,19 +8,19 @@ import com.serhiiromanchuk.auth.presentation.screens.create_pin.CreatePinScreenR
 import com.serhiiromanchuk.auth.presentation.screens.login.LoginScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.OnboardingPrefScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.PinPromptScreenRoot
-import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.PinPromptViewModel
 import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationScreenRoot
+import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationViewModel
 import com.serhiiromanchuk.settings.presentation.screens.preferences.PreferencesScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.security.SecurityScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.settings.SettingsScreen
-import com.serhiiromanchuk.settings.presentation.screens.settings.components.LogoutButton
 import com.serhiiromanchuk.spendless.navigation.routes.Feature
 import com.serhiiromanchuk.spendless.navigation.routes.Screen
 import com.serhiiromanchuk.transactions.screens.dashboard.DashboardScreenRoot
+import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
     navigation(
-        startDestination = Screen.Login.route,
+        startDestination = Screen.Registration.route,
         route = Feature.Auth.route
     ) {
         composable(
@@ -35,9 +35,11 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(
             route = Screen.Registration.route
         ) {
+            val testViewModel: RegistrationViewModel = koinViewModel()
             RegistrationScreenRoot(
                 navigateToLogIn = { navController.navigate(Screen.Login.route) },
-                navigateNext = { navController.navigate(Screen.CreatePIN.route) }
+                navigateNext = { navController.navigate(Screen.CreatePIN.route) },
+                viewModel = testViewModel
             )
         }
         composable(

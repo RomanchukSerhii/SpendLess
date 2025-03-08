@@ -34,7 +34,7 @@ fun LogInForm(
             placeholder = {
                 Text(
                     text = stringResource(R.string.username),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         )
@@ -46,7 +46,7 @@ fun LogInForm(
             placeholder = {
                 Text(
                     text = stringResource(R.string.log_in),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         )

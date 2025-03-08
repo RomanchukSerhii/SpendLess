@@ -13,7 +13,7 @@ object ExpenseIncomeColors {
 
     @Composable
     fun categoryIconBackground(isIncome: Boolean): Color {
-        return if (isIncome) AppColors.SecondaryFixed else AppColors.PrimaryFixed
+        return if (isIncome) AppColors.SecondaryFixed.copy(alpha = 0.4f) else AppColors.PrimaryFixed
     }
 
     val notesIconBackground @Composable get() = MaterialTheme.colorScheme.surfaceContainerLowest
@@ -32,43 +32,4 @@ object ExpenseIncomeColors {
             else -> MaterialTheme.colorScheme.inversePrimary
         }
     }
-}
-data class IconButtonColorsScheme(
-    val containerColor: @Composable (Boolean) -> Color,
-    val contentColor: @Composable () -> Color,
-    val disabledContainerColor: @Composable () -> Color,
-    val disabledContentColor: @Composable () -> Color
-)
-
-object AppIconButtonColors {
-    val Filled = IconButtonColorsScheme(
-        containerColor = { isPressed ->
-            if (isPressed) AppColors.PrimaryOpacity12 else MaterialTheme.colorScheme.primary
-        },
-        contentColor = { MaterialTheme.colorScheme.onPrimary },
-        disabledContainerColor = { AppColors.SurfContainerHighest },
-        disabledContentColor = { AppColors.OnSurfaceOpacity12 },
-    )
-
-    val Standard = IconButtonColorsScheme(
-        containerColor = { Color.Transparent },
-        contentColor = { MaterialTheme.colorScheme.onSurface },
-        disabledContainerColor = { Color.Transparent },
-        disabledContentColor = { MaterialTheme.colorScheme.onSurfaceVariant },
-    )
-
-    val Error = IconButtonColorsScheme(
-        containerColor = { MaterialTheme.colorScheme.errorContainer },
-        contentColor = { MaterialTheme.colorScheme.error },
-        disabledContainerColor = { MaterialTheme.colorScheme.surfaceVariant },
-        disabledContentColor = { MaterialTheme.colorScheme.onSurfaceVariant },
-    )
-    val OnPrimary = IconButtonColorsScheme(
-        containerColor = { isPressed ->
-            if (isPressed) AppColors.PrimaryContainerOpacity08 else AppColors.OnPrimaryContainerOpacity12
-        },
-        contentColor = { MaterialTheme.colorScheme.onPrimary },
-        disabledContainerColor = { AppColors.SurfContainerHighest },
-        disabledContentColor = { AppColors.OnSurfaceOpacity12 }
-    )
 }

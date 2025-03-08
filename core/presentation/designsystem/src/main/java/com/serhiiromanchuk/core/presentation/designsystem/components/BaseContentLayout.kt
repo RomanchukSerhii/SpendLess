@@ -13,11 +13,9 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
@@ -52,8 +50,9 @@ fun BaseContentLayout(
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(containerColor),
-    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+    contentWindowInsets: WindowInsets = WindowInsets.safeDrawing,
     errorMessage: String? = null,
+    background: (@Composable () -> Unit)? = null,
     content: @Composable (BoxScope.() -> Unit)
 ) {
     val view = LocalView.current
@@ -79,10 +78,10 @@ fun BaseContentLayout(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
+            if (background != null) background()
+
             Scaffold(
-                modifier = Modifier
-                    .windowInsetsPadding(WindowInsets.safeDrawing)
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxSize(),
                 topBar = { topBar() },
                 bottomBar = {
                     Column {
@@ -93,7 +92,7 @@ fun BaseContentLayout(
                 snackbarHost = snackbarHost,
                 floatingActionButton = floatingActionButton,
                 floatingActionButtonPosition = floatingActionButtonPosition,
-                containerColor = containerColor,
+                containerColor = if (background != null) Color.Transparent else containerColor,
                 contentColor = contentColor,
                 contentWindowInsets = contentWindowInsets,
             ) { paddingValues ->

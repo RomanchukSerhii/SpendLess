@@ -19,13 +19,12 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextButt
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RegistrationScreenRoot(
     navigateToLogIn: () -> Unit,
     navigateNext: () -> Unit,
-    viewModel: RegistrationViewModel = koinViewModel()
+    viewModel: RegistrationViewModel
 ) {
     ObserveAsActions(viewModel.actions) { action ->
         when (action) {

@@ -16,12 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.serhiiromanchuk.core.presentation.designsystem.R
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.DropdownItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.RepeatingCategoryItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.SpendCategoryItem
 
 @Composable
 fun CategoryCard(
@@ -45,10 +43,10 @@ fun CategoryCard(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            category.Icon()
+            category.TextIcon(fontSize = 18.sp)
 
             Text(
-                text = category.title,
+                text = stringResource(category.titleRes),
                 modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface
@@ -65,37 +63,5 @@ fun CategoryCard(
                 modifier = Modifier.padding(end = 12.dp)
             )
         }
-    }
-}
-
-@Preview(
-    showBackground = true,
-    backgroundColor = 0xFFF6F3F3
-)
-@Composable
-fun PreviewSpendCategoryCard() {
-    MaterialTheme {
-        CategoryCard(
-            category = SpendCategoryItem.FOOD,
-            onClick = {},
-            isExpanded = true,
-            modifier = Modifier.padding(16.dp)
-        )
-    }
-}
-
-@Preview(
-    showBackground = true,
-    backgroundColor = 0xFFF6F3F3
-)
-@Composable
-fun PreviewRepeatingCategoryCard() {
-    MaterialTheme {
-        CategoryCard(
-            category = RepeatingCategoryItem.NOT_REPEAT,
-            onClick = {},
-            isExpanded = false,
-            modifier = Modifier.padding(16.dp)
-        )
     }
 }

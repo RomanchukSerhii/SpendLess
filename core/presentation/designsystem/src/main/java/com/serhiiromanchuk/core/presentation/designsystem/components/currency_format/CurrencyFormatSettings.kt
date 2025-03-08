@@ -78,7 +78,7 @@ private fun FormattingExample(
             )
             Text(
                 text = "spend this month",
-                style = MaterialTheme.typography.bodySmall.copy(
+                style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             )

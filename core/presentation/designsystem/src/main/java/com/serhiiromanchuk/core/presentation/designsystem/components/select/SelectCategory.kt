@@ -27,11 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.DropdownItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.category.SpendCategoryItem
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun SelectCategory(
@@ -96,14 +95,14 @@ private fun SelectDropdown(
             DropdownMenuItem(
                 text = {
                     Text(
-                        text = categoryItem.title,
+                        text = stringResource(categoryItem.titleRes),
                         modifier = Modifier.offset(x = (-4).dp),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 },
                 onClick = { onItemSelected(categoryItem) },
-                leadingIcon = { categoryItem.Icon() },
+                leadingIcon = { categoryItem.TextIcon(fontSize = 18.sp) },
                 trailingIcon = {
                     if (categoryItem == selectedItem) {
                         Icon(
@@ -119,21 +118,5 @@ private fun SelectDropdown(
                 contentPadding = PaddingValues(horizontal = 4.dp)
             )
         }
-    }
-}
-
-@Preview(
-    showBackground = true,
-    backgroundColor = 0xFFF6F3F3
-)
-@Composable
-fun PreviewSelectDropdown() {
-    MaterialTheme {
-        SelectCategory(
-            items = SpendCategoryItem.entries,
-            selectedItem = SpendCategoryItem.HOME,
-            onItemSelected = {},
-            modifier = Modifier.padding(16.dp)
-        )
     }
 }
