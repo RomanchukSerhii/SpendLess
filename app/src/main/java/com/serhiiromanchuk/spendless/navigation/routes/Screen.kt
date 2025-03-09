@@ -3,7 +3,7 @@ package com.serhiiromanchuk.spendless.navigation.routes
 sealed class Screen(val route: String) {
 
     data object Login : Screen(ROUTE_LOGIN)
-    data object Registration : Screen(ROUTE_REGISTRATION)
+    data object CreateUsername : Screen(ROUTE_CREATE_USERNAME)
     data object CreatePIN : Screen(ROUTE_CREATE_PIN)
     data object OnboardingPreferences : Screen(ROUTE_ONBOARDING_PREFERENCES)
     data object PINPrompt : Screen(ROUTE_PIN_PROMPT)
@@ -17,7 +17,7 @@ sealed class Screen(val route: String) {
 
     companion object {
         private const val ROUTE_LOGIN = "login_screen"
-        private const val ROUTE_REGISTRATION = "registration_screen"
+        private const val ROUTE_CREATE_USERNAME = "registration_screen"
         private const val ROUTE_CREATE_PIN = "create_pin_screen"
         private const val ROUTE_ONBOARDING_PREFERENCES = "onboarding_preferences_screen"
         private const val ROUTE_PIN_PROMPT = "pin_prompt_screen"

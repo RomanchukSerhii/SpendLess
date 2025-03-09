@@ -18,6 +18,7 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.com
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinAction
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
@@ -29,10 +30,10 @@ import org.koin.androidx.compose.koinViewModel
 fun CreatePinScreenRoot(
     navigateBack: () -> Unit,
     navigateNext: () -> Unit,
-    viewModel: CreatePinViewModel = koinViewModel()
+    viewModel: RegistrationSharedViewModel = koinViewModel()
 ) {
 
-    ObserveAsActions(viewModel.actions) { action ->
+    ObserveAsActions(viewModel.pinActions) { action ->
         when (action) {
             CreatePinAction.NavigateBack -> navigateBack()
             CreatePinAction.NavigateNext -> navigateNext()
@@ -40,7 +41,7 @@ fun CreatePinScreenRoot(
     }
 
     CreatePinScreen(
-        state = viewModel.state,
+        state = viewModel.pinState,
         onEvent = viewModel::onEvent
     )
 }

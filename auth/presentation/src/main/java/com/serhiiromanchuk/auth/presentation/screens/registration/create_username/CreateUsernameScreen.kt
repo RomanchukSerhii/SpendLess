@@ -15,24 +15,26 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.create_usernam
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameAction
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextButton
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CreateUsernameScreenRoot(
     navigateToLogIn: () -> Unit,
     navigateNext: () -> Unit,
-    viewModel: CreateUsernameViewModel
+    viewModel: RegistrationSharedViewModel = koinViewModel()
 ) {
-    ObserveAsActions(viewModel.actions) { action ->
+    ObserveAsActions(viewModel.usernameActions) { action ->
         when (action) {
             CreateUsernameAction.NavigateToCreatePinScreen -> navigateNext()
         }
     }
     CreateUsernameScreen(
-        state = viewModel.state,
+        state = viewModel.usernameState,
         onEvent = viewModel::onEvent,
         onLogInClick = navigateToLogIn
     )
@@ -72,7 +74,7 @@ private fun CreateUsernameScreen(
 
 @Preview
 @Composable
-private fun UsernameScreenPreview() {
+private fun CreateUsernameScreenPreview() {
     SpendLessTheme {
         CreateUsernameScreen(
             state = CreateUsernameUiState(),

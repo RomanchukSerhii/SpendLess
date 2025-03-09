@@ -13,6 +13,7 @@ import com.serhiiromanchuk.auth.presentation.components.BackButton
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.components.OnboardingPrefHeader
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
 import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatSettings
@@ -22,10 +23,10 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun OnboardingPrefScreenRoot(
     navigateBack: () -> Unit,
-    viewModel: OnboardingPrefViewModel = koinViewModel()
+    viewModel: RegistrationSharedViewModel = koinViewModel()
 ) {
     OnboardingPrefScreen(
-        state = viewModel.state,
+        state = viewModel.onboardingPrefState,
         onEvent = viewModel::onEvent,
         onBackClick = navigateBack
     )

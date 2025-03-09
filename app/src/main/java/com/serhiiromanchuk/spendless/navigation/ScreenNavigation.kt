@@ -1,5 +1,9 @@
 package com.serhiiromanchuk.spendless.navigation
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -9,7 +13,7 @@ import com.serhiiromanchuk.auth.presentation.screens.login.LoginScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.OnboardingPrefScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.PinPromptScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.CreateUsernameScreenRoot
-import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.CreateUsernameViewModel
+import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
 import com.serhiiromanchuk.settings.presentation.screens.preferences.PreferencesScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.security.SecurityScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.settings.SettingsScreen
@@ -20,7 +24,7 @@ import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
     navigation(
-        startDestination = Screen.Registration.route,
+        startDestination = Screen.CreateUsername.route,
         route = Feature.Auth.route
     ) {
         composable(
@@ -28,34 +32,38 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         ) {
             LoginScreenRoot(
                 navigateToLogIn = { navController.navigate(Screen.PINPrompt.route) },
-                navigateToRegistration = { navController.navigate(Screen.Registration.route) }
+                navigateToRegistration = { navController.navigate(Screen.CreateUsername.route) }
             )
         }
 
         composable(
-            route = Screen.Registration.route
-        ) {
-            val testViewModel: CreateUsernameViewModel = koinViewModel()
+            route = Screen.CreateUsername.route
+        ) { entry ->
+            val registrationSharedViewModel = entry.sharedViewModel<RegistrationSharedViewModel>(navController)
             CreateUsernameScreenRoot(
                 navigateToLogIn = { navController.navigate(Screen.Login.route) },
                 navigateNext = { navController.navigate(Screen.CreatePIN.route) },
-                viewModel = testViewModel
+                viewModel = registrationSharedViewModel
             )
         }
         composable(
             route = Screen.CreatePIN.route
-        ) {
+        ) { entry ->
+            val registrationSharedViewModel = entry.sharedViewModel<RegistrationSharedViewModel>(navController)
             CreatePinScreenRoot(
                 navigateBack = { navController.popBackStack() },
-                navigateNext = { navController.navigate(Screen.OnboardingPreferences.route) }
+                navigateNext = { navController.navigate(Screen.OnboardingPreferences.route) },
+                viewModel = registrationSharedViewModel
             )
         }
 
         composable(
             route = Screen.OnboardingPreferences.route
-        ) {
+        ) { entry ->
+            val registrationSharedViewModel = entry.sharedViewModel<RegistrationSharedViewModel>(navController)
             OnboardingPrefScreenRoot(
-                navigateBack = { navController.popBackStack() }
+                navigateBack = { navController.popBackStack() },
+                viewModel = registrationSharedViewModel
             )
         }
 
@@ -63,7 +71,7 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
             route = Screen.PINPrompt.route
         ) {
             PinPromptScreenRoot(
-                onLogOutClick = { navController.navigate(Screen.Registration.route)}
+                onLogOutClick = { navController.navigate(Screen.CreateUsername.route)}
             )
         }
     }
@@ -119,4 +127,15 @@ fun NavGraphBuilder.settingsGraph(navController: NavHostController) {
             )
         }
     }
+}
+
+@Composable
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
+    navController: NavHostController
+): T {
+    val navGraphRoute = destination.parent?.route ?: return koinViewModel<T>()
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+    return koinViewModel(viewModelStoreOwner = parentEntry)
 }
