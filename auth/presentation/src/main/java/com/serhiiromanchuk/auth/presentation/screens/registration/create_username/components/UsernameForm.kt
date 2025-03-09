@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.auth.presentation.screens.registration.components
+package com.serhiiromanchuk.auth.presentation.screens.registration.create_username.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,16 +32,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.auth.presentation.R
-import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationUiEvent
-import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiEvent
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiState
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
-internal fun RegistrationForm(
-    state: RegistrationUiState,
-    onEvent: (RegistrationUiEvent) -> Unit,
+internal fun UsernameForm(
+    state: CreateUsernameUiState,
+    onEvent: (CreateUsernameUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -52,7 +52,7 @@ internal fun RegistrationForm(
 
         FilledButton(
             text = stringResource(R.string.next),
-            onClick = { onEvent(RegistrationUiEvent.NextButtonClicked) },
+            onClick = { onEvent(CreateUsernameUiEvent.NextButtonClicked) },
             modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
                 Icon(
@@ -68,7 +68,7 @@ internal fun RegistrationForm(
 
 @Composable
 private fun UsernameTextField(
-    state: RegistrationUiState,
+    state: CreateUsernameUiState,
     modifier: Modifier = Modifier
 ) {
     Column {
@@ -149,11 +149,11 @@ private fun UsernamePlaceholder(
     backgroundColor = 0xFFFEF7FF
 )
 @Composable
-private fun PreviewRegistrationForm() {
+private fun UsernameFormPreview() {
     SpendLessTheme {
         Box(modifier = Modifier.padding(16.dp)) {
-            RegistrationForm(
-                state = RegistrationUiState(),
+            UsernameForm(
+                state = CreateUsernameUiState(),
                 onEvent = {}
             )
         }

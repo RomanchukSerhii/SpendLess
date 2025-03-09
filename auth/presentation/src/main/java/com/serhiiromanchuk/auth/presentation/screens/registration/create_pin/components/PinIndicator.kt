@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.auth.presentation.screens.create_pin.components
+package com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.auth.presentation.screens.create_pin.handling
+package com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling
 
 data class CreatePinUiState(
     val screenMode: ScreenMode = ScreenMode.CreatePin,

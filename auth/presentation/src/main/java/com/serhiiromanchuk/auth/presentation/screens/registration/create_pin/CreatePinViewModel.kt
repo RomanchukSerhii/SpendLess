@@ -1,15 +1,15 @@
-package com.serhiiromanchuk.auth.presentation.screens.create_pin
+package com.serhiiromanchuk.auth.presentation.screens.registration.create_pin
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.handling.CreatePinAction
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.handling.CreatePinUiEvent
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.handling.CreatePinUiEvent.*
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.handling.CreatePinUiState
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.handling.CreatePinUiState.*
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinAction
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiEvent
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiEvent.*
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiState.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch

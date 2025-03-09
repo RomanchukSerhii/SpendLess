@@ -4,12 +4,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.CreatePinScreenRoot
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.CreatePinScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.login.LoginScreenRoot
-import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.OnboardingPrefScreenRoot
+import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.OnboardingPrefScreenRoot
 import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.PinPromptScreenRoot
-import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationScreenRoot
-import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationViewModel
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.CreateUsernameScreenRoot
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.CreateUsernameViewModel
 import com.serhiiromanchuk.settings.presentation.screens.preferences.PreferencesScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.security.SecurityScreenRoot
 import com.serhiiromanchuk.settings.presentation.screens.settings.SettingsScreen
@@ -35,8 +35,8 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(
             route = Screen.Registration.route
         ) {
-            val testViewModel: RegistrationViewModel = koinViewModel()
-            RegistrationScreenRoot(
+            val testViewModel: CreateUsernameViewModel = koinViewModel()
+            CreateUsernameScreenRoot(
                 navigateToLogIn = { navController.navigate(Screen.Login.route) },
                 navigateNext = { navController.navigate(Screen.CreatePIN.route) },
                 viewModel = testViewModel

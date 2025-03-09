@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.auth.presentation.screens.onboarding_pref
+package com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,9 +10,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.BackButton
-import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.components.OnboardingPrefHeader
-import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.handling.OnboardingPrefUiEvent
-import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.handling.OnboardingPrefUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.components.OnboardingPrefHeader
+import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiEvent
+import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiState
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
 import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatSettings

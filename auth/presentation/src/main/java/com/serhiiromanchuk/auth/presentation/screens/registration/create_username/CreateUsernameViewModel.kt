@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.auth.presentation.screens.registration
+package com.serhiiromanchuk.auth.presentation.screens.registration.create_username
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.serhiiromanchuk.auth.domain.UserDataValidator
 import com.serhiiromanchuk.auth.domain.UsernameValidationState
-import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationAction
-import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationUiEvent
-import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationUiEvent.*
-import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameAction
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiEvent
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiEvent.*
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiState
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
@@ -18,13 +18,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class RegistrationViewModel(
+class CreateUsernameViewModel(
     private val userDataValidator: UserDataValidator
 ) : ViewModel() {
-    var state by mutableStateOf(RegistrationUiState())
+    var state by mutableStateOf(CreateUsernameUiState())
         private set
 
-    private val _actions = Channel<RegistrationAction>()
+    private val _actions = Channel<CreateUsernameAction>()
     val actions = _actions.receiveAsFlow()
 
     init {
@@ -33,7 +33,7 @@ class RegistrationViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun onEvent(event: RegistrationUiEvent) {
+    fun onEvent(event: CreateUsernameUiEvent) {
         when (event) {
             NextButtonClicked -> validateUsername()
         }
@@ -59,7 +59,7 @@ class RegistrationViewModel(
         )
         if (state.usernameValidationState.isValidUsername) {
             viewModelScope.launch {
-                _actions.send(RegistrationAction.NavigateToCreatePinScreen)
+                _actions.send(CreateUsernameAction.NavigateToCreatePinScreen)
             }
         }
     }

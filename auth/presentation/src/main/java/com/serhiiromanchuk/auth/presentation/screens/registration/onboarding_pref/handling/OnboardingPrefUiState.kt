@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.handling
+package com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling
 
 import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatState
 

@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.auth.presentation.screens.create_pin
+package com.serhiiromanchuk.auth.presentation.screens.registration.create_pin
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +13,11 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.BackButton
 import com.serhiiromanchuk.auth.presentation.components.PinKeyboard
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.components.CreatePinHeader
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.components.PinIndicator
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.handling.CreatePinAction
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.handling.CreatePinUiEvent
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.handling.CreatePinUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.components.CreatePinHeader
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.components.PinIndicator
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinAction
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiEvent
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiState
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController

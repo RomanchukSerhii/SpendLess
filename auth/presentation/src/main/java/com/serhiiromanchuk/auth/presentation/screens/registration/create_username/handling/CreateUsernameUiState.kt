@@ -1,9 +1,9 @@
-package com.serhiiromanchuk.auth.presentation.screens.registration.handling
+package com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling
 
 import androidx.compose.foundation.text.input.TextFieldState
 import com.serhiiromanchuk.auth.domain.UsernameValidationState
 
-data class RegistrationUiState(
+data class CreateUsernameUiState(
     val username: TextFieldState = TextFieldState(),
     val usernameValidationState: UsernameValidationState = UsernameValidationState()
 ) {

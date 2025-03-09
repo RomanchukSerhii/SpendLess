@@ -1,11 +1,11 @@
-package com.serhiiromanchuk.auth.presentation.screens.create_pin.components
+package com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.AuthHeader
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.handling.CreatePinUiState.ScreenMode
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiState.ScreenMode
 
 @Composable
 internal fun CreatePinHeader(

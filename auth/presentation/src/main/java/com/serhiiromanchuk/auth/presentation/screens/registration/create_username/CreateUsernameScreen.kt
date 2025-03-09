@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.auth.presentation.screens.registration
+package com.serhiiromanchuk.auth.presentation.screens.registration.create_username
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,27 +11,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.AuthHeader
-import com.serhiiromanchuk.auth.presentation.screens.registration.components.RegistrationForm
-import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationAction
-import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationUiEvent
-import com.serhiiromanchuk.auth.presentation.screens.registration.handling.RegistrationUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.components.UsernameForm
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameAction
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiEvent
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiState
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextButton
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 
 @Composable
-fun RegistrationScreenRoot(
+fun CreateUsernameScreenRoot(
     navigateToLogIn: () -> Unit,
     navigateNext: () -> Unit,
-    viewModel: RegistrationViewModel
+    viewModel: CreateUsernameViewModel
 ) {
     ObserveAsActions(viewModel.actions) { action ->
         when (action) {
-            RegistrationAction.NavigateToCreatePinScreen -> navigateNext()
+            CreateUsernameAction.NavigateToCreatePinScreen -> navigateNext()
         }
     }
-    RegistrationScreen(
+    CreateUsernameScreen(
         state = viewModel.state,
         onEvent = viewModel::onEvent,
         onLogInClick = navigateToLogIn
@@ -39,9 +39,9 @@ fun RegistrationScreenRoot(
 }
 
 @Composable
-private fun RegistrationScreen(
-    state: RegistrationUiState,
-    onEvent: (RegistrationUiEvent) -> Unit,
+private fun CreateUsernameScreen(
+    state: CreateUsernameUiState,
+    onEvent: (CreateUsernameUiEvent) -> Unit,
     onLogInClick: () -> Unit
 ) {
     BaseContentLayout {
@@ -55,7 +55,7 @@ private fun RegistrationScreen(
                 modifier = Modifier.padding(vertical = 36.dp)
             )
 
-            RegistrationForm(
+            UsernameForm(
                 state = state,
                 onEvent = onEvent
             )
@@ -72,10 +72,10 @@ private fun RegistrationScreen(
 
 @Preview
 @Composable
-private fun RegistrationScreenPreview() {
+private fun UsernameScreenPreview() {
     SpendLessTheme {
-        RegistrationScreen(
-            state = RegistrationUiState(),
+        CreateUsernameScreen(
+            state = CreateUsernameUiState(),
             onEvent = {},
             onLogInClick = {}
         )

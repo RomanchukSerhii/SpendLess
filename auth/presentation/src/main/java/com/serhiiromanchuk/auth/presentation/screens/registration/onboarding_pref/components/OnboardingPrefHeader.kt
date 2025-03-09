@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.components
+package com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

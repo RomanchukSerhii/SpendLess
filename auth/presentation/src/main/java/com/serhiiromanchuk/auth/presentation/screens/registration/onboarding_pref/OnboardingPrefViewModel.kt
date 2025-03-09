@@ -1,12 +1,12 @@
-package com.serhiiromanchuk.auth.presentation.screens.onboarding_pref
+package com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.handling.OnboardingPrefUiEvent
-import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.handling.OnboardingPrefUiEvent.*
-import com.serhiiromanchuk.auth.presentation.screens.onboarding_pref.handling.OnboardingPrefUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiEvent
+import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiEvent.*
+import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiState
 import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyCategoryItem
 import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatState
 import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.DecimalSeparator
