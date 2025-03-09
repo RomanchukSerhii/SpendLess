@@ -16,7 +16,7 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pre
 import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatSettings
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesSettings
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -46,8 +46,8 @@ private fun OnboardingPrefScreen(
 
             OnboardingPrefHeader(modifier = Modifier.padding(top = 12.dp))
 
-            CurrencyFormatSettings(
-                currencyFormatState = state.currencyFormatState,
+            ExpensesSettings(
+                expensesFormatState = state.expensesFormatState,
                 onExpensesFormatClick = { onEvent(OnboardingPrefUiEvent.ExpensesFormatClicked(it)) },
                 onCurrencyClick = { onEvent(OnboardingPrefUiEvent.CurrencyClicked(it)) },
                 onDecimalSeparatorClick = { onEvent(OnboardingPrefUiEvent.DecimalSeparatorClicked(it)) },

@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components.currency_format
+package com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -13,7 +13,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.OptionText
 import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentOption
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.DropdownItem
 
-enum class ExpensesFormat(override val label: @Composable () -> Unit) : SegmentOption {
+enum class ExpensesFormatUi(override val label: @Composable () -> Unit) : SegmentOption {
     MINUS(
         label = {
             OptionText(text = stringResource(R.string._10))
@@ -23,7 +23,7 @@ enum class ExpensesFormat(override val label: @Composable () -> Unit) : SegmentO
         label = {
             OptionText(text = stringResource(R.string.parentheses_10))
         }
-    )
+    );
 }
 
 enum class CurrencyCategoryItem(override val titleRes: Int, val symbol: String) : DropdownItem {
@@ -89,14 +89,14 @@ enum class CurrencyCategoryItem(override val titleRes: Int, val symbol: String) 
     },
 }
 
-enum class DecimalSeparator(
+enum class DecimalSeparatorUi(
     override val label: @Composable () -> Unit, val separator: String
 ) : SegmentOption {
     POINT(label = { OptionText("1.00") }, "."),
     COMMA(label = { OptionText("1,00") }, ",")
 }
 
-enum class ThousandsSeparator(
+enum class ThousandsSeparatorUi(
     override val label: @Composable () -> Unit, val separator: String
 ) : SegmentOption {
     POINT(label = { OptionText("1.000") }, "."),

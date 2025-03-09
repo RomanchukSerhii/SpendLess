@@ -17,11 +17,11 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.create_usernam
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiState
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiState
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyCategoryItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatState
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.DecimalSeparator
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.ExpensesFormat
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.ThousandsSeparator
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.CurrencyCategoryItem
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -176,7 +176,7 @@ class RegistrationSharedViewModel(
         }
     }
 
-    private fun updateExpensesFormat(expensesFormat: ExpensesFormat) {
+    private fun updateExpensesFormat(expensesFormat: ExpensesFormatUi) {
         updateCurrencyFormatState { it.copy(expensesFormat = expensesFormat) }
     }
 
@@ -184,18 +184,18 @@ class RegistrationSharedViewModel(
         updateCurrencyFormatState { it.copy(currency = currency) }
     }
 
-    private fun updateDecimalSeparator(decimalSeparator: DecimalSeparator) {
+    private fun updateDecimalSeparator(decimalSeparator: DecimalSeparatorUi) {
         updateCurrencyFormatState { it.copy(decimalSeparator = decimalSeparator) }
     }
 
-    private fun updateThousandsSeparator(thousandsSeparator: ThousandsSeparator) {
+    private fun updateThousandsSeparator(thousandsSeparator: ThousandsSeparatorUi) {
         updateCurrencyFormatState { it.copy(thousandsSeparator = thousandsSeparator) }
     }
 
     private fun updateCurrencyFormatState(
-        update: (CurrencyFormatState) -> CurrencyFormatState
+        update: (ExpensesFormatState) -> ExpensesFormatState
     ) {
-        onboardingPrefState = onboardingPrefState.copy(currencyFormatState = update(onboardingPrefState.currencyFormatState))
+        onboardingPrefState = onboardingPrefState.copy(expensesFormatState = update(onboardingPrefState.expensesFormatState))
     }
 
     private companion object {

@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components.currency_format
+package com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,12 +18,12 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.SettingItem
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.SelectCategory
 
 @Composable
-fun CurrencyFormatSettings(
-    currencyFormatState: CurrencyFormatState,
-    onExpensesFormatClick: (ExpensesFormat) -> Unit,
+fun ExpensesSettings(
+    expensesFormatState: ExpensesFormatState,
+    onExpensesFormatClick: (ExpensesFormatUi) -> Unit,
     onCurrencyClick: (CurrencyCategoryItem) -> Unit,
-    onDecimalSeparatorClick: (DecimalSeparator) -> Unit,
-    onThousandsSeparatorClick: (ThousandsSeparator) -> Unit,
+    onDecimalSeparatorClick: (DecimalSeparatorUi) -> Unit,
+    onThousandsSeparatorClick: (ThousandsSeparatorUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -31,27 +31,27 @@ fun CurrencyFormatSettings(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         FormattingExample(
-            formattingValue = currencyFormatState.formattingExample,
+            formattingValue = expensesFormatState.formattingExample,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
         ExpensesFormatSettings(
-            selectedFormat = currencyFormatState.expensesFormat,
+            selectedFormat = expensesFormatState.expensesFormat,
             onOptionClick = onExpensesFormatClick
         )
 
         CurrencySettings(
-            selectedCurrency = currencyFormatState.currency,
+            selectedCurrency = expensesFormatState.currency,
             onOptionClick = onCurrencyClick
         )
 
         DecimalSeparatorSettings(
-            selectedDecimal = currencyFormatState.decimalSeparator,
+            selectedDecimal = expensesFormatState.decimalSeparator,
             onOptionClick = onDecimalSeparatorClick
         )
 
         ThousandsSeparatorSettings(
-            selectedThousands = currencyFormatState.thousandsSeparator,
+            selectedThousands = expensesFormatState.thousandsSeparator,
             onOptionClick = onThousandsSeparatorClick
         )
     }
@@ -88,8 +88,8 @@ private fun FormattingExample(
 
 @Composable
 private fun ExpensesFormatSettings(
-    selectedFormat: ExpensesFormat,
-    onOptionClick: (ExpensesFormat) -> Unit,
+    selectedFormat: ExpensesFormatUi,
+    onOptionClick: (ExpensesFormatUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingItem(
@@ -97,9 +97,9 @@ private fun ExpensesFormatSettings(
         modifier = modifier
     ) {
         SegmentedButton(
-            segmentOptions = ExpensesFormat.entries,
+            segmentOptions = ExpensesFormatUi.entries,
             selectedOption = selectedFormat,
-            onOptionClick = { onOptionClick(it as ExpensesFormat) }
+            onOptionClick = { onOptionClick(it as ExpensesFormatUi) }
         )
     }
 }
@@ -124,8 +124,8 @@ private fun CurrencySettings(
 
 @Composable
 private fun DecimalSeparatorSettings(
-    selectedDecimal: DecimalSeparator,
-    onOptionClick: (DecimalSeparator) -> Unit,
+    selectedDecimal: DecimalSeparatorUi,
+    onOptionClick: (DecimalSeparatorUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingItem(
@@ -133,17 +133,17 @@ private fun DecimalSeparatorSettings(
         modifier = modifier
     ) {
         SegmentedButton(
-            segmentOptions = DecimalSeparator.entries,
+            segmentOptions = DecimalSeparatorUi.entries,
             selectedOption = selectedDecimal,
-            onOptionClick = { onOptionClick(it as DecimalSeparator) }
+            onOptionClick = { onOptionClick(it as DecimalSeparatorUi) }
         )
     }
 }
 
 @Composable
 private fun ThousandsSeparatorSettings(
-    selectedThousands: ThousandsSeparator,
-    onOptionClick: (ThousandsSeparator) -> Unit,
+    selectedThousands: ThousandsSeparatorUi,
+    onOptionClick: (ThousandsSeparatorUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingItem(
@@ -151,9 +151,9 @@ private fun ThousandsSeparatorSettings(
         modifier = modifier
     ) {
         SegmentedButton(
-            segmentOptions = ThousandsSeparator.entries,
+            segmentOptions = ThousandsSeparatorUi.entries,
             selectedOption = selectedThousands,
-            onOptionClick = { onOptionClick(it as ThousandsSeparator) }
+            onOptionClick = { onOptionClick(it as ThousandsSeparatorUi) }
         )
     }
 }
