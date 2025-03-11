@@ -5,14 +5,15 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -25,6 +26,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -76,19 +78,14 @@ fun BaseContentLayout(
         color = containerColor
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().imePadding()
         ) {
             if (background != null) background()
 
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 topBar = { topBar() },
-                bottomBar = {
-                    Column {
-                        bottomBar()
-                        errorMessage?.let { ErrorMessage(it) }
-                    }
-                },
+                bottomBar = { bottomBar() },
                 snackbarHost = snackbarHost,
                 floatingActionButton = floatingActionButton,
                 floatingActionButtonPosition = floatingActionButtonPosition,
@@ -106,12 +103,9 @@ fun BaseContentLayout(
             }
 
             errorMessage?.let {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .windowInsetsBottomHeight(WindowInsets.navigationBars)
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.error)
+                ErrorMessage(
+                    text = it,
+                    modifier = Modifier.align(Alignment.BottomCenter)
                 )
             }
         }
@@ -123,12 +117,20 @@ fun ErrorMessage(
     text: String,
     modifier: Modifier = Modifier
 ) {
+
     Text(
         text = text,
         modifier = modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.error)
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+            .padding(
+                bottom = if (WindowInsets.ime.getBottom(LocalDensity.current) > 0) {
+                    0.dp
+                } else {
+                    WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+                }
+            )
+            .padding(16.dp),
         style = MaterialTheme.typography.labelMedium,
         color = MaterialTheme.colorScheme.onError,
         textAlign = TextAlign.Center

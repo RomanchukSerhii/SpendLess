@@ -22,4 +22,6 @@
     <string name="start_tracking">Start Tracking!</string>
     <string name="error_wrong_pin">Wrong PIN</string>
     <string name="log_out">Log out</string>
+    <string name="user_name_cannot_be_empty">User name cannot be empty</string>
+    <string name="error_username_been_taken">This username has already been taken!</string>
 </resources>

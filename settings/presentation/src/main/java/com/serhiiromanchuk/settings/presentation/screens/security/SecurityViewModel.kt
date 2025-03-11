@@ -4,9 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.serhiiromanchuk.settings.presentation.screens.BiometricsPrompt
-import com.serhiiromanchuk.settings.presentation.screens.LockedOutDuration
-import com.serhiiromanchuk.settings.presentation.screens.SessionExpiryDuration
+import com.serhiiromanchuk.settings.presentation.screens.BiometricsPromptUi
+import com.serhiiromanchuk.settings.presentation.screens.LockedOutDurationUi
+import com.serhiiromanchuk.settings.presentation.screens.SessionExpiryDurationUi
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent.*
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiState
@@ -29,15 +29,15 @@ class SecurityViewModel : ViewModel() {
 
     }
 
-    private fun updateBiometricsPrompt(biometricsPrompt: BiometricsPrompt) {
+    private fun updateBiometricsPrompt(biometricsPrompt: BiometricsPromptUi) {
         state = state.copy(biometricsPrompt = biometricsPrompt)
     }
 
-    private fun updateLockedOutDuration(lockedOutDuration: LockedOutDuration) {
+    private fun updateLockedOutDuration(lockedOutDuration: LockedOutDurationUi) {
         state = state.copy(lockedOutDuration = lockedOutDuration)
     }
 
-    private fun updateSessionExpiryDuration(sessionExpiryDuration: SessionExpiryDuration) {
+    private fun updateSessionExpiryDuration(sessionExpiryDuration: SessionExpiryDurationUi) {
         state = state.copy(sessionExpiryDuration = sessionExpiryDuration)
     }
 }

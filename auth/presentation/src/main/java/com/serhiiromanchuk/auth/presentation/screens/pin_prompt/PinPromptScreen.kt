@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.AuthHeader
 import com.serhiiromanchuk.auth.presentation.components.PinKeyboard
-import com.serhiiromanchuk.auth.presentation.screens.create_pin.components.PinIndicator
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.components.PinIndicator
 import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.handling.PinPromptUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.handling.PinPromptUiState
 import com.serhiiromanchuk.core.presentation.designsystem.LogoutIcon

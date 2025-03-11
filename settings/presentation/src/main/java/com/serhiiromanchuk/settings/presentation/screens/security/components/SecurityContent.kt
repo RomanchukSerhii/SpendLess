@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentedButton
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.settings.presentation.R
-import com.serhiiromanchuk.settings.presentation.screens.BiometricsPrompt
-import com.serhiiromanchuk.settings.presentation.screens.LockedOutDuration
-import com.serhiiromanchuk.settings.presentation.screens.SessionExpiryDuration
+import com.serhiiromanchuk.settings.presentation.screens.BiometricsPromptUi
+import com.serhiiromanchuk.settings.presentation.screens.LockedOutDurationUi
+import com.serhiiromanchuk.settings.presentation.screens.SessionExpiryDurationUi
 import com.serhiiromanchuk.core.presentation.designsystem.components.SettingItem
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiState
@@ -46,8 +46,8 @@ fun SecurityContent(
 
 @Composable
 private fun BiometricsSettings(
-    selectedOption: BiometricsPrompt,
-    onOptionClick: (BiometricsPrompt) -> Unit,
+    selectedOption: BiometricsPromptUi,
+    onOptionClick: (BiometricsPromptUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingItem(
@@ -55,17 +55,17 @@ private fun BiometricsSettings(
         modifier = modifier
     ) {
         SegmentedButton(
-            segmentOptions = BiometricsPrompt.entries,
+            segmentOptions = BiometricsPromptUi.entries,
             selectedOption = selectedOption,
-            onOptionClick = { onOptionClick(it as BiometricsPrompt) }
+            onOptionClick = { onOptionClick(it as BiometricsPromptUi) }
         )
     }
 }
 
 @Composable
 private fun SessionSettings(
-    selectedOption: SessionExpiryDuration,
-    onOptionClick: (SessionExpiryDuration) -> Unit,
+    selectedOption: SessionExpiryDurationUi,
+    onOptionClick: (SessionExpiryDurationUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingItem(
@@ -73,17 +73,17 @@ private fun SessionSettings(
         modifier = modifier
     ) {
         SegmentedButton(
-            segmentOptions = SessionExpiryDuration.entries,
+            segmentOptions = SessionExpiryDurationUi.entries,
             selectedOption = selectedOption,
-            onOptionClick = { onOptionClick(it as SessionExpiryDuration) }
+            onOptionClick = { onOptionClick(it as SessionExpiryDurationUi) }
         )
     }
 }
 
 @Composable
 private fun LockedOutSettings(
-    selectedOption: LockedOutDuration,
-    onOptionClick: (LockedOutDuration) -> Unit,
+    selectedOption: LockedOutDurationUi,
+    onOptionClick: (LockedOutDurationUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingItem(
@@ -91,9 +91,9 @@ private fun LockedOutSettings(
         modifier = modifier
     ) {
         SegmentedButton(
-            segmentOptions = LockedOutDuration.entries,
+            segmentOptions = LockedOutDurationUi.entries,
             selectedOption = selectedOption,
-            onOptionClick = { onOptionClick(it as LockedOutDuration) }
+            onOptionClick = { onOptionClick(it as LockedOutDurationUi) }
         )
     }
 }

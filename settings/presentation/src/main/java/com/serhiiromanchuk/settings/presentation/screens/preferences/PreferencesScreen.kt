@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTopBar
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatSettings
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesSettings
 import com.serhiiromanchuk.settings.presentation.R
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiState
@@ -44,8 +44,8 @@ private fun PreferencesScreen(
     Column(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        CurrencyFormatSettings(
-            currencyFormatState = state.currencyFormatState,
+        ExpensesSettings(
+            expensesFormatState = state.expensesFormatState,
             onExpensesFormatClick = { onEvent(PreferencesUiEvent.ExpensesFormatClicked(it)) },
             onCurrencyClick = { onEvent(PreferencesUiEvent.CurrencyClicked(it)) },
             onDecimalSeparatorClick = { onEvent(PreferencesUiEvent.DecimalSeparatorClicked(it)) },

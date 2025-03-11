@@ -11,7 +11,7 @@ fun NavigationRoot(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Feature.Transactions.route
+        startDestination = Feature.Auth.route
     ) {
         authGraph(navController)
         transactionsGraph(navController)

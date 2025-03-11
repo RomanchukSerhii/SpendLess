@@ -4,11 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyCategoryItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.CurrencyFormatState
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.DecimalSeparator
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.ExpensesFormat
-import com.serhiiromanchuk.core.presentation.designsystem.components.currency_format.ThousandsSeparator
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.CurrencyCategoryItem
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.CurrencyClicked
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.DecimalSeparatorClicked
@@ -36,7 +36,7 @@ class PreferencesViewModel : ViewModel() {
 
     }
 
-    private fun updateExpensesFormat(expensesFormat: ExpensesFormat) {
+    private fun updateExpensesFormat(expensesFormat: ExpensesFormatUi) {
         updateCurrencyFormatState { it.copy(expensesFormat = expensesFormat) }
     }
 
@@ -44,17 +44,17 @@ class PreferencesViewModel : ViewModel() {
         updateCurrencyFormatState { it.copy(currency = currency) }
     }
 
-    private fun updateDecimalSeparator(decimalSeparator: DecimalSeparator) {
+    private fun updateDecimalSeparator(decimalSeparator: DecimalSeparatorUi) {
         updateCurrencyFormatState { it.copy(decimalSeparator = decimalSeparator) }
     }
 
-    private fun updateThousandsSeparator(thousandsSeparator: ThousandsSeparator) {
+    private fun updateThousandsSeparator(thousandsSeparator: ThousandsSeparatorUi) {
         updateCurrencyFormatState { it.copy(thousandsSeparator = thousandsSeparator) }
     }
 
     private fun updateCurrencyFormatState(
-        update: (CurrencyFormatState) -> CurrencyFormatState
+        update: (ExpensesFormatState) -> ExpensesFormatState
     ) {
-        state = state.copy(currencyFormatState = update(state.currencyFormatState))
+        state = state.copy(expensesFormatState = update(state.expensesFormatState))
     }
 }

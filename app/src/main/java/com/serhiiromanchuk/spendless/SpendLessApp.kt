@@ -1,8 +1,10 @@
 package com.serhiiromanchuk.spendless
 
 import android.app.Application
+import com.google.android.play.core.ktx.BuildConfig
 import com.serhiiromanchuk.auth.data.di.authDataModule
 import com.serhiiromanchuk.auth.presentation.di.authViewModelModule
+import com.serhiiromanchuk.core.database.di.databaseModule
 import com.serhiiromanchuk.settings.presentation.di.settingsViewModelModule
 import com.serhiiromanchuk.spendless.di.appModule
 import com.serhiiromanchuk.transactions.di.transactionsViewModelModule
@@ -26,6 +28,7 @@ class SpendLessApp : Application() {
                 appModule,
                 authViewModelModule,
                 authDataModule,
+                databaseModule,
                 settingsViewModelModule,
                 transactionsViewModelModule
             )
