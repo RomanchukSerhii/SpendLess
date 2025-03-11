@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,6 +20,8 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.create_usernam
 import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextButton
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
+import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import org.koin.androidx.compose.koinViewModel
@@ -28,9 +32,14 @@ fun CreateUsernameScreenRoot(
     navigateNext: () -> Unit,
     viewModel: RegistrationSharedViewModel = koinViewModel()
 ) {
+    val focusManager = LocalFocusManager.current
+
     ObserveAsActions(viewModel.usernameActions) { action ->
         when (action) {
-            CreateUsernameAction.NavigateToCreatePinScreen -> navigateNext()
+            CreateUsernameAction.NavigateToCreatePinScreen -> {
+                focusManager.clearFocus()
+                navigateNext()
+            }
         }
     }
     CreateUsernameScreen(
@@ -46,28 +55,36 @@ private fun CreateUsernameScreen(
     onEvent: (CreateUsernameUiEvent) -> Unit,
     onLogInClick: () -> Unit
 ) {
-    BaseContentLayout {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+    CompositionLocalProvider (
+        LocalSystemIconsUiController provides SystemIconsUiController(
+            isNavigationBarIconsDark = !state.isUsernameTaken
+        )
+    ) {
+        BaseContentLayout(
+            errorMessage = if (state.isUsernameTaken) stringResource(R.string.error_username_been_taken) else null
         ) {
-            AuthHeader(
-                title = stringResource(R.string.registration_title),
-                description = stringResource(R.string.registration_description),
-                modifier = Modifier.padding(vertical = 36.dp)
-            )
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AuthHeader(
+                    title = stringResource(R.string.registration_title),
+                    description = stringResource(R.string.registration_description),
+                    modifier = Modifier.padding(vertical = 36.dp)
+                )
 
-            UsernameForm(
-                state = state,
-                onEvent = onEvent
-            )
+                UsernameForm(
+                    state = state,
+                    onEvent = onEvent
+                )
 
-            // Registration text button
-            AppTextButton(
-                text = stringResource(R.string.already_have_an_account),
-                onClick = onLogInClick,
-                modifier = Modifier.padding(top = 28.dp)
-            )
+                // Registration text button
+                AppTextButton(
+                    text = stringResource(R.string.already_have_an_account),
+                    onClick = onLogInClick,
+                    modifier = Modifier.padding(top = 28.dp)
+                )
+            }
         }
     }
 }

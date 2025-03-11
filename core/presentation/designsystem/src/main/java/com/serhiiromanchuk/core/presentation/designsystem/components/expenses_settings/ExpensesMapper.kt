@@ -41,3 +41,40 @@ fun ThousandsSeparator.toUi(): ThousandsSeparatorUi {
         ThousandsSeparator.SPACE -> ThousandsSeparatorUi.SPACE
     }
 }
+
+fun ExpensesFormatUi.toDomain(): ExpensesFormat {
+    return when (this) {
+        ExpensesFormatUi.MINUS -> ExpensesFormat.MINUS
+        ExpensesFormatUi.PARENTHESES -> ExpensesFormat.PARENTHESES
+    }
+}
+
+fun CurrencyCategoryItem.toDomain(): Currency {
+    return when (this) {
+        CurrencyCategoryItem.USD -> Currency.USD
+        CurrencyCategoryItem.EUR -> Currency.EUR
+        CurrencyCategoryItem.GBP -> Currency.GBP
+        CurrencyCategoryItem.JPY -> Currency.JPY
+        CurrencyCategoryItem.CNY -> Currency.CNY
+        CurrencyCategoryItem.INR -> Currency.INR
+        CurrencyCategoryItem.ZAR -> Currency.ZAR
+        CurrencyCategoryItem.CAD -> Currency.CAD
+        CurrencyCategoryItem.AUD -> Currency.AUD
+        CurrencyCategoryItem.CHF -> Currency.CHF
+    }
+}
+
+fun DecimalSeparatorUi.toDomain(): DecimalSeparator {
+    return when (this) {
+        DecimalSeparatorUi.POINT -> DecimalSeparator.POINT
+        DecimalSeparatorUi.COMMA -> DecimalSeparator.COMMA
+    }
+}
+
+fun ThousandsSeparatorUi.toDomain(): ThousandsSeparator {
+    return when (this) {
+        ThousandsSeparatorUi.POINT -> ThousandsSeparator.POINT
+        ThousandsSeparatorUi.COMMA -> ThousandsSeparator.COMMA
+        ThousandsSeparatorUi.SPACE -> ThousandsSeparator.SPACE
+    }
+}

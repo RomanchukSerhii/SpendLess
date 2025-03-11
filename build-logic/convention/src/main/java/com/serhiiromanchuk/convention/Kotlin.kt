@@ -5,6 +5,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -35,7 +36,13 @@ internal fun Project.configureKotlinJvm() {
 }
 
 private fun Project.configureKotlin() {
+    pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
+
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
+    }
+
+    dependencies {
+        "implementation"(libs.findLibrary("kotlinx-serialization-json").get())
     }
 }

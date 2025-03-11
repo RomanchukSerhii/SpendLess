@@ -39,7 +39,8 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(
             route = Screen.CreateUsername.route
         ) { entry ->
-            val registrationSharedViewModel = entry.sharedViewModel<RegistrationSharedViewModel>(navController)
+            val registrationSharedViewModel =
+                entry.sharedViewModel<RegistrationSharedViewModel>(navController)
             CreateUsernameScreenRoot(
                 navigateToLogIn = { navController.navigate(Screen.Login.route) },
                 navigateNext = { navController.navigate(Screen.CreatePIN.route) },
@@ -49,7 +50,8 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(
             route = Screen.CreatePIN.route
         ) { entry ->
-            val registrationSharedViewModel = entry.sharedViewModel<RegistrationSharedViewModel>(navController)
+            val registrationSharedViewModel =
+                entry.sharedViewModel<RegistrationSharedViewModel>(navController)
             CreatePinScreenRoot(
                 navigateBack = { navController.popBackStack() },
                 navigateNext = { navController.navigate(Screen.OnboardingPreferences.route) },
@@ -60,9 +62,15 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(
             route = Screen.OnboardingPreferences.route
         ) { entry ->
-            val registrationSharedViewModel = entry.sharedViewModel<RegistrationSharedViewModel>(navController)
+            val registrationSharedViewModel =
+                entry.sharedViewModel<RegistrationSharedViewModel>(navController)
             OnboardingPrefScreenRoot(
                 navigateBack = { navController.popBackStack() },
+                navigateToDashboard = {
+                    navController.navigate(Feature.Transactions.route) {
+                        popUpTo(Screen.CreateUsername.route) { inclusive = true }
+                    }
+                },
                 viewModel = registrationSharedViewModel
             )
         }
@@ -71,7 +79,7 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
             route = Screen.PINPrompt.route
         ) {
             PinPromptScreenRoot(
-                onLogOutClick = { navController.navigate(Screen.CreateUsername.route)}
+                onLogOutClick = { navController.navigate(Screen.CreateUsername.route) }
             )
         }
     }

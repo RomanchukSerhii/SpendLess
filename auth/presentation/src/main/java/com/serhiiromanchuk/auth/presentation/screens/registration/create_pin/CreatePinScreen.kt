@@ -32,7 +32,6 @@ fun CreatePinScreenRoot(
     navigateNext: () -> Unit,
     viewModel: RegistrationSharedViewModel = koinViewModel()
 ) {
-
     ObserveAsActions(viewModel.pinActions) { action ->
         when (action) {
             CreatePinAction.NavigateBack -> navigateBack()

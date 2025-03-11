@@ -1,10 +1,13 @@
 package com.serhiiromanchuk.core.domain.entity
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class UserSettings(
-    val expensesFormat: ExpensesFormat,
-    val currency: Currency,
-    val decimalSeparator: DecimalSeparator,
-    val thousandsSeparator: ThousandsSeparator,
+    val expensesFormat: ExpensesFormat = ExpensesFormat.MINUS,
+    val currency: Currency = Currency.USD,
+    val decimalSeparator: DecimalSeparator = DecimalSeparator.POINT,
+    val thousandsSeparator: ThousandsSeparator = ThousandsSeparator.COMMA,
     val biometricsPrompt: BiometricsPrompt = BiometricsPrompt.DISABLE,
     val sessionExpiryDuration: SessionExpiryDuration = SessionExpiryDuration.FIVE_MIN,
     val lockedOutDuration: LockedOutDuration = LockedOutDuration.THIRTY_SEC

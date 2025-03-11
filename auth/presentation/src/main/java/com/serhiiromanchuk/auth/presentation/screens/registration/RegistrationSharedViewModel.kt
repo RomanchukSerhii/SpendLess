@@ -15,14 +15,20 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.han
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameAction
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefAction
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiState
+import com.serhiiromanchuk.core.domain.entity.User
+import com.serhiiromanchuk.core.domain.entity.UserSettings
+import com.serhiiromanchuk.core.domain.repository.UserRepository
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.CurrencyCategoryItem
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.toDomain
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -32,7 +38,8 @@ import kotlinx.coroutines.launch
 
 class RegistrationSharedViewModel(
     private val userDataValidator: UserDataValidator,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     var usernameState by mutableStateOf(CreateUsernameUiState())
         private set
@@ -48,6 +55,9 @@ class RegistrationSharedViewModel(
 
     private val _pinActions = Channel<CreatePinAction>()
     val pinActions = _pinActions.receiveAsFlow()
+
+    private val _onboardingPrefActions = Channel<OnboardingPrefAction>()
+    val onboardingPrefAction = _onboardingPrefActions.receiveAsFlow()
 
     init {
         usernameState.username.textAsFlow()
@@ -75,9 +85,34 @@ class RegistrationSharedViewModel(
             is OnboardingPrefUiEvent.DecimalSeparatorClicked -> updateDecimalSeparator(event.decimalSeparator)
             is OnboardingPrefUiEvent.ExpensesFormatClicked -> updateExpensesFormat(event.expensesFormat)
             is OnboardingPrefUiEvent.ThousandsSeparatorClicked -> updateThousandsSeparator(event.thousandsSeparator)
-            OnboardingPrefUiEvent.StartButtonClicked -> TODO()
+            OnboardingPrefUiEvent.StartButtonClicked -> {
+                saveUser()
+            }
         }
     }
+
+    private fun saveUser() {
+        val username = savedStateHandle.get<String>(USERNAME_KEY) ?: throw IllegalArgumentException("User name cannot be empty")
+        val pin = savedStateHandle.get<String>(PIN_KEY) ?: throw IllegalArgumentException("Pin cannot be empty")
+        val expensesFormatState = onboardingPrefState.expensesFormatState
+        val settings = UserSettings(
+            expensesFormat = expensesFormatState.expensesFormat.toDomain(),
+            currency = expensesFormatState.currency.toDomain(),
+            decimalSeparator = expensesFormatState.decimalSeparator.toDomain(),
+            thousandsSeparator = expensesFormatState.thousandsSeparator.toDomain()
+        )
+
+        val user = User(
+            username = username,
+            pin = pin,
+            settings = settings
+        )
+
+        viewModelScope.launch {
+            userRepository.upsertUser(user)
+            _onboardingPrefActions.send(OnboardingPrefAction.NavigateToDashboard(username))
+        }
+     }
 
     private fun handleUsernameInput(newText: CharSequence) {
         val filteredText = newText.filter { it.isLetterOrDigit() }
@@ -85,6 +120,10 @@ class RegistrationSharedViewModel(
         if (filteredText != newText) {
             usernameState.username.edit {
                 replace(0, usernameState.username.text.length, filteredText)
+            }
+
+            if (usernameState.isUsernameTaken) {
+                usernameState = usernameState.copy(isUsernameTaken = false)
             }
         }
 
@@ -97,10 +136,20 @@ class RegistrationSharedViewModel(
         usernameState = usernameState.copy(
             usernameValidationState = userDataValidator.validateUsername(usernameState.username.text.toString())
         )
+
         if (usernameState.usernameValidationState.isValidUsername) {
-            savedStateHandle[USERNAME_KEY] = usernameState.username.text.toString()
             viewModelScope.launch {
-                _usernameActions.send(CreateUsernameAction.NavigateToCreatePinScreen)
+                val username = usernameState.username.text.toString()
+                val isUsernameTaken = viewModelScope.async {
+                    userRepository.getUser(username = username) != null
+                }
+
+                if (isUsernameTaken.await()) {
+                    usernameState = usernameState.copy(isUsernameTaken = true)
+                } else {
+                    savedStateHandle[USERNAME_KEY] = username
+                    _usernameActions.send(CreateUsernameAction.NavigateToCreatePinScreen)
+                }
             }
         }
     }

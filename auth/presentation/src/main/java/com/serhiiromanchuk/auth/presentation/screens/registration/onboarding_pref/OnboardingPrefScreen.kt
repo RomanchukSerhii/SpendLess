@@ -10,21 +10,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.BackButton
+import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.components.OnboardingPrefHeader
+import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefAction
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiState
-import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesSettings
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
+import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun OnboardingPrefScreenRoot(
     navigateBack: () -> Unit,
+    navigateToDashboard: () -> Unit,
     viewModel: RegistrationSharedViewModel = koinViewModel()
 ) {
+    ObserveAsActions(viewModel.onboardingPrefAction) { actions ->
+        when (actions) {
+            is OnboardingPrefAction.NavigateToDashboard -> navigateToDashboard()
+        }
+    }
     OnboardingPrefScreen(
         state = viewModel.onboardingPrefState,
         onEvent = viewModel::onEvent,

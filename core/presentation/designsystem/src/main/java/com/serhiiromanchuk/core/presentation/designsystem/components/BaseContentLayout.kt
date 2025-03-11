@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -21,8 +23,10 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -74,19 +78,14 @@ fun BaseContentLayout(
         color = containerColor
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().imePadding()
         ) {
             if (background != null) background()
 
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 topBar = { topBar() },
-                bottomBar = {
-                    Box {
-                        bottomBar()
-                        errorMessage?.let { ErrorMessage(it) }
-                    }
-                },
+                bottomBar = { bottomBar() },
                 snackbarHost = snackbarHost,
                 floatingActionButton = floatingActionButton,
                 floatingActionButtonPosition = floatingActionButtonPosition,
@@ -102,6 +101,13 @@ fun BaseContentLayout(
                     content()
                 }
             }
+
+            errorMessage?.let {
+                ErrorMessage(
+                    text = it,
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                )
+            }
         }
     }
 }
@@ -111,13 +117,20 @@ fun ErrorMessage(
     text: String,
     modifier: Modifier = Modifier
 ) {
+
     Text(
         text = text,
         modifier = modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.error)
-            .padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+            .padding(
+                bottom = if (WindowInsets.ime.getBottom(LocalDensity.current) > 0) {
+                    0.dp
+                } else {
+                    WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+                }
+            )
+            .padding(16.dp),
         style = MaterialTheme.typography.labelMedium,
         color = MaterialTheme.colorScheme.onError,
         textAlign = TextAlign.Center

@@ -5,7 +5,8 @@ import com.serhiiromanchuk.auth.domain.UsernameValidationState
 
 data class CreateUsernameUiState(
     val username: TextFieldState = TextFieldState(),
-    val usernameValidationState: UsernameValidationState = UsernameValidationState()
+    val usernameValidationState: UsernameValidationState = UsernameValidationState(),
+    val isUsernameTaken: Boolean = false
 ) {
     val isNextButtonEnabled: Boolean
         get() {
