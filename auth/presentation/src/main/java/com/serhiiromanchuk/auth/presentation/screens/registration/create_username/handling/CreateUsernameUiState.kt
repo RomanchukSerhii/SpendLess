@@ -1,11 +1,11 @@
 package com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling
 
 import androidx.compose.foundation.text.input.TextFieldState
-import com.serhiiromanchuk.auth.domain.UsernameValidationState
+import com.serhiiromanchuk.auth.domain.UserValidationState
 
 data class CreateUsernameUiState(
     val username: TextFieldState = TextFieldState(),
-    val usernameValidationState: UsernameValidationState = UsernameValidationState(),
+    val userValidationState: UserValidationState = UserValidationState(),
     val isUsernameTaken: Boolean = false
 ) {
     val isNextButtonEnabled: Boolean

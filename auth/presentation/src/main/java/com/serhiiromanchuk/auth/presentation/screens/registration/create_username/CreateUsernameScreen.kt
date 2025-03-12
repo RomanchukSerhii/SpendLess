@@ -61,7 +61,8 @@ private fun CreateUsernameScreen(
         )
     ) {
         BaseContentLayout(
-            errorMessage = if (state.isUsernameTaken) stringResource(R.string.error_username_been_taken) else null
+            errorMessage = if (state.isUsernameTaken) stringResource(R.string.error_username_been_taken) else null,
+            onBackPressed = onLogInClick
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
