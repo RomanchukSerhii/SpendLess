@@ -24,15 +24,21 @@ import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
     navigation(
-        startDestination = Screen.CreateUsername.route,
+        startDestination = Screen.Login.route,
         route = Feature.Auth.route
     ) {
         composable(
             route = Screen.Login.route
         ) {
             LoginScreenRoot(
-                navigateToLogIn = { navController.navigate(Screen.PINPrompt.route) },
-                navigateToRegistration = { navController.navigate(Screen.CreateUsername.route) }
+                navigateToDashboard = {
+                    navController.navigate(Feature.Transactions.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                navigateToRegistration = {
+                    navController.navigate(Screen.CreateUsername.route)
+                }
             )
         }
 
@@ -42,7 +48,11 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
             val registrationSharedViewModel =
                 entry.sharedViewModel<RegistrationSharedViewModel>(navController)
             CreateUsernameScreenRoot(
-                navigateToLogIn = { navController.navigate(Screen.Login.route) },
+                navigateToLogIn = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
                 navigateNext = { navController.navigate(Screen.CreatePIN.route) },
                 viewModel = registrationSharedViewModel
             )
@@ -68,7 +78,7 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
                 navigateBack = { navController.popBackStack() },
                 navigateToDashboard = {
                     navController.navigate(Feature.Transactions.route) {
-                        popUpTo(Screen.CreateUsername.route) { inclusive = true }
+                        popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 },
                 viewModel = registrationSharedViewModel

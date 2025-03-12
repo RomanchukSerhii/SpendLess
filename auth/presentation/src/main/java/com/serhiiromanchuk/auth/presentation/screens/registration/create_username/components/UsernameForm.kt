@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.auth.presentation.R
+import com.serhiiromanchuk.auth.presentation.components.UsernameLengthError
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiState
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
@@ -72,8 +73,6 @@ private fun UsernameTextField(
     modifier: Modifier = Modifier
 ) {
     Column {
-        val validationState = state.usernameValidationState
-
         Box(
             modifier = modifier
                 .fillMaxWidth()
@@ -103,7 +102,9 @@ private fun UsernameTextField(
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                 decorator = { innerBox ->
                     Box(
-                        modifier = Modifier.wrapContentWidth().padding(horizontal = 12.dp),
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .padding(horizontal = 12.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         innerBox()
@@ -116,20 +117,8 @@ private fun UsernameTextField(
             )
         }
 
-        if (!validationState.isValidUsername) {
-            Text(
-                text = when  {
-                    !validationState.hasMinLength -> "Username must be at least 3 characters long"
-                    !validationState.isWithinMaxLength -> "Username cannot exceed 14 characters."
-                    else -> ""
-                },
-                modifier = Modifier.padding(top = 4.dp),
-                color = MaterialTheme.colorScheme.error
-            )
-        }
-
+        UsernameLengthError(state.userValidationState)
     }
-
 }
 
 @Composable

@@ -24,4 +24,8 @@
     <string name="log_out">Log out</string>
     <string name="user_name_cannot_be_empty">User name cannot be empty</string>
     <string name="error_username_been_taken">This username has already been taken!</string>
+    <string name="error_min_username_length">Username must be at least 3 characters long</string>
+    <string name="error_max_username_length">Username cannot exceed 14 characters.</string>
+    <string name="error_pin_length">PIN must contain exactly 5 digits.</string>
+    <string name="username_or_pin_is_incorrect">Username or PIN is incorrect</string>
 </resources>

@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.serhiiromanchuk.auth.domain.UserDataValidator
-import com.serhiiromanchuk.auth.domain.UsernameValidationState
+import com.serhiiromanchuk.auth.domain.UserValidationState
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinAction
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiState
@@ -127,17 +127,17 @@ class RegistrationSharedViewModel(
             }
         }
 
-        if (!usernameState.usernameValidationState.isValidUsername) {
-            usernameState = usernameState.copy(usernameValidationState = UsernameValidationState())
+        if (!usernameState.userValidationState.isValidUsername) {
+            usernameState = usernameState.copy(userValidationState = UserValidationState())
         }
     }
 
     private fun validateUsername() {
         usernameState = usernameState.copy(
-            usernameValidationState = userDataValidator.validateUsername(usernameState.username.text.toString())
+            userValidationState = userDataValidator.validateUsername(usernameState.username.text.toString())
         )
 
-        if (usernameState.usernameValidationState.isValidUsername) {
+        if (usernameState.userValidationState.isValidUsername) {
             viewModelScope.launch {
                 val username = usernameState.username.text.toString()
                 val isUsernameTaken = viewModelScope.async {
