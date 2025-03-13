@@ -18,9 +18,9 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContent
 import com.serhiiromanchuk.core.presentation.designsystem.components.DashboardTopBar
 import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
-import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionViewModel
+import com.serhiiromanchuk.transactions.screens.TransactionsSharedViewModel
+import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionBottomSheet
 import com.serhiiromanchuk.transactions.screens.dashboard.components.AccountInfo
-import com.serhiiromanchuk.transactions.screens.dashboard.components.CreateTransactionBottomSheet
 import com.serhiiromanchuk.transactions.screens.dashboard.components.DashboardBackground
 import com.serhiiromanchuk.transactions.screens.dashboard.components.LatestTransactions
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent
@@ -30,21 +30,19 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun DashboardScreenRoot(
     onSettingsClick: () -> Unit,
-    dashboardViewModel: DashboardViewModel = koinViewModel(),
-    createTransactionViewModel: CreateTransactionViewModel = koinViewModel()
+    username: String,
+    viewModel: TransactionsSharedViewModel = koinViewModel()
 ) {
+
     DashboardScreen(
-        state = dashboardViewModel.state,
-        onEvent = dashboardViewModel::onEvent,
-        onFabClick = { dashboardViewModel.onEvent(DashboardUiEvent.CreateTransactionSheetToggled) }
+        state = viewModel.dashboardState,
+        onEvent = viewModel::onEvent
     )
 
-    if (dashboardViewModel.state.isCreateTransactionSheetOpened) {
+    if (viewModel.dashboardState.isCreateTransactionOpen) {
         CreateTransactionBottomSheet(
-            viewModel = createTransactionViewModel,
-            onDismissRequest = {
-                dashboardViewModel.onEvent(DashboardUiEvent.CreateTransactionSheetToggled)
-            }
+            state = viewModel.createTransactionState,
+            onEvent = viewModel::onEvent
         )
     }
 }
@@ -53,7 +51,6 @@ fun DashboardScreenRoot(
 private fun DashboardScreen(
     state: DashboardUiState,
     onEvent: (DashboardUiEvent) -> Unit,
-    onFabClick: () -> Unit
 ) {
     CompositionLocalProvider(
         LocalSystemIconsUiController provides SystemIconsUiController(
@@ -75,7 +72,8 @@ private fun DashboardScreen(
                             WindowInsets.navigationBars.getBottom(this).toDp()
                         }
                     ),
-                    onClick = onFabClick)
+                    onClick = { onEvent(DashboardUiEvent.CreateTransactionSheetToggled) }
+                )
             },
             background = { DashboardBackground() },
             contentWindowInsets = WindowInsets.statusBars,
@@ -96,6 +94,5 @@ private fun DashboardScreen(
             }
         }
     }
-
 }
 

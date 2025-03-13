@@ -110,7 +110,7 @@ class RegistrationSharedViewModel(
 
         viewModelScope.launch {
             userRepository.upsertUser(user)
-            _onboardingPrefActions.send(OnboardingPrefAction.NavigateToDashboard(username))
+            _onboardingPrefActions.send(OnboardingPrefAction.NavigateToTransactions(username))
         }
      }
 

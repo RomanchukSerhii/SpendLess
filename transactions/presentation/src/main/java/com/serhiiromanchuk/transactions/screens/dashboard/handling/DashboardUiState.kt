@@ -8,7 +8,7 @@ import java.time.Instant
 
 data class DashboardUiState(
     val transactions: Map<Instant, List<Transaction>> = createTestTransactions(),
-    val isCreateTransactionSheetOpened: Boolean = false,
+    val isCreateTransactionOpen: Boolean = false,
     val accountInfoState: AccountInfoState = AccountInfoState()
 ) {
     data class AccountInfoState(

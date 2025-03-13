@@ -1,11 +1,9 @@
 package com.serhiiromanchuk.transactions.di
 
-import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionViewModel
-import com.serhiiromanchuk.transactions.screens.dashboard.DashboardViewModel
-import org.koin.core.module.dsl.viewModelOf
+import com.serhiiromanchuk.transactions.screens.TransactionsSharedViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val transactionsViewModelModule = module {
-    viewModelOf(::CreateTransactionViewModel)
-    viewModelOf(::DashboardViewModel)
+val transactionsSharedViewModelModule = module {
+    viewModel { (username: String) -> TransactionsSharedViewModel(username) }
 }

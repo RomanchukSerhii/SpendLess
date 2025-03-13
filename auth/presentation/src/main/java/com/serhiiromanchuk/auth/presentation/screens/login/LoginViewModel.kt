@@ -62,7 +62,7 @@ class LoginViewModel(
 
                 if (user != null) {
                     if (state.pin == user.pin) {
-                        sendAction(LoginAction.NavigateToDashboard)
+                        sendAction(LoginAction.NavigateToTransactions(username))
                     } else {
                         updateError(true)
                     }
