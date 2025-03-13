@@ -7,7 +7,7 @@
     <string name="receiver">Receiver</string>
     <string name="create">Create</string>
     <string name="sender">Sender</string>
-    <string name="expense_sign">-$</string>
+    <string name="expense_sign">%s$</string>
     <string name="income_sign">$</string>
     <string name="amount_placeholder">00.00</string>
     <string name="add_note">Add Note</string>
@@ -32,4 +32,5 @@
     <string name="other">Other</string>
     <string name="does_not_repeat">Does not repeat</string>
     <string name="daily">Daily</string>
+    <string name="suffix_sign">)</string>
 </resources>

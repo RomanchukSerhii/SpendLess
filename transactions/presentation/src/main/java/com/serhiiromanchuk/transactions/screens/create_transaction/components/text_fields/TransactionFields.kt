@@ -17,12 +17,14 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.serhiiromanchuk.core.domain.entity.ExpensesFormat
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent
-import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiState.*
+import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiState.TransactionFieldsState
 
 @Composable
 fun TransactionFields(
     transactionFieldsState: TransactionFieldsState,
+    expensesFormat: ExpensesFormat,
     onEvent: (CreateTransactionUiEvent) -> Unit,
     isExpense: Boolean,
     modifier: Modifier = Modifier
@@ -54,6 +56,7 @@ fun TransactionFields(
 
         TransactionAmountTextField(
             state = transactionFieldsState.amount,
+            expensesFormat = expensesFormat,
             isExpense = isExpense,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next

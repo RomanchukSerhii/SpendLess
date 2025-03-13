@@ -20,22 +20,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.serhiiromanchuk.core.domain.entity.ExpensesFormat
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.transactions.presentation.R
 
 @Composable
 fun TransactionAmountTextField(
     state: TextFieldState,
+    expensesFormat: ExpensesFormat,
     isExpense: Boolean,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onKeyboardAction: KeyboardActionHandler? = null,
 ) {
+    val prefixSign = when (expensesFormat) {
+        ExpensesFormat.MINUS -> "-"
+        ExpensesFormat.PARENTHESES -> "("
+    }
+
     val prefix = if (isExpense) {
-        stringResource(R.string.expense_sign)
+        stringResource(R.string.expense_sign, prefixSign)
     } else stringResource(R.string.income_sign)
 
-    val prefixColor = if (isExpense) {
+    val signsColor = if (isExpense) {
         MaterialTheme.colorScheme.error
     } else AppColors.Success
 
@@ -55,14 +62,20 @@ fun TransactionAmountTextField(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    PrefixText(
-                        text = prefix,
-                        color = prefixColor
+                    PrefixSign(
+                        sign = prefix,
+                        color = signsColor
                     )
+
                     Box(modifier = Modifier.width(IntrinsicSize.Min)) {
                         AmountPlaceholder(state.text.toString())
                         innerBox()
                     }
+
+                    SuffixSign(
+                        color = signsColor,
+                        expensesFormat = expensesFormat
+                    )
                 }
             }
         },
@@ -74,14 +87,31 @@ fun TransactionAmountTextField(
 }
 
 @Composable
-private fun PrefixText(
-    text: String,
+private fun PrefixSign(
+    sign: String,
     color: Color,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = text,
+        text = sign,
         modifier = modifier.padding(end = 4.dp),
+        style = MaterialTheme.typography.displayMedium,
+        color = color
+    )
+}
+
+@Composable
+private fun SuffixSign(
+    expensesFormat: ExpensesFormat,
+    color: Color,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = when (expensesFormat) {
+            ExpensesFormat.MINUS -> ""
+            ExpensesFormat.PARENTHESES -> stringResource(R.string.suffix_sign)
+        },
+        modifier = modifier.padding(start = 4.dp),
         style = MaterialTheme.typography.displayMedium,
         color = color
     )

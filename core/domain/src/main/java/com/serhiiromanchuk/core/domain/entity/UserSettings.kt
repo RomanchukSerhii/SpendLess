@@ -1,8 +1,5 @@
 package com.serhiiromanchuk.core.domain.entity
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class UserSettings(
     val expensesFormat: ExpensesFormat = ExpensesFormat.MINUS,
     val currency: Currency = Currency.USD,

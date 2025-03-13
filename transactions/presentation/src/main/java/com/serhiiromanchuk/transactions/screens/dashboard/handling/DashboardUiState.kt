@@ -1,5 +1,8 @@
 package com.serhiiromanchuk.transactions.screens.dashboard.handling
 
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.CurrencyCategoryItem
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.domain.Expense
 import com.serhiiromanchuk.transactions.domain.Income
@@ -9,7 +12,8 @@ import java.time.Instant
 data class DashboardUiState(
     val transactions: Map<Instant, List<Transaction>> = createTestTransactions(),
     val isCreateTransactionOpen: Boolean = false,
-    val accountInfoState: AccountInfoState = AccountInfoState()
+    val accountInfoState: AccountInfoState = AccountInfoState(),
+    val amountSettings: AmountSettings = AmountSettings(),
 ) {
     data class AccountInfoState(
         val balance: String = "$10,382.45",
@@ -18,6 +22,13 @@ data class DashboardUiState(
         val largestTransactionAmount: String = "-$59.99",
         val largestTransactionDate: String = "Jan 7, 2025",
         val previousWeekExpense: String = "-$762.20"
+    )
+
+    data class AmountSettings(
+        val isExpense: Boolean = true,
+        val currency: CurrencyCategoryItem = CurrencyCategoryItem.USD,
+        val decimalSeparator: DecimalSeparatorUi = DecimalSeparatorUi.POINT,
+        val thousandsSeparator: ThousandsSeparatorUi = ThousandsSeparatorUi.COMMA,
     )
 }
 

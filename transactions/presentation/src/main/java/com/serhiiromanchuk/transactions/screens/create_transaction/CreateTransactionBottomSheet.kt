@@ -63,6 +63,7 @@ fun CreateTransactionBottomSheet(
                 )
                 TransactionFields(
                     transactionFieldsState = state.transactionFieldsState,
+                    expensesFormat = state.expensesFormat,
                     onEvent = onEvent,
                     isExpense = state.isExpense
                 )
