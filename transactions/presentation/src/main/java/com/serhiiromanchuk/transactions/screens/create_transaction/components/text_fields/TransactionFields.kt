@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,6 +15,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.domain.entity.ExpensesFormat
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent
@@ -30,7 +30,9 @@ fun TransactionFields(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().padding(vertical = 32.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -47,7 +49,8 @@ fun TransactionFields(
             modifier = Modifier
                 .focusRequester(focusRequester),
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                capitalization = KeyboardCapitalization.Sentences
             ),
             onKeyboardAction = {
                 focusManager.moveFocus(FocusDirection.Down)
@@ -62,17 +65,19 @@ fun TransactionFields(
                 imeAction = ImeAction.Next
             ),
             onKeyboardAction = {
-                KeyboardActions(
-                    onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                )
+                focusManager.moveFocus(FocusDirection.Down)
             }
         )
 
         NoteTextField(
-            value = transactionFieldsState.note,
-            onValueChange = { onEvent(CreateTransactionUiEvent.NoteTextChanged(it)) }
+            state = transactionFieldsState.note,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.Sentences
+            ),
+            onKeyboardAction = {
+                focusManager.clearFocus()
+            }
         )
     }
 }

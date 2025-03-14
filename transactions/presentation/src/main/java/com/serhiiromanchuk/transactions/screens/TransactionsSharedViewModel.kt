@@ -13,7 +13,6 @@ import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
 import com.serhiiromanchuk.transactions.screens.create_transaction.components.TransactionModeOptions
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.CreateButtonClicked
-import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.NoteTextChanged
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.RepeatingCategorySelected
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.SpendCategorySelected
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.TransactionModeSelected
@@ -55,6 +54,10 @@ class TransactionsSharedViewModel(
         createTransactionState.transactionFieldsState.amount.textAsFlow()
             .onEach(::handleAmountInput)
             .launchIn(viewModelScope)
+
+        createTransactionState.transactionFieldsState.note.textAsFlow()
+            .onEach(::handleNoteInput)
+            .launchIn(viewModelScope)
     }
 
     private fun setAmountSettings() {
@@ -83,8 +86,6 @@ class TransactionsSharedViewModel(
             is SpendCategorySelected -> updateSpendCategory(event.spendCategory)
             is RepeatingCategorySelected -> updateRepeatingCategory(event.repeatingCategory)
 
-            is NoteTextChanged -> updateNoteText(event.text)
-
             CreateButtonClicked -> TODO()
             CreateTransactionUiEvent.CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
         }
@@ -105,9 +106,17 @@ class TransactionsSharedViewModel(
 
     private fun handleAmountInput(newText: CharSequence) {
         val amountState = createTransactionState.transactionFieldsState.amount
-        val formatedAmount = amountFormatter.getFormatedAmount(newText, dashboardState.amountSettings)
+        val formatedAmount =
+            amountFormatter.getFormatedAmount(newText, dashboardState.amountSettings)
 
         amountState.edit { replace(0, amountState.text.length, formatedAmount) }
+    }
+
+    private fun handleNoteInput(newText: CharSequence) {
+        val noteState = createTransactionState.transactionFieldsState.note
+        val filteredText = newText.take(100)
+
+        noteState.edit { replace(0, noteState.text.length, filteredText) }
     }
 
     private fun toggleCreateTransactionSheet() {
@@ -119,7 +128,8 @@ class TransactionsSharedViewModel(
         if (dashboardState.isCreateTransactionOpen) {
             val currentText = createTransactionState.transactionFieldsState.amount.text
             val decimalSeparator = dashboardState.amountSettings.decimalSeparator.separator
-            val cleanedText = amountFormatter.removeOldThousandsSeparator(currentText, decimalSeparator)
+            val cleanedText =
+                amountFormatter.removeOldThousandsSeparator(currentText, decimalSeparator)
             handleAmountInput(cleanedText)
         }
     }
@@ -134,12 +144,6 @@ class TransactionsSharedViewModel(
 
     private fun updateRepeatingCategory(repeatingCategory: RepeatingCategory) {
         createTransactionState = createTransactionState.copy(repeatingCategory = repeatingCategory)
-    }
-
-    private fun updateNoteText(text: String) {
-        updateTransactionFieldsState {
-            it.copy(note = text)
-        }
     }
 
     private fun updateTransactionFieldsState(

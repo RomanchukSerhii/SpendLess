@@ -6,7 +6,6 @@ import com.serhiiromanchuk.transactions.screens.create_transaction.components.Tr
 
 sealed interface CreateTransactionUiEvent {
     data object CreateTransactionSheetToggled : CreateTransactionUiEvent
-    data class NoteTextChanged(val text: String) : CreateTransactionUiEvent
     data class TransactionModeSelected(val transactionMode: TransactionModeOptions) : CreateTransactionUiEvent
     data class SpendCategorySelected(val spendCategory: ExpenseCategory) : CreateTransactionUiEvent
     data class RepeatingCategorySelected(val repeatingCategory: RepeatingCategory) : CreateTransactionUiEvent

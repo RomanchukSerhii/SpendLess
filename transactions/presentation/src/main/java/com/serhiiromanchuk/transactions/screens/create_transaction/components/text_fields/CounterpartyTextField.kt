@@ -1,7 +1,6 @@
 package com.serhiiromanchuk.transactions.screens.create_transaction.components.text_fields
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -20,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.transactions.presentation.R
 
 @Composable
@@ -47,9 +45,6 @@ fun CounterpartyTextField(
         lineLimits = TextFieldLineLimits.SingleLine,
         decorator = { innerBox ->
             Box(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .padding(horizontal = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 innerBox()

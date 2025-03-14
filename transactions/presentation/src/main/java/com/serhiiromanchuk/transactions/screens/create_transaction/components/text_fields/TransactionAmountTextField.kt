@@ -55,8 +55,6 @@ fun TransactionAmountTextField(
         lineLimits = TextFieldLineLimits.SingleLine,
         decorator = { innerBox ->
             Box(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Row(

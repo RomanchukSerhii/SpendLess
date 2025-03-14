@@ -134,7 +134,10 @@ private fun TransactionIcon(
         when (transactionType) {
             is Income -> IncomeIcon()
             is Expense -> {
-                ExpenseCategory.fromExpense(transactionType).TextIcon(fontSize = 20.sp)
+                ExpenseCategory.fromExpense(transactionType).TextIcon(
+                    modifier = Modifier,
+                    fontSize = 20.sp
+                )
             }
         }
 

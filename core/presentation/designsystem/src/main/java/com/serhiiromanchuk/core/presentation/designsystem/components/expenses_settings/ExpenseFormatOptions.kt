@@ -29,62 +29,132 @@ enum class ExpensesFormatUi(override val label: @Composable () -> Unit) : Segmen
 enum class CurrencyCategoryItem(override val titleRes: Int, val symbol: String) : DropdownItem {
     USD(R.string.us_dollar_usd, "\$") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("\$")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "\$",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
     EUR(R.string.euro_eur, "€") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("€")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "€",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
     GBP(R.string.british_pound_sterling_gbp, "£") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("£")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "£",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
     JPY(R.string.japanese_currency, "¥") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("¥")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "¥",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
     CNY(R.string.chinese_currency, "¥") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("¥")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "¥",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
     INR(R.string.indian_currency, "₹") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("₹")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "₹",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
     ZAR(R.string.south_african_currency, "R") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("R")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "R",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
     CAD(R.string.canadian_currency, "C\$") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("C\$")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "C\$",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
     AUD(R.string.australian_currency, "A\$") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("A\$")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "A\$",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
     CHF(R.string.swiss_currency, "CHF") {
         @Composable
-        override fun TextIcon(fontSize: TextUnit) {
-            CurrencyIcon("CHF")
+        override fun TextIcon(
+            modifier: Modifier,
+            fontSize: TextUnit
+        ) {
+            CurrencyIcon(
+                currency = "CHF",
+                modifier = modifier,
+                fontSize = fontSize
+            )
         }
     },
 }

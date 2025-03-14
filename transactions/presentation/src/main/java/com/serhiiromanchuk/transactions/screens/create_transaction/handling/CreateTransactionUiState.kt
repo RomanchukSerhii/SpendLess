@@ -28,7 +28,7 @@ data class CreateTransactionUiState(
     data class TransactionFieldsState(
         val counterparty: TextFieldState = TextFieldState(),
         val amount: TextFieldState = TextFieldState(),
-        val note: String = "",
+        val note: TextFieldState = TextFieldState(),
     )
 
     companion object {

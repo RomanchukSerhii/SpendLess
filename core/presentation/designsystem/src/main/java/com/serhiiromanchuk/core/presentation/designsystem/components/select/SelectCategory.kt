@@ -95,14 +95,19 @@ private fun SelectDropdown(
             DropdownMenuItem(
                 text = {
                     Text(
-                        text = stringResource(categoryItem.titleRes),
+                        text = stringResource(categoryItem.titleRes, *categoryItem.titleArgs),
                         modifier = Modifier.offset(x = (-4).dp),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 },
                 onClick = { onItemSelected(categoryItem) },
-                leadingIcon = { categoryItem.TextIcon(fontSize = 18.sp) },
+                leadingIcon = {
+                    categoryItem.TextIcon(
+                        modifier = Modifier.size(40.dp),
+                        fontSize = 18.sp
+                    )
+                },
                 trailingIcon = {
                     if (categoryItem == selectedItem) {
                         Icon(

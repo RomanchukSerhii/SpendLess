@@ -93,7 +93,10 @@ private fun PopularCategory(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            popularCategory.TextIcon(fontSize = 30.sp)
+            popularCategory.TextIcon(
+                modifier = Modifier,
+                fontSize = 30.sp
+            )
 
             Column {
                 Text(
