@@ -30,13 +30,13 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun DashboardScreenRoot(
     onSettingsClick: () -> Unit,
-    username: String,
     viewModel: TransactionsSharedViewModel = koinViewModel()
 ) {
 
     DashboardScreen(
         state = viewModel.dashboardState,
-        onEvent = viewModel::onEvent
+        onEvent = viewModel::onEvent,
+        onSettingsClick = onSettingsClick
     )
 
     if (viewModel.dashboardState.isCreateTransactionOpen) {
@@ -51,6 +51,7 @@ fun DashboardScreenRoot(
 private fun DashboardScreen(
     state: DashboardUiState,
     onEvent: (DashboardUiEvent) -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
     CompositionLocalProvider(
         LocalSystemIconsUiController provides SystemIconsUiController(
@@ -61,7 +62,7 @@ private fun DashboardScreen(
             topBar = {
                 DashboardTopBar(
                     name = "rockefeller74",
-                    onSettingsClick = {},
+                    onSettingsClick = onSettingsClick,
                     onExportClick = {}
                 )
             },

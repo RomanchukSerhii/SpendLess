@@ -24,6 +24,12 @@ class NavigationState(
         }
     }
 
+    fun navigateToSettings(
+        username: String
+    ) {
+        navController.navigate("${Feature.Settings.route}/$username")
+    }
+
     fun navigateToLogin() {
         navController.navigate(Screen.Login.route) {
             popUpTo(Screen.Login.route) { inclusive = true }

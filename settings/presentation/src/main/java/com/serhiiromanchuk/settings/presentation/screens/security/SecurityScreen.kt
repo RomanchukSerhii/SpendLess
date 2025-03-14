@@ -11,6 +11,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.AppTopBar
 import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
 import com.serhiiromanchuk.settings.presentation.R
+import com.serhiiromanchuk.settings.presentation.screens.SettingsSharedViewModel
 import com.serhiiromanchuk.settings.presentation.screens.security.components.SecurityContent
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiState
@@ -19,7 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SecurityScreenRoot(
     onBackClick: () -> Unit,
-    viewModel: SecurityViewModel = koinViewModel()
+    viewModel: SettingsSharedViewModel = koinViewModel()
 ) {
     BaseContentLayout(
         topBar = {
@@ -30,7 +31,7 @@ fun SecurityScreenRoot(
         }
     ) {
         SecurityScreen(
-            state = viewModel.state,
+            state = viewModel.securityState,
             onEvent = viewModel::onEvent
         )
     }

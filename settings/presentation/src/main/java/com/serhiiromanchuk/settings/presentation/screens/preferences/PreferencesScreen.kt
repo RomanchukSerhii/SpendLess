@@ -12,6 +12,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContent
 import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesSettings
 import com.serhiiromanchuk.settings.presentation.R
+import com.serhiiromanchuk.settings.presentation.screens.SettingsSharedViewModel
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiState
 import org.koin.androidx.compose.koinViewModel
@@ -19,7 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun PreferencesScreenRoot(
     onBackClick: () -> Unit,
-    viewModel: PreferencesViewModel = koinViewModel()
+    viewModel: SettingsSharedViewModel = koinViewModel()
 ) {
     BaseContentLayout(
         topBar = {
@@ -30,7 +31,7 @@ fun PreferencesScreenRoot(
         }
     ) {
         PreferencesScreen(
-            state = viewModel.state,
+            state = viewModel.preferencesState,
             onEvent = viewModel::onEvent
         )
     }

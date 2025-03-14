@@ -22,13 +22,12 @@ import com.serhiiromanchuk.core.domain.entity.User
 import com.serhiiromanchuk.core.domain.entity.UserSettings
 import com.serhiiromanchuk.core.domain.repository.UserRepository
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.CurrencyCategoryItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.toDomain
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -140,11 +139,9 @@ class RegistrationSharedViewModel(
         if (usernameState.userValidationState.isValidUsername) {
             viewModelScope.launch {
                 val username = usernameState.username.text.toString()
-                val isUsernameTaken = viewModelScope.async {
-                    userRepository.getUser(username = username) != null
-                }
+                val user = userRepository.getUser(username)
 
-                if (isUsernameTaken.await()) {
+                if (user != null) {
                     usernameState = usernameState.copy(isUsernameTaken = true)
                 } else {
                     savedStateHandle[USERNAME_KEY] = username

@@ -29,8 +29,7 @@ fun NavGraphBuilder.transactionsGraph(navigationState: NavigationState) {
                 )
 
             DashboardScreenRoot(
-                onSettingsClick = { navigationState.navigateTo(Feature.Settings.route) },
-                username = username,
+                onSettingsClick = { navigationState.navigateToSettings(username) },
                 viewModel = transactionsSharedViewModel
             )
         }

@@ -72,10 +72,12 @@ fun TransactionAmountTextField(
                         innerBox()
                     }
 
-                    SuffixSign(
-                        color = signsColor,
-                        expensesFormat = expensesFormat
-                    )
+                    if (isExpense) {
+                        SuffixSign(
+                            expensesFormat = expensesFormat,
+                            color = signsColor
+                        )
+                    }
                 }
             }
         },
