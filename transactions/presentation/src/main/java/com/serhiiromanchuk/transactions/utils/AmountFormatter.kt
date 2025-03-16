@@ -33,6 +33,19 @@ class AmountFormatter() {
         return resultText
     }
 
+    fun parseAmountToFloat(
+        amountText: CharSequence,
+        amountSettings: DashboardUiState.AmountSettings
+    ): Float {
+        val decimalSeparator = amountSettings.decimalSeparator.separator
+        val cleanedText = amountText.toString()
+            .replace(amountSettings.thousandsSeparator.separator, "")
+            .replace(decimalSeparator, ".")
+
+        return cleanedText.toFloatOrNull()
+            ?: throw NumberFormatException("Invalid amount format: $amountText")
+    }
+
     fun removeOldThousandsSeparator(text: CharSequence, decimalSeparator: String): CharSequence {
         val lastDecimalIndex = text.lastIndexOf(decimalSeparator)
 

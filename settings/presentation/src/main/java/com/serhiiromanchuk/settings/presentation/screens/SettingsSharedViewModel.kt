@@ -12,7 +12,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_se
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.toDomain
+import com.serhiiromanchuk.core.presentation.ui.mappers.toDomain
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.CurrencyClicked
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.DecimalSeparatorClicked

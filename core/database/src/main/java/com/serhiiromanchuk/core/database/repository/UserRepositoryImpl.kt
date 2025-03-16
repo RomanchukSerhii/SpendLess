@@ -12,7 +12,7 @@ class UserRepositoryImpl(
     private val userDao: UserDao
 ) : UserRepository {
     override suspend fun upsertUser(user: User) {
-        userDao.upsertDao(user.toEntity())
+        userDao.upsertUser(user.toEntity())
     }
 
     override suspend fun getUser(username: String): User? {

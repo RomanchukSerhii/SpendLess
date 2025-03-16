@@ -30,7 +30,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.MoneyIcon
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextButton
 import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
 import com.serhiiromanchuk.transactions.common_components.TransactionItem
-import com.serhiiromanchuk.transactions.domain.Transaction
+import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.transactions.presentation.R
 import java.time.Instant
 

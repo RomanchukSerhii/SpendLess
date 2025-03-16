@@ -44,7 +44,7 @@ fun TransactionFields(
         }
 
         CounterpartyTextField(
-            state = transactionFieldsState.counterparty,
+            state = transactionFieldsState.title,
             isExpense = isExpense,
             modifier = Modifier
                 .focusRequester(focusRequester),

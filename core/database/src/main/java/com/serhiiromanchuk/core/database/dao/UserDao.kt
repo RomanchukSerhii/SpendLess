@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserDao {
     @Upsert
-    suspend fun upsertDao(user: UserEntity)
+    suspend fun upsertUser(user: UserEntity)
 
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
     suspend fun getUser(username: String): UserEntity?

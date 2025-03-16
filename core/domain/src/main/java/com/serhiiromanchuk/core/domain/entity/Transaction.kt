@@ -1,15 +1,16 @@
-package com.serhiiromanchuk.transactions.domain
+package com.serhiiromanchuk.core.domain.entity
 
 import java.time.Instant
 
 data class Transaction(
     val id: Long = 0L,
-    val user: String,
+    val userId: Long,
     val title: String,
     val amount: Float,
+    val repeatType: RepeatType,
     val transactionType: TransactionType,
     val note: String? = null,
-    val creationTimestamp: Instant = Instant.now()
+    val transactionDate: Long = Instant.now().toEpochMilli()
 )
 
 sealed interface TransactionType
@@ -28,3 +29,11 @@ enum class Expense : TransactionType {
 }
 
 data object Income : TransactionType
+
+enum class RepeatType {
+    NOT_REPEAT,
+    DAILY,
+    WEEKLY,
+    MONTHLY,
+    YEARLY
+}

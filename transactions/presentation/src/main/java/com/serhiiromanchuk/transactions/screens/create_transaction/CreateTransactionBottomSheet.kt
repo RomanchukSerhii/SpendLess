@@ -69,7 +69,7 @@ fun CreateTransactionBottomSheet(
                 )
                 TransactionOptions(
                     isExpense = state.isExpense,
-                    selectedSpendCategory = state.spendCategory,
+                    selectedSpendCategory = state.expenseCategory,
                     selectedRepeatingCategory = state.repeatingCategory,
                     onSpendCategoryClick = {
                         onEvent(CreateTransactionUiEvent.SpendCategorySelected(it))

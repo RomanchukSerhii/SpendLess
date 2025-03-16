@@ -20,7 +20,7 @@ class NavigationState(
         username: String
     ) {
         navController.navigate("${Feature.Transactions.route}/$username") {
-            popUpTo(Screen.Login.route) { inclusive = true }
+            popUpTo(Feature.Transactions.route) { inclusive = true }
         }
     }
 

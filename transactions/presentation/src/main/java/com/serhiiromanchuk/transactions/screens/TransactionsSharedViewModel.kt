@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.serhiiromanchuk.core.domain.entity.Transaction
+import com.serhiiromanchuk.core.domain.repository.TransactionRepository
 import com.serhiiromanchuk.core.domain.repository.UserRepository
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.toUi
+import com.serhiiromanchuk.core.presentation.ui.mappers.toUi
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
@@ -22,6 +24,7 @@ import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEv
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent.CreateTransactionSheetToggled
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import com.serhiiromanchuk.transactions.utils.AmountFormatter
+import com.serhiiromanchuk.transactions.utils.toDomain
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -30,6 +33,7 @@ import kotlinx.coroutines.launch
 class TransactionsSharedViewModel(
     private val username: String,
     private val userRepository: UserRepository,
+    private val transactionRepository: TransactionRepository,
     private val amountFormatter: AmountFormatter
 ) : ViewModel() {
     var dashboardState by mutableStateOf(DashboardUiState())
@@ -38,26 +42,63 @@ class TransactionsSharedViewModel(
     var createTransactionState by mutableStateOf(CreateTransactionUiState())
         private set
 
+    private var userId: Long? = null
+
+    init {
+        viewModelScope.launch {
+            userId = userRepository.getUser(username)?.id
+            userId?.let { id ->
+                transactionRepository.getTransactionsByUser(id).collectLatest { transactions ->
+                    // TODO
+                }
+            }
+        }
+        setAmountSettings()
+        observeTextFields()
+    }
+
     fun onEvent(event: DashboardUiEvent) {
         when (event) {
             CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
         }
     }
 
-    init {
-        setAmountSettings()
+    fun onEvent(event: CreateTransactionUiEvent) {
+        when (event) {
+            is TransactionModeSelected -> updateTransactionMode(event.transactionMode)
+            is SpendCategorySelected -> updateSpendCategory(event.spendCategory)
+            is RepeatingCategorySelected -> updateRepeatingCategory(event.repeatingCategory)
 
-        createTransactionState.transactionFieldsState.counterparty.textAsFlow()
-            .onEach(::handleCounterpartyInput)
-            .launchIn(viewModelScope)
+            CreateButtonClicked -> createTransaction()
+            CreateTransactionUiEvent.CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
+        }
+    }
 
-        createTransactionState.transactionFieldsState.amount.textAsFlow()
-            .onEach(::handleAmountInput)
-            .launchIn(viewModelScope)
+    private fun createTransaction() {
+        userId?.let {
+            val transactionsFields = createTransactionState.transactionFieldsState
+            val title = transactionsFields.title.text.toString()
+            val amount = amountFormatter.parseAmountToFloat(
+                amountText = transactionsFields.amount.text,
+                amountSettings = dashboardState.amountSettings
+            )
+            val note = if (transactionsFields.note.text.isNotBlank()) {
+                transactionsFields.note.text.toString()
+            } else null
 
-        createTransactionState.transactionFieldsState.note.textAsFlow()
-            .onEach(::handleNoteInput)
-            .launchIn(viewModelScope)
+            val transaction = Transaction(
+                userId = it,
+                title = title,
+                amount = amount,
+                repeatType = createTransactionState.repeatingCategory.toDomain(),
+                transactionType = createTransactionState.expenseCategory.toDomain(),
+                note = note
+            )
+
+            viewModelScope.launch {
+                transactionRepository.upsertTransaction(transaction)
+            }
+        }
     }
 
     private fun setAmountSettings() {
@@ -80,19 +121,23 @@ class TransactionsSharedViewModel(
         }
     }
 
-    fun onEvent(event: CreateTransactionUiEvent) {
-        when (event) {
-            is TransactionModeSelected -> updateTransactionMode(event.transactionMode)
-            is SpendCategorySelected -> updateSpendCategory(event.spendCategory)
-            is RepeatingCategorySelected -> updateRepeatingCategory(event.repeatingCategory)
+    private fun observeTextFields() {
+        createTransactionState.transactionFieldsState.title.textAsFlow()
+            .onEach(::handleCounterpartyInput)
+            .launchIn(viewModelScope)
 
-            CreateButtonClicked -> TODO()
-            CreateTransactionUiEvent.CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
-        }
+        createTransactionState.transactionFieldsState.amount.textAsFlow()
+            .onEach(::handleAmountInput)
+            .launchIn(viewModelScope)
+
+        createTransactionState.transactionFieldsState.note.textAsFlow()
+            .onEach(::handleNoteInput)
+            .launchIn(viewModelScope)
     }
 
+
     private fun handleCounterpartyInput(newText: CharSequence) {
-        val counterpartyState = createTransactionState.transactionFieldsState.counterparty
+        val counterpartyState = createTransactionState.transactionFieldsState.title
 
         val filteredText = newText.filter { it.isLetter() }
         val limitedText = filteredText.take(MAX_COUNTERPARTY_LENGTH)
@@ -123,15 +168,6 @@ class TransactionsSharedViewModel(
         dashboardState = dashboardState.copy(
             isCreateTransactionOpen = !dashboardState.isCreateTransactionOpen
         )
-
-        // Update the amount according to the settings preferences
-        if (dashboardState.isCreateTransactionOpen) {
-            val currentText = createTransactionState.transactionFieldsState.amount.text
-            val decimalSeparator = dashboardState.amountSettings.decimalSeparator.separator
-            val cleanedText =
-                amountFormatter.removeOldThousandsSeparator(currentText, decimalSeparator)
-            handleAmountInput(cleanedText)
-        }
     }
 
     private fun updateTransactionMode(transactionMode: TransactionModeOptions) {
@@ -139,7 +175,7 @@ class TransactionsSharedViewModel(
     }
 
     private fun updateSpendCategory(spendCategory: ExpenseCategory) {
-        createTransactionState = createTransactionState.copy(spendCategory = spendCategory)
+        createTransactionState = createTransactionState.copy(expenseCategory = spendCategory)
     }
 
     private fun updateRepeatingCategory(repeatingCategory: RepeatingCategory) {

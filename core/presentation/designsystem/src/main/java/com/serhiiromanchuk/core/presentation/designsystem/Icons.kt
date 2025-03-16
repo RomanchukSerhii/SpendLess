@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -71,8 +70,7 @@ fun IncomeIcon(
     Box(
         modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(ExpenseIncomeColors.categoryIconBackground(isIncome = true))
-            .padding(12.dp),
+            .background(ExpenseIncomeColors.categoryIconBackground(isIncome = true)),
         contentAlignment = Alignment.Center
     ) {
         Text(

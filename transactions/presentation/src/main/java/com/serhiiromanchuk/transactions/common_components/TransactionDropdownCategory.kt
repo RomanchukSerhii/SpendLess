@@ -16,7 +16,6 @@ import com.serhiiromanchuk.core.presentation.designsystem.SavingIcon
 import com.serhiiromanchuk.core.presentation.designsystem.TransportationIcon
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.DropdownItem
 import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
-import com.serhiiromanchuk.transactions.domain.Expense
 import com.serhiiromanchuk.transactions.presentation.R
 
 
@@ -141,23 +140,6 @@ enum class ExpenseCategory(
                 modifier = modifier,
                 fontSize = fontSize
             )
-        }
-    };
-
-    companion object {
-        fun fromExpense(expense: Expense): ExpenseCategory {
-            return when (expense) {
-                Expense.HOME -> HOME
-                Expense.FOOD -> FOOD
-                Expense.ENTERTAINMENT -> ENTERTAINMENT
-                Expense.CLOTHING -> CLOTHING
-                Expense.HEALTH -> HEALTH
-                Expense.PERSONAL_CARE -> PERSONAL_CARE
-                Expense.TRANSPORTATION -> TRANSPORTATION
-                Expense.EDUCATION -> EDUCATION
-                Expense.SAVING -> SAVING
-                Expense.OTHER -> OTHER
-            }
         }
     }
 }

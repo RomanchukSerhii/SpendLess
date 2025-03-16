@@ -31,7 +31,7 @@ fun NavGraphBuilder.settingsGraph(navigationState: NavigationState) {
             )
 
             SettingsScreen(
-                onBackClick = { },
+                onBackClick = { navigationState.navigateToTransactions(username) },
                 onPreferencesClick = { navigationState.navigateTo(Screen.Preferences.route) },
                 onSecurityClick = { navigationState.navigateTo(Screen.Security.route) },
                 onLogoutClick = { }

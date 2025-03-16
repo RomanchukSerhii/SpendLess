@@ -8,5 +8,5 @@ import org.koin.dsl.module
 val transactionsSharedViewModelModule = module {
     single { AmountFormatter() }
 
-    viewModel { (username: String) -> TransactionsSharedViewModel(username, get(), get()) }
+    viewModel { (username: String) -> TransactionsSharedViewModel(username, get(), get(), get()) }
 }

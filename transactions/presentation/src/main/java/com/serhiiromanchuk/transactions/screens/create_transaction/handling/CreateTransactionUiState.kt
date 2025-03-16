@@ -8,14 +8,14 @@ import com.serhiiromanchuk.transactions.screens.create_transaction.components.Tr
 
 data class CreateTransactionUiState(
     val transactionMode: TransactionModeOptions = TransactionModeOptions.EXPENSE,
-    val spendCategory: ExpenseCategory = ExpenseCategory.OTHER,
+    val expenseCategory: ExpenseCategory = ExpenseCategory.OTHER,
     val repeatingCategory: RepeatingCategory = RepeatingCategory.NOT_REPEAT,
     val transactionFieldsState: TransactionFieldsState = TransactionFieldsState(),
     val expensesFormat: ExpensesFormat = ExpensesFormat.MINUS
 ) {
     val isCreateButtonEnabled: Boolean
         get() {
-            val hasCounterpartyMinLength = transactionFieldsState.counterparty.text.length >= MIN_COUNTERPARTY_LENGTH
+            val hasCounterpartyMinLength = transactionFieldsState.title.text.length >= MIN_COUNTERPARTY_LENGTH
             val isAmountNotBlank = transactionFieldsState.amount.text.isNotBlank()
             return isAmountNotBlank && hasCounterpartyMinLength
         }
@@ -26,7 +26,7 @@ data class CreateTransactionUiState(
         }
 
     data class TransactionFieldsState(
-        val counterparty: TextFieldState = TextFieldState(),
+        val title: TextFieldState = TextFieldState(),
         val amount: TextFieldState = TextFieldState(),
         val note: TextFieldState = TextFieldState(),
     )
