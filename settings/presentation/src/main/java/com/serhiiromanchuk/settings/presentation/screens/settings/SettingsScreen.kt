@@ -26,7 +26,8 @@ fun SettingsScreen(
                 title = stringResource(R.string.settings),
                 onBackClick = onBackClick
             )
-        }
+        },
+        onBackPressed = onBackClick
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp)

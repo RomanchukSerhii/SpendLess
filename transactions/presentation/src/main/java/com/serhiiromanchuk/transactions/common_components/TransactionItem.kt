@@ -34,10 +34,11 @@ import androidx.compose.ui.unit.sp
 import com.serhiiromanchuk.core.presentation.designsystem.IncomeIcon
 import com.serhiiromanchuk.core.presentation.designsystem.NotesIcon
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
-import com.serhiiromanchuk.transactions.domain.Expense
-import com.serhiiromanchuk.transactions.domain.Income
-import com.serhiiromanchuk.transactions.domain.Transaction
+import com.serhiiromanchuk.core.domain.entity.Expense
+import com.serhiiromanchuk.core.domain.entity.Income
+import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.transactions.presentation.R
+import com.serhiiromanchuk.transactions.utils.toUi
 
 @Composable
 fun TransactionItem(
@@ -132,9 +133,14 @@ private fun TransactionIcon(
         // Transaction icon
         val transactionType = transaction.transactionType
         when (transactionType) {
-            is Income -> IncomeIcon()
+            is Income -> IncomeIcon(
+                modifier = Modifier.size(44.dp)
+            )
             is Expense -> {
-                ExpenseCategory.fromExpense(transactionType).TextIcon(fontSize = 20.sp)
+                transactionType.toUi().TextIcon(
+                    modifier = Modifier.size(44.dp),
+                    fontSize = 20.sp
+                )
             }
         }
 
@@ -174,7 +180,7 @@ fun RowScope.TransactionInfo(
         val categoryName = when (val transactionType = transaction.transactionType) {
             is Income -> stringResource(R.string.income)
             is Expense -> {
-                val expenseCategory = ExpenseCategory.fromExpense(transactionType)
+                val expenseCategory = transactionType.toUi()
                 stringResource(expenseCategory.titleRes)
             }
         }

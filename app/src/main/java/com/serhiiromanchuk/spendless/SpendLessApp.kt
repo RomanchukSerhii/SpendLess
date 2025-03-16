@@ -7,7 +7,7 @@ import com.serhiiromanchuk.auth.presentation.di.authViewModelModule
 import com.serhiiromanchuk.core.database.di.databaseModule
 import com.serhiiromanchuk.settings.presentation.di.settingsViewModelModule
 import com.serhiiromanchuk.spendless.di.appModule
-import com.serhiiromanchuk.transactions.di.transactionsViewModelModule
+import com.serhiiromanchuk.transactions.di.transactionsSharedViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -30,7 +30,7 @@ class SpendLessApp : Application() {
                 authDataModule,
                 databaseModule,
                 settingsViewModelModule,
-                transactionsViewModelModule
+                transactionsSharedViewModelModule
             )
         }
     }

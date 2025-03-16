@@ -25,12 +25,12 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun OnboardingPrefScreenRoot(
     navigateBack: () -> Unit,
-    navigateToDashboard: () -> Unit,
+    navigateToTransactions: (username: String) -> Unit,
     viewModel: RegistrationSharedViewModel = koinViewModel()
 ) {
-    ObserveAsActions(viewModel.onboardingPrefAction) { actions ->
-        when (actions) {
-            is OnboardingPrefAction.NavigateToDashboard -> navigateToDashboard()
+    ObserveAsActions(viewModel.onboardingPrefAction) { action ->
+        when (action) {
+            is OnboardingPrefAction.NavigateToTransactions -> navigateToTransactions(action.username)
         }
     }
     OnboardingPrefScreen(

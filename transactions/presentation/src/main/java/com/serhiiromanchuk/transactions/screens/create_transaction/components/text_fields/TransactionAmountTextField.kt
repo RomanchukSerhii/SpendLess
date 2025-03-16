@@ -1,9 +1,16 @@
 package com.serhiiromanchuk.transactions.screens.create_transaction.components.text_fields
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.KeyboardActionHandler
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,61 +18,82 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.serhiiromanchuk.core.domain.entity.ExpensesFormat
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.transactions.presentation.R
 
 @Composable
 fun TransactionAmountTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
+    state: TextFieldState,
+    expensesFormat: ExpensesFormat,
     isExpense: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    onKeyboardAction: KeyboardActionHandler? = null,
 ) {
+    val prefixSign = when (expensesFormat) {
+        ExpensesFormat.MINUS -> "-"
+        ExpensesFormat.PARENTHESES -> "("
+    }
+
     val prefix = if (isExpense) {
-        stringResource(R.string.expense_sign)
+        stringResource(R.string.expense_sign, prefixSign)
     } else stringResource(R.string.income_sign)
 
-    val prefixColor = if (isExpense) {
+    val signsColor = if (isExpense) {
         MaterialTheme.colorScheme.error
     } else AppColors.Success
 
     BasicTextField(
-        value = value,
-        onValueChange = { newValue ->
-            if (newValue.matches(Regex("^[0-9,.]*$"))) {
-                onValueChange(newValue)
-            }
-        },
+        state = state,
         modifier = modifier.wrapContentWidth(),
         textStyle = MaterialTheme.typography.displayMedium.copy(
             color = MaterialTheme.colorScheme.onSurface
         ),
-        decorationBox = { innerTextField ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+        lineLimits = TextFieldLineLimits.SingleLine,
+        decorator = { innerBox ->
+            Box(
+                contentAlignment = Alignment.Center
             ) {
-                PrefixText(
-                    text = prefix,
-                    color = prefixColor
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    PrefixSign(
+                        sign = prefix,
+                        color = signsColor
+                    )
 
-                if (value.isEmpty()) {
-                    AmountPlaceholder()
-                } else innerTextField()
+                    Box(modifier = Modifier.width(IntrinsicSize.Min)) {
+                        AmountPlaceholder(state.text.toString())
+                        innerBox()
+                    }
+
+                    if (isExpense) {
+                        SuffixSign(
+                            expensesFormat = expensesFormat,
+                            color = signsColor
+                        )
+                    }
+                }
             }
-        }
+        },
+        keyboardOptions = keyboardOptions.copy(
+            keyboardType = KeyboardType.Number
+        ),
+        onKeyboardAction = onKeyboardAction
     )
 }
 
 @Composable
-private fun PrefixText(
-    text: String,
+private fun PrefixSign(
+    sign: String,
     color: Color,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = text,
+        text = sign,
         modifier = modifier.padding(end = 4.dp),
         style = MaterialTheme.typography.displayMedium,
         color = color
@@ -73,13 +101,35 @@ private fun PrefixText(
 }
 
 @Composable
-private fun AmountPlaceholder(
+private fun SuffixSign(
+    expensesFormat: ExpensesFormat,
+    color: Color,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = stringResource(R.string.amount_placeholder),
+        text = when (expensesFormat) {
+            ExpensesFormat.MINUS -> ""
+            ExpensesFormat.PARENTHESES -> stringResource(R.string.suffix_sign)
+        },
+        modifier = modifier.padding(start = 4.dp),
+        style = MaterialTheme.typography.displayMedium,
+        color = color
+    )
+}
+
+@Composable
+private fun AmountPlaceholder(
+    amount: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = amount.ifEmpty { stringResource(R.string.amount_placeholder) },
         modifier = modifier,
         style = MaterialTheme.typography.displayMedium,
-        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.6f)
+        color = if (amount.isEmpty()) {
+            MaterialTheme.colorScheme.outline.copy(alpha = 0.6f)
+        } else {
+            Color.Transparent
+        }
     )
 }

@@ -27,19 +27,19 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreenRoot(
-    navigateToDashboard: () -> Unit,
+    navigateToTransactions: (username: String) -> Unit,
     navigateToRegistration: () -> Unit,
     viewModel: LoginViewModel = koinViewModel()
 ) {
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
-    ObserveAsActions(viewModel.actions) { actions ->
-        when (actions) {
+    ObserveAsActions(viewModel.actions) { action ->
+        when (action) {
             RequestFocus -> focusRequester.requestFocus()
-            NavigateToDashboard -> {
+            is NavigateToTransactions -> {
                 focusManager.clearFocus()
-                navigateToDashboard()
+                navigateToTransactions(action.username)
             }
             NavigateToRegistration -> {
                 focusManager.clearFocus()

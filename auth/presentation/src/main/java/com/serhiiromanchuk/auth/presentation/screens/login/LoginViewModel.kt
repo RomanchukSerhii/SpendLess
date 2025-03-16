@@ -14,7 +14,6 @@ import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiEvent.UsernameTextChanged
 import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiState
 import com.serhiiromanchuk.core.domain.repository.UserRepository
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -54,15 +53,11 @@ class LoginViewModel(
 
         if (state.userValidationState.isValidUser) {
             viewModelScope.launch {
-                val username = state.username
-                val userDeferred = viewModelScope.async {
-                    userRepository.getUser(username = username)
-                }
-                val user = userDeferred.await()
+                val user = userRepository.getUser(username = state.username)
 
                 if (user != null) {
                     if (state.pin == user.pin) {
-                        sendAction(LoginAction.NavigateToDashboard)
+                        sendAction(LoginAction.NavigateToTransactions(state.username))
                     } else {
                         updateError(true)
                     }

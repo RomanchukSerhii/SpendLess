@@ -5,9 +5,7 @@ import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
 import com.serhiiromanchuk.transactions.screens.create_transaction.components.TransactionModeOptions
 
 sealed interface CreateTransactionUiEvent {
-    data class CounterpartyTextChanged(val text: String) : CreateTransactionUiEvent
-    data class AmountTextChanged(val text: String) : CreateTransactionUiEvent
-    data class NoteTextChanged(val text: String) : CreateTransactionUiEvent
+    data object CreateTransactionSheetToggled : CreateTransactionUiEvent
     data class TransactionModeSelected(val transactionMode: TransactionModeOptions) : CreateTransactionUiEvent
     data class SpendCategorySelected(val spendCategory: ExpenseCategory) : CreateTransactionUiEvent
     data class RepeatingCategorySelected(val repeatingCategory: RepeatingCategory) : CreateTransactionUiEvent

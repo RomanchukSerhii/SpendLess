@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -35,7 +36,9 @@ fun AccountInfo(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         AccountBalance(accountInfoState.balance)
+
         PopularCategory(accountInfoState.popularCategory)
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -47,6 +50,7 @@ fun AccountInfo(
                 amount = accountInfoState.largestTransactionAmount,
                 modifier = Modifier.weight(1f)
             )
+
             PreviousWeekExpense(accountInfoState.previousWeekExpense)
         }
     }
@@ -93,7 +97,10 @@ private fun PopularCategory(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            popularCategory.TextIcon(fontSize = 30.sp)
+            popularCategory.TextIcon(
+                modifier = Modifier.size(56.dp),
+                fontSize = 30.sp
+            )
 
             Column {
                 Text(

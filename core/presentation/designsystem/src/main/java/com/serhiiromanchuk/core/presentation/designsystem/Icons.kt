@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -71,8 +70,7 @@ fun IncomeIcon(
     Box(
         modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(ExpenseIncomeColors.categoryIconBackground(isIncome = true))
-            .padding(12.dp),
+            .background(ExpenseIncomeColors.categoryIconBackground(isIncome = true)),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -84,9 +82,12 @@ fun IncomeIcon(
 
 @Composable
 fun HomeIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             text = String(Character.toChars(0x1F3E0)),
             fontSize = fontSize
@@ -96,9 +97,12 @@ fun HomeIcon(
 
 @Composable
 fun FoodIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             text = String(Character.toChars(0x1F355)),
             fontSize = fontSize
@@ -108,9 +112,12 @@ fun FoodIcon(
 
 @Composable
 fun EntertainmentIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             text = String(Character.toChars(0x1F4BB)),
             fontSize = fontSize
@@ -120,9 +127,12 @@ fun EntertainmentIcon(
 
 @Composable
 fun ClothingIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             text = String(Character.toChars(0x1F454)),
             fontSize = fontSize
@@ -132,9 +142,12 @@ fun ClothingIcon(
 
 @Composable
 fun HealthIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             text = String(Character.toChars(0x2764)),
             fontSize = fontSize
@@ -144,9 +157,12 @@ fun HealthIcon(
 
 @Composable
 fun PersonalCareIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             text = String(Character.toChars(0x1F6C1)),
             fontSize = fontSize
@@ -156,9 +172,12 @@ fun PersonalCareIcon(
 
 @Composable
 fun TransportationIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             modifier = Modifier.offset(y = (-4).dp),
             text = String(Character.toChars(0x1F697)),
@@ -169,9 +188,12 @@ fun TransportationIcon(
 
 @Composable
 fun EducationIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             text = String(Character.toChars(0x1F393)),
             fontSize = fontSize
@@ -181,9 +203,12 @@ fun EducationIcon(
 
 @Composable
 fun SavingIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             text = String(Character.toChars(0x1F48E)),
             fontSize = fontSize
@@ -193,9 +218,12 @@ fun SavingIcon(
 
 @Composable
 fun OtherIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    ExpenseIconBackground {
+    ExpenseIconBackground(
+        modifier = modifier
+    ) {
         Text(
             text = String(Character.toChars(0x2699)),
             fontSize = fontSize
@@ -205,6 +233,7 @@ fun OtherIcon(
 
 @Composable
 fun MoneyIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
     Text(
@@ -215,10 +244,11 @@ fun MoneyIcon(
 
 @Composable
 fun RepeatIcon(
+    modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
     Box(
-        Modifier
+        modifier
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.tertiaryContainer)
             .size(40.dp),
@@ -233,13 +263,13 @@ fun RepeatIcon(
 
 @Composable
 private fun ExpenseIconBackground(
+    modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
     Box(
-        Modifier
+        modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(ExpenseIncomeColors.categoryIconBackground(isIncome = false))
-            .padding(12.dp),
+            .background(ExpenseIncomeColors.categoryIconBackground(isIncome = false)),
         contentAlignment = Alignment.Center
     ) {
         content()
