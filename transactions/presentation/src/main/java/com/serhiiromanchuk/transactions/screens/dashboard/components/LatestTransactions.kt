@@ -3,6 +3,7 @@ package com.serhiiromanchuk.transactions.screens.dashboard.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -26,17 +27,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.presentation.designsystem.MoneyIcon
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextButton
 import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
 import com.serhiiromanchuk.transactions.common_components.TransactionItem
-import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.transactions.presentation.R
+import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import java.time.Instant
 
 @Composable
 fun LatestTransactions(
     latestTransactions: Map<Instant, List<Transaction>>,
+    amountSettings: DashboardUiState.AmountSettings,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -52,6 +55,7 @@ fun LatestTransactions(
         } else {
             LatestTransactionsList(
                 transactions = latestTransactions,
+                amountSettings = amountSettings,
                 modifier = Modifier.padding(top = 12.dp)
             )
         }
@@ -86,15 +90,18 @@ private fun EmptyTransactions() {
 @Composable
 private fun LatestTransactionsList(
     transactions: Map<Instant, List<Transaction>>,
+    amountSettings: DashboardUiState.AmountSettings,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         TransactionsListHeader(onShowAllClick = {})
+
         LazyColumn(
             modifier = Modifier.padding(horizontal = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             transactions.forEach { (instant, transactions) ->
                 // DataHeader
@@ -110,10 +117,9 @@ private fun LatestTransactionsList(
                 }
 
                 items(transactions, key = { it.id }) { transaction ->
-                    TransactionItem(transaction)
+                    TransactionItem(transaction, amountSettings)
                 }
             }
-
         }
     }
 }

@@ -1,13 +1,16 @@
 package com.serhiiromanchuk.transactions.screens
 
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.domain.repository.TransactionRepository
 import com.serhiiromanchuk.core.domain.repository.UserRepository
+import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
 import com.serhiiromanchuk.core.presentation.ui.mappers.toUi
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
@@ -19,11 +22,11 @@ import com.serhiiromanchuk.transactions.screens.create_transaction.handling.Crea
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.SpendCategorySelected
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.TransactionModeSelected
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiState
-import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiState.TransactionFieldsState
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent.CreateTransactionSheetToggled
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import com.serhiiromanchuk.transactions.utils.AmountFormatter
+import com.serhiiromanchuk.transactions.utils.TransactionAnalytics
 import com.serhiiromanchuk.transactions.utils.toDomain
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -33,8 +36,7 @@ import kotlinx.coroutines.launch
 class TransactionsSharedViewModel(
     private val username: String,
     private val userRepository: UserRepository,
-    private val transactionRepository: TransactionRepository,
-    private val amountFormatter: AmountFormatter
+    private val transactionRepository: TransactionRepository
 ) : ViewModel() {
     var dashboardState by mutableStateOf(DashboardUiState())
         private set
@@ -49,7 +51,22 @@ class TransactionsSharedViewModel(
             userId = userRepository.getUser(username)?.id
             userId?.let { id ->
                 transactionRepository.getTransactionsByUser(id).collectLatest { transactions ->
-                    // TODO
+                    if (transactions.isNotEmpty()) {
+                        val latestTransactions = TransactionAnalytics
+                            .getLatestTransactions(transactions)
+                            .groupBy { InstantFormatter.convertInstantToLocalDate(it.transactionDate) }
+
+                        val accountInfoState = TransactionAnalytics.getAccountInfoState(
+                            transactions = transactions,
+                            amountSettings = dashboardState.amountSettings
+                        )
+
+                        dashboardState = dashboardState.copy(
+                            latestTransactions = latestTransactions,
+                            accountInfoState = accountInfoState
+                        )
+                    }
+
                 }
             }
         }
@@ -78,27 +95,47 @@ class TransactionsSharedViewModel(
         userId?.let {
             val transactionsFields = createTransactionState.transactionFieldsState
             val title = transactionsFields.title.text.toString()
-            val amount = amountFormatter.parseAmountToFloat(
+            val amount = AmountFormatter.parseAmountToFloat(
                 amountText = transactionsFields.amount.text,
-                amountSettings = dashboardState.amountSettings
+                amountSettings = dashboardState.amountSettings,
+                isExpense = createTransactionState.isExpense
             )
             val note = if (transactionsFields.note.text.isNotBlank()) {
                 transactionsFields.note.text.toString()
             } else null
+
+            val transactionType = if (createTransactionState.isExpense) {
+                createTransactionState.expenseCategory.toDomain()
+            } else Income
 
             val transaction = Transaction(
                 userId = it,
                 title = title,
                 amount = amount,
                 repeatType = createTransactionState.repeatingCategory.toDomain(),
-                transactionType = createTransactionState.expenseCategory.toDomain(),
+                transactionType = transactionType,
                 note = note
             )
 
             viewModelScope.launch {
                 transactionRepository.upsertTransaction(transaction)
+                resetCreateTransactionState()
+                toggleCreateTransactionSheet()
             }
         }
+    }
+
+    private fun resetCreateTransactionState() {
+        val transactionFieldsState = createTransactionState.transactionFieldsState
+        transactionFieldsState.amount.clearText()
+        transactionFieldsState.amount.clearText()
+        transactionFieldsState.note.clearText()
+
+        createTransactionState = createTransactionState.copy(
+            transactionMode = TransactionModeOptions.EXPENSE,
+            expenseCategory = ExpenseCategory.OTHER,
+            repeatingCategory = RepeatingCategory.NOT_REPEAT,
+        )
     }
 
     private fun setAmountSettings() {
@@ -107,6 +144,7 @@ class TransactionsSharedViewModel(
                 user?.let {
                     dashboardState = dashboardState.copy(
                         amountSettings = dashboardState.amountSettings.copy(
+                            expensesFormat = user.settings.expensesFormat.toUi(),
                             currency = user.settings.currency.toUi(),
                             decimalSeparator = user.settings.decimalSeparator.toUi(),
                             thousandsSeparator = user.settings.thousandsSeparator.toUi()
@@ -152,7 +190,7 @@ class TransactionsSharedViewModel(
     private fun handleAmountInput(newText: CharSequence) {
         val amountState = createTransactionState.transactionFieldsState.amount
         val formatedAmount =
-            amountFormatter.getFormatedAmount(newText, dashboardState.amountSettings)
+            AmountFormatter.getFormatedAmount(newText, dashboardState.amountSettings)
 
         amountState.edit { replace(0, amountState.text.length, formatedAmount) }
     }
@@ -180,13 +218,6 @@ class TransactionsSharedViewModel(
 
     private fun updateRepeatingCategory(repeatingCategory: RepeatingCategory) {
         createTransactionState = createTransactionState.copy(repeatingCategory = repeatingCategory)
-    }
-
-    private fun updateTransactionFieldsState(
-        update: (TransactionFieldsState) -> TransactionFieldsState
-    ) {
-        createTransactionState =
-            createTransactionState.copy(transactionFieldsState = update(createTransactionState.transactionFieldsState))
     }
 
     companion object {

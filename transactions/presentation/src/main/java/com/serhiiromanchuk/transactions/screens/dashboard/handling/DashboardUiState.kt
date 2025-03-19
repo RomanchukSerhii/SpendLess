@@ -8,25 +8,30 @@ import com.serhiiromanchuk.core.domain.entity.Expense
 import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.RepeatType
 import com.serhiiromanchuk.core.domain.entity.Transaction
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
 import java.time.Instant
 
 data class DashboardUiState(
-    val transactions: Map<Instant, List<Transaction>> = createTestTransactions(),
+    val latestTransactions: Map<Instant, List<Transaction>> = emptyMap(),
     val isCreateTransactionOpen: Boolean = false,
     val accountInfoState: AccountInfoState = AccountInfoState(),
     val amountSettings: AmountSettings = AmountSettings(),
 ) {
     data class AccountInfoState(
-        val balance: String = "$10,382.45",
-        val popularCategory: ExpenseCategory = ExpenseCategory.FOOD,
-        val largestTransactionTitle: String = "Adobe Yearly",
-        val largestTransactionAmount: String = "-$59.99",
-        val largestTransactionDate: String = "Jan 7, 2025",
-        val previousWeekExpense: String = "-$762.20"
+        val balance: String = "\$0",
+        val popularCategory: ExpenseCategory? = null,
+        val largestTransaction: LargestTransaction? = null,
+        val previousWeekExpenseAmount: String = "\$0"
+    )
+
+    data class LargestTransaction(
+        val title: String = "",
+        val amount: String = "",
+        val date: String = "",
     )
 
     data class AmountSettings(
-        val isExpense: Boolean = true,
+        val expensesFormat: ExpensesFormatUi = ExpensesFormatUi.MINUS,
         val currency: CurrencyCategoryItem = CurrencyCategoryItem.USD,
         val decimalSeparator: DecimalSeparatorUi = DecimalSeparatorUi.POINT,
         val thousandsSeparator: ThousandsSeparatorUi = ThousandsSeparatorUi.COMMA,

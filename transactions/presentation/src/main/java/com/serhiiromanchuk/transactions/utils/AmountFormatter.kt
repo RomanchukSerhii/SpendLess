@@ -4,11 +4,16 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_se
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 
-class AmountFormatter() {
+object AmountFormatter {
+
+    private const val MAX_AMOUNT_INTEGER_LENGTH = 9
+    private const val MAX_NUMBER_OF_SEPARATORS = 2
+    private const val MAX_DECIMAL_LENGTH = 2
 
     fun getFormatedAmount(
         newText: CharSequence,
-        amountSettings: DashboardUiState.AmountSettings
+        amountSettings: DashboardUiState.AmountSettings,
+        enforceTwoDecimalPlaces: Boolean = false
     ): String {
         val decimalSeparator = amountSettings.decimalSeparator.separator
         val thousandSeparator = amountSettings.thousandsSeparator.separator
@@ -27,7 +32,13 @@ class AmountFormatter() {
         // If there is a fractional part, limit it to two digits
         var resultText = integerPart
         if (parts.size > 1) {
-            resultText += decimalSeparator + parts[1].take(MAX_DECIMAL_LENGTH)
+            val fractionalPart = when {
+                enforceTwoDecimalPlaces && parts[1].length == 1 -> parts[1] + "0"
+                enforceTwoDecimalPlaces && parts[1].isEmpty() -> "00"
+                else -> parts[1].take(MAX_DECIMAL_LENGTH)
+            }
+
+            resultText += decimalSeparator + fractionalPart
         }
 
         return resultText
@@ -35,15 +46,18 @@ class AmountFormatter() {
 
     fun parseAmountToFloat(
         amountText: CharSequence,
-        amountSettings: DashboardUiState.AmountSettings
+        amountSettings: DashboardUiState.AmountSettings,
+        isExpense: Boolean
     ): Float {
         val decimalSeparator = amountSettings.decimalSeparator.separator
         val cleanedText = amountText.toString()
             .replace(amountSettings.thousandsSeparator.separator, "")
             .replace(decimalSeparator, ".")
 
-        return cleanedText.toFloatOrNull()
+        val amount =cleanedText.toFloatOrNull()
             ?: throw NumberFormatException("Invalid amount format: $amountText")
+
+        return if (isExpense) -amount else amount
     }
 
     fun removeOldThousandsSeparator(text: CharSequence, decimalSeparator: String): CharSequence {
@@ -105,11 +119,5 @@ class AmountFormatter() {
             .replace(" ", "")
             .replace(".", "")
             .replace(",", "")
-    }
-
-    companion object {
-        private const val MAX_AMOUNT_INTEGER_LENGTH = 9
-        private const val MAX_NUMBER_OF_SEPARATORS = 2
-        private const val MAX_DECIMAL_LENGTH = 2
     }
 }
