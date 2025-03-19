@@ -3,9 +3,13 @@
 package com.serhiiromanchuk.transactions.screens.dashboard.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -18,12 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.presentation.R
+import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState.AccountInfoState
 
 @Composable
@@ -35,23 +41,30 @@ fun AccountInfo(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        AccountBalance(accountInfoState.balance)
+        Box(
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            AccountBalance(accountInfoState.balance)
+        }
 
-        PopularCategory(accountInfoState.popularCategory)
+        accountInfoState.popularCategory?.let {
+            PopularCategory(it)
+        }
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .height(72.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             LargestTransaction(
-                title = accountInfoState.largestTransactionTitle,
-                date = accountInfoState.largestTransactionDate,
-                amount = accountInfoState.largestTransactionAmount,
+                largestTransaction = accountInfoState.largestTransaction,
                 modifier = Modifier.weight(1f)
             )
 
-            PreviousWeekExpense(accountInfoState.previousWeekExpense)
+            PreviousWeekExpense(accountInfoState.previousWeekExpenseAmount)
         }
     }
 }
@@ -87,7 +100,9 @@ private fun PopularCategory(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .height(72.dp)
+            .fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         contentColor = MaterialTheme.colorScheme.onPrimary,
         color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f)
@@ -120,59 +135,79 @@ private fun PopularCategory(
 
 @Composable
 private fun LargestTransaction(
-    title: String,
-    amount: String,
-    date: String,
+    largestTransaction: DashboardUiState.LargestTransaction?,
     modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = modifier,
+        modifier = modifier.fillMaxHeight(),
         shape = RoundedCornerShape(16.dp),
         contentColor = MaterialTheme.colorScheme.onSurface,
         color = AppColors.PrimaryFixed
     ) {
-        Row(
-            modifier = Modifier.padding(vertical = 14.dp, horizontal = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            // Transaction title
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
+            if (largestTransaction != null) {
+                LargestTransactionInfo(largestTransaction)
+            } else {
                 Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = stringResource(R.string.largest_transaction),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                    )
+                    text = "Your largest transaction will appear here",
+                    modifier = Modifier.padding(12.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center
                 )
             }
+        }
+    }
+}
 
-            // Transaction amount
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
-                Text(
-                    text = amount,
-                    style = MaterialTheme.typography.titleLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+@Composable
+private fun LargestTransactionInfo(
+    largestTransaction: DashboardUiState.LargestTransaction,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        // Transaction title
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Text(
+                text = largestTransaction.title,
+                style = MaterialTheme.typography.titleLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = stringResource(R.string.largest_transaction),
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                 )
-                Text(
-                    text = date,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                    )
+            )
+        }
+
+        // Transaction amount
+        Column(
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Text(
+                text = largestTransaction.amount,
+                style = MaterialTheme.typography.titleLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = largestTransaction.date,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                 )
-            }
+            )
         }
     }
 }
@@ -183,14 +218,19 @@ private fun PreviousWeekExpense(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = modifier.width(132.dp),
+        modifier = modifier
+            .fillMaxHeight()
+            .width(132.dp),
         shape = RoundedCornerShape(16.dp),
         contentColor = MaterialTheme.colorScheme.onSurface,
         color = AppColors.SecondaryFixed
     ) {
         Column(
-            modifier = modifier.padding(vertical = 14.dp, horizontal = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
+            modifier = modifier.fillMaxHeight().padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(
+                space = 2.dp,
+                alignment = Alignment.CenterVertically
+            )
         ) {
             Text(
                 text = amount,
@@ -204,5 +244,6 @@ private fun PreviousWeekExpense(
                 )
             )
         }
+
     }
 }

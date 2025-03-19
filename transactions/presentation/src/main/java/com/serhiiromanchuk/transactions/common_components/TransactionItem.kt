@@ -37,12 +37,16 @@ import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.domain.entity.Expense
 import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.Transaction
+import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
 import com.serhiiromanchuk.transactions.presentation.R
+import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
+import com.serhiiromanchuk.transactions.utils.AmountFormatter
 import com.serhiiromanchuk.transactions.utils.toUi
 
 @Composable
 fun TransactionItem(
     transaction: Transaction,
+    amountSettings: DashboardUiState.AmountSettings,
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
@@ -80,6 +84,12 @@ fun TransactionItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(horizontalSpace)
             ) {
+                val formattedAmount = AmountFormatter.getFormatedAmount(
+                    newText = transaction.amount.toString(),
+                    amountSettings = amountSettings,
+                    enforceTwoDecimalPlaces = true
+                )
+
                 TransactionIcon(
                     transaction = transaction,
                     modifier = Modifier
@@ -94,9 +104,19 @@ fun TransactionItem(
 
                 // Transaction amount
                 Text(
-                    text = transaction.amount.toString(),
+                    text = when (transaction.transactionType) {
+                        is Expense -> when (amountSettings.expensesFormat) {
+                            ExpensesFormatUi.MINUS -> "-\$$formattedAmount"
+                            ExpensesFormatUi.PARENTHESES -> "(\$$formattedAmount)"
+                        }
+                        is Income -> "\$$formattedAmount"
+                    },
                     modifier = Modifier.padding(end = 4.dp),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    color = when (transaction.transactionType) {
+                        is Expense -> MaterialTheme.colorScheme.onSurface
+                        is Income -> AppColors.Success
+                    }
                 )
             }
 
@@ -136,6 +156,7 @@ private fun TransactionIcon(
             is Income -> IncomeIcon(
                 modifier = Modifier.size(44.dp)
             )
+
             is Expense -> {
                 transactionType.toUi().TextIcon(
                     modifier = Modifier.size(44.dp),
@@ -155,7 +176,8 @@ private fun TransactionIcon(
                     is Income -> AppColors.SecondaryFixedDim
                     is Expense -> MaterialTheme.colorScheme.primaryContainer
                 },
-                color = AppColors.SurfContainerLowest
+                color = AppColors.SurfContainerLowest,
+                shadowElevation = 1.dp
             ) {
                 Icon(
                     modifier = Modifier

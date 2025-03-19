@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppFAB
@@ -18,6 +19,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContent
 import com.serhiiromanchuk.core.presentation.designsystem.components.DashboardTopBar
 import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
+import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.transactions.screens.TransactionsSharedViewModel
 import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionBottomSheet
 import com.serhiiromanchuk.transactions.screens.dashboard.components.AccountInfo
@@ -84,16 +86,29 @@ private fun DashboardScreen(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+
                 AccountInfo(
                     accountInfoState = state.accountInfoState,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 16.dp)
                 )
 
                 LatestTransactions(
-                    latestTransactions = state.transactions
+                    modifier = Modifier.weight(1.4f),
+                    latestTransactions = state.latestTransactions,
+                    amountSettings = state.amountSettings
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun DashboardScreenPreview() {
+    SpendLessTheme {
+        AccountInfo(DashboardUiState.AccountInfoState())
     }
 }
 

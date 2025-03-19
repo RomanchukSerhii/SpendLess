@@ -7,7 +7,7 @@ import com.serhiiromanchuk.core.domain.entity.RepeatType
 import com.serhiiromanchuk.core.domain.entity.TransactionType
 
 object TransactionConverter {
-    private const val INCOME_TYPE = "INCOME"
+    private const val INCOME_TYPE = "Income"
 
     @TypeConverter
     fun fromRepeatType(value: RepeatType): String = value.name
