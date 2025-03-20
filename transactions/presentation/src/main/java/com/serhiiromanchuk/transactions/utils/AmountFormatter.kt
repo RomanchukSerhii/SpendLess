@@ -2,7 +2,7 @@ package com.serhiiromanchuk.transactions.utils
 
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
-import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
+import com.serhiiromanchuk.transactions.common_components.AmountSettings
 
 object AmountFormatter {
 
@@ -12,7 +12,7 @@ object AmountFormatter {
 
     fun getFormatedAmount(
         newText: CharSequence,
-        amountSettings: DashboardUiState.AmountSettings,
+        amountSettings: AmountSettings,
         enforceTwoDecimalPlaces: Boolean = false
     ): String {
         val decimalSeparator = amountSettings.decimalSeparator.separator
@@ -46,7 +46,7 @@ object AmountFormatter {
 
     fun parseAmountToFloat(
         amountText: CharSequence,
-        amountSettings: DashboardUiState.AmountSettings,
+        amountSettings: AmountSettings,
         isExpense: Boolean
     ): Float {
         val decimalSeparator = amountSettings.decimalSeparator.separator

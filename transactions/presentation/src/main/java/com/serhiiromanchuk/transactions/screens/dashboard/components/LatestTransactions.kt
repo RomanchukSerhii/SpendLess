@@ -3,7 +3,6 @@ package com.serhiiromanchuk.transactions.screens.dashboard.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -24,22 +21,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.presentation.designsystem.MoneyIcon
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextButton
-import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
-import com.serhiiromanchuk.transactions.common_components.TransactionItem
+import com.serhiiromanchuk.transactions.common_components.AmountSettings
+import com.serhiiromanchuk.transactions.common_components.TransactionsList
 import com.serhiiromanchuk.transactions.presentation.R
-import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import java.time.Instant
 
 @Composable
 fun LatestTransactions(
     latestTransactions: Map<Instant, List<Transaction>>,
-    amountSettings: DashboardUiState.AmountSettings,
+    amountSettings: AmountSettings,
+    onShowAllClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -53,11 +49,17 @@ fun LatestTransactions(
         if (latestTransactions.isEmpty()) {
             EmptyTransactions()
         } else {
-            LatestTransactionsList(
-                transactions = latestTransactions,
-                amountSettings = amountSettings,
-                modifier = Modifier.padding(top = 12.dp)
-            )
+            Column(
+                modifier = modifier.fillMaxSize().padding(top = 12.dp)
+            ) {
+                TransactionsListHeader(onShowAllClick = onShowAllClick)
+
+                TransactionsList(
+                    transactions = latestTransactions,
+                    amountSettings = amountSettings,
+                    modifier = Modifier.padding(horizontal = 12.dp)
+                )
+            }
         }
     }
 }
@@ -88,44 +90,7 @@ private fun EmptyTransactions() {
 }
 
 @Composable
-private fun LatestTransactionsList(
-    transactions: Map<Instant, List<Transaction>>,
-    amountSettings: DashboardUiState.AmountSettings,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-        TransactionsListHeader(onShowAllClick = {})
-
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
-        ) {
-            transactions.forEach { (instant, transactions) ->
-                // DataHeader
-                item {
-                    Text(
-                        modifier = Modifier.padding(horizontal = 4.dp).padding(top = 8.dp, bottom = 4.dp),
-                        text = InstantFormatter.formatToRelativeDay(instant).asString(),
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                        ),
-                    )
-                }
-
-                items(transactions, key = { it.id }) { transaction ->
-                    TransactionItem(transaction, amountSettings)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun TransactionsListHeader(
+private fun TransactionsListHeader(
     onShowAllClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -147,3 +112,4 @@ fun TransactionsListHeader(
         )
     }
 }
+

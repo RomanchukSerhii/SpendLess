@@ -4,6 +4,7 @@ import com.serhiiromanchuk.core.domain.entity.Expense
 import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
 import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
+import com.serhiiromanchuk.transactions.common_components.AmountSettings
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import kotlinx.coroutines.async
@@ -15,7 +16,7 @@ object TransactionAnalytics {
 
     suspend fun getAccountInfoState(
         transactions: List<Transaction>,
-        amountSettings: DashboardUiState.AmountSettings
+        amountSettings: AmountSettings
     ): DashboardUiState.AccountInfoState = coroutineScope {
         val balanceDeferred =
             async { formatAmount(getAccountBalance(transactions), amountSettings) }
@@ -122,7 +123,7 @@ object TransactionAnalytics {
 
     private fun formatAmount(
         amount: Float,
-        amountSettings: DashboardUiState.AmountSettings
+        amountSettings: AmountSettings
     ): String {
         val formattedAmount = AmountFormatter.getFormatedAmount(
             newText = amount.toString(),
@@ -141,13 +142,3 @@ object TransactionAnalytics {
         require(transactions.isNotEmpty()) { "Transactions list is empty or null!" }
     }
 }
-
-data class TransactionAnalyticsState(
-    val accountBalance: Float,
-    val mostPopularCategory: String,
-    val largestTransactionAmount: Float,
-    val largestTransactionName: String,
-    val largestTransactionDate: Long,
-    val previousWeekExpenseAmount: Float,
-    val latestTransactions: List<Transaction>
-)

@@ -7,12 +7,15 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,25 +31,58 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.serhiiromanchuk.core.presentation.designsystem.IncomeIcon
-import com.serhiiromanchuk.core.presentation.designsystem.NotesIcon
-import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.domain.entity.Expense
 import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.Transaction
+import com.serhiiromanchuk.core.presentation.designsystem.IncomeIcon
+import com.serhiiromanchuk.core.presentation.designsystem.NotesIcon
 import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
+import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
+import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
 import com.serhiiromanchuk.transactions.presentation.R
-import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import com.serhiiromanchuk.transactions.utils.AmountFormatter
 import com.serhiiromanchuk.transactions.utils.toUi
+import java.time.Instant
 
 @Composable
-fun TransactionItem(
+fun TransactionsList(
+    transactions: Map<Instant, List<Transaction>>,
+    amountSettings: AmountSettings,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        contentPadding = PaddingValues(bottom = 16.dp)
+    ) {
+        transactions.forEach { (instant, transactions) ->
+            // DataHeader
+            item {
+                Text(
+                    modifier = Modifier.padding(horizontal = 4.dp).padding(top = 8.dp, bottom = 4.dp),
+                    text = InstantFormatter.formatToRelativeDay(instant).asString(),
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    ),
+                )
+            }
+
+            items(transactions, key = { it.id }) { transaction ->
+                TransactionItem(transaction, amountSettings)
+            }
+        }
+    }
+}
+
+@Composable
+private fun TransactionItem(
     transaction: Transaction,
-    amountSettings: DashboardUiState.AmountSettings,
+    amountSettings: AmountSettings,
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current

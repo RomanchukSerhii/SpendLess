@@ -8,6 +8,7 @@ import com.serhiiromanchuk.spendless.navigation.routes.Feature
 import com.serhiiromanchuk.spendless.navigation.routes.Screen
 import com.serhiiromanchuk.spendless.navigation.sharedViewModel
 import com.serhiiromanchuk.transactions.screens.TransactionsSharedViewModel
+import com.serhiiromanchuk.transactions.screens.all_transactions.AllTransactionsScreenRoot
 import com.serhiiromanchuk.transactions.screens.dashboard.DashboardScreenRoot
 
 fun NavGraphBuilder.transactionsGraph(navigationState: NavigationState) {
@@ -30,13 +31,24 @@ fun NavGraphBuilder.transactionsGraph(navigationState: NavigationState) {
 
             DashboardScreenRoot(
                 onSettingsClick = { navigationState.navigateToSettings(username) },
-                viewModel = transactionsSharedViewModel
+                viewModel = transactionsSharedViewModel,
+                onShowAllClick = { navigationState.navigateTo(Screen.AllTransactions.route)}
             )
         }
+
         composable(
             route = Screen.AllTransactions.route
-        ) {
+        ) { entry ->
 
+            val transactionsSharedViewModel =
+                entry.sharedViewModel<TransactionsSharedViewModel>(
+                    navigationState.navController
+                )
+
+            AllTransactionsScreenRoot(
+                onBackClick = { navigationState.popBackStack() },
+                viewModel = transactionsSharedViewModel
+            )
         }
     }
 }
