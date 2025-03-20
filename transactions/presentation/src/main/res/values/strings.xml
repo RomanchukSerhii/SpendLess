@@ -36,4 +36,5 @@
     <string name="weekly">"Weekly on %s"</string>
     <string name="monthly">Monthly on the %sth</string>
     <string name="yearly">Yearly on the %sth</string>
+    <string name="all_transactions">All Transactions</string>
 </resources>

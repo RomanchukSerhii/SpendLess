@@ -22,7 +22,8 @@ fun AppFAB(
 ) {
     FloatingActionButton(
         onClick = onClick,
-        modifier = modifier.size(64.dp),
+        modifier = modifier
+            .size(64.dp),
         shape = RoundedCornerShape(20.dp),
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
@@ -35,7 +36,7 @@ fun AppFAB(
     }
 }
 
-@Preview(apiLevel = 34)
+@Preview()
 @Composable
 fun PreviewSpendLessFAB() {
     SpendLessTheme {

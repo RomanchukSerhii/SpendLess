@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.Transaction
+import com.serhiiromanchuk.core.domain.entity.User
 import com.serhiiromanchuk.core.domain.repository.TransactionRepository
 import com.serhiiromanchuk.core.domain.repository.UserRepository
 import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
@@ -15,6 +16,8 @@ import com.serhiiromanchuk.core.presentation.ui.mappers.toUi
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
+import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiState
+import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiEvent
 import com.serhiiromanchuk.transactions.screens.create_transaction.components.TransactionModeOptions
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.CreateButtonClicked
@@ -44,33 +47,13 @@ class TransactionsSharedViewModel(
     var createTransactionState by mutableStateOf(CreateTransactionUiState())
         private set
 
+    var allTransactionsState by mutableStateOf(AllTransactionsUiState())
+        private set
+
     private var userId: Long? = null
 
     init {
-        viewModelScope.launch {
-            userId = userRepository.getUser(username)?.id
-            userId?.let { id ->
-                transactionRepository.getTransactionsByUser(id).collectLatest { transactions ->
-                    if (transactions.isNotEmpty()) {
-                        val latestTransactions = TransactionAnalytics
-                            .getLatestTransactions(transactions)
-                            .groupBy { InstantFormatter.convertInstantToLocalDate(it.transactionDate) }
-
-                        val accountInfoState = TransactionAnalytics.getAccountInfoState(
-                            transactions = transactions,
-                            amountSettings = dashboardState.amountSettings
-                        )
-
-                        dashboardState = dashboardState.copy(
-                            latestTransactions = latestTransactions,
-                            accountInfoState = accountInfoState
-                        )
-                    }
-
-                }
-            }
-        }
-        setAmountSettings()
+        setDashboardInfo()
         observeTextFields()
     }
 
@@ -88,6 +71,65 @@ class TransactionsSharedViewModel(
 
             CreateButtonClicked -> createTransaction()
             CreateTransactionUiEvent.CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
+        }
+    }
+
+    fun onEvent(event: AllTransactionsUiEvent) {
+        when (event) {
+            AllTransactionsUiEvent.CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
+            AllTransactionsUiEvent.ExportTransactionsSheetToggled -> TODO()
+        }
+    }
+
+    private fun setDashboardInfo() {
+        viewModelScope.launch {
+            userRepository.getFlowUser(username = username).collectLatest { user ->
+                user?.let {
+                    setAmountSettings(user)
+                    setTransactionsAnalytics(user.id)
+                }
+            }
+        }
+    }
+
+    private fun setAmountSettings(user: User) {
+        dashboardState = dashboardState.copy(
+            amountSettings = dashboardState.amountSettings.copy(
+                expensesFormat = user.settings.expensesFormat.toUi(),
+                currency = user.settings.currency.toUi(),
+                decimalSeparator = user.settings.decimalSeparator.toUi(),
+                thousandsSeparator = user.settings.thousandsSeparator.toUi()
+            )
+        )
+
+        createTransactionState = createTransactionState.copy(
+            expensesFormat = user.settings.expensesFormat
+        )
+    }
+
+    private suspend fun setTransactionsAnalytics(userId: Long) {
+        transactionRepository.getTransactionsByUser(userId).collectLatest { transactions ->
+            if (transactions.isNotEmpty()) {
+                val latestTransactions = TransactionAnalytics
+                    .getLatestTransactions(transactions)
+                    .groupBy { InstantFormatter.convertInstantToLocalDate(it.transactionDate) }
+
+                val accountInfoState = TransactionAnalytics.getAccountInfoState(
+                    transactions = transactions,
+                    amountSettings = dashboardState.amountSettings
+                )
+
+                dashboardState = dashboardState.copy(
+                    latestTransactions = latestTransactions,
+                    accountInfoState = accountInfoState
+                )
+
+                allTransactionsState = allTransactionsState.copy(
+                    transactions = transactions
+                        .reversed()
+                        .groupBy { InstantFormatter.convertInstantToLocalDate(it.transactionDate) }
+                )
+            }
         }
     }
 
@@ -136,27 +178,6 @@ class TransactionsSharedViewModel(
             expenseCategory = ExpenseCategory.OTHER,
             repeatingCategory = RepeatingCategory.NOT_REPEAT,
         )
-    }
-
-    private fun setAmountSettings() {
-        viewModelScope.launch {
-            userRepository.getFlowUser(username = username).collectLatest { user ->
-                user?.let {
-                    dashboardState = dashboardState.copy(
-                        amountSettings = dashboardState.amountSettings.copy(
-                            expensesFormat = user.settings.expensesFormat.toUi(),
-                            currency = user.settings.currency.toUi(),
-                            decimalSeparator = user.settings.decimalSeparator.toUi(),
-                            thousandsSeparator = user.settings.thousandsSeparator.toUi()
-                        )
-                    )
-
-                    createTransactionState = createTransactionState.copy(
-                        expensesFormat = user.settings.expensesFormat
-                    )
-                }
-            }
-        }
     }
 
     private fun observeTextFields() {
