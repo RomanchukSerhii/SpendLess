@@ -10,7 +10,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.TrendingDownIcon
 import com.serhiiromanchuk.core.presentation.designsystem.TrendingUpIcon
 import com.serhiiromanchuk.core.presentation.designsystem.components.OptionText
 import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentOption
-import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentedButton
+import com.serhiiromanchuk.core.presentation.designsystem.components.AppSegmentedButton
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.transactions.presentation.R
 
@@ -20,7 +20,7 @@ fun TransactionModeSelector(
     onOptionClicked: (TransactionModeOptions) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    SegmentedButton(
+    AppSegmentedButton(
         segmentOptions = TransactionModeOptions.entries,
         selectedOption = selectedOption,
         onOptionClick = { onOptionClicked(it as TransactionModeOptions) },

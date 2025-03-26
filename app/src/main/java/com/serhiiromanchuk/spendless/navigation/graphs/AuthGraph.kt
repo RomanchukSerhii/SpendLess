@@ -23,10 +23,9 @@ fun NavGraphBuilder.authGraph(navigationState: NavigationState) {
             route = Screen.Login.route
         ) {
             LoginScreenRoot(
-                navigateToTransactions = { username ->
-                    navigationState.navigateToTransactions(username)
-                },
-                navigateToRegistration = { navigationState.navigateTo(Screen.CreateUsername.route) }
+                navigateToTransactions = { navigationState.navigateToTransactions() },
+                navigateToRegistration = { navigationState.navigateTo(Screen.CreateUsername.route) },
+                navigateToPinPrompt = { navigationState.navigateToPinPrompt() }
             )
         }
 
@@ -35,6 +34,7 @@ fun NavGraphBuilder.authGraph(navigationState: NavigationState) {
         ) { entry ->
             val registrationSharedViewModel =
                 entry.sharedViewModel<RegistrationSharedViewModel>(navigationState.navController)
+
             CreateUsernameScreenRoot(
                 navigateToLogIn = { navigationState.navigateToLogin() },
                 navigateNext = { navigationState.navigateTo(Screen.CreatePIN.route) },
@@ -46,6 +46,7 @@ fun NavGraphBuilder.authGraph(navigationState: NavigationState) {
         ) { entry ->
             val registrationSharedViewModel =
                 entry.sharedViewModel<RegistrationSharedViewModel>(navigationState.navController)
+
             CreatePinScreenRoot(
                 navigateBack = { navigationState.popBackStack() },
                 navigateNext = { navigationState.navigateTo(Screen.OnboardingPreferences.route) },
@@ -58,20 +59,20 @@ fun NavGraphBuilder.authGraph(navigationState: NavigationState) {
         ) { entry ->
             val registrationSharedViewModel =
                 entry.sharedViewModel<RegistrationSharedViewModel>(navigationState.navController)
+
             OnboardingPrefScreenRoot(
                 navigateBack = { navigationState.popBackStack() },
-                navigateToTransactions = { username ->
-                    navigationState.navigateToTransactions(username)
-                },
+                navigateToTransactions = { navigationState.navigateToTransactions() },
                 viewModel = registrationSharedViewModel
             )
         }
 
         composable(
-            route = Screen.PINPrompt.route
+            route = Screen.PinPrompt.route
         ) {
             PinPromptScreenRoot(
-                onLogOutClick = { navigationState.navigateTo(Screen.CreateUsername.route) }
+                navigateToTransactions = { navigationState.navigateToTransactions() } ,
+                onLogOutClick = { navigationState.navigateTo(Screen.Login.route) }
             )
         }
     }

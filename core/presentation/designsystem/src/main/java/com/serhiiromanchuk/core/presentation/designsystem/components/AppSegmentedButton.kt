@@ -1,8 +1,11 @@
 package com.serhiiromanchuk.core.presentation.designsystem.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -11,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,7 +31,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
-fun SegmentedButton(
+fun AppSegmentedButton(
     options: List<String>,
     selectedIndex: Int,
     onOptionSelected: (Int) -> Unit,
@@ -58,7 +62,7 @@ fun SegmentedButton(
 }
 
 @Composable
-fun SegmentedButton(
+fun AppSegmentedButton(
     segmentOptions: List<SegmentOption>,
     selectedOption: SegmentOption,
     onOptionClick: (SegmentOption) -> Unit,
@@ -73,16 +77,19 @@ fun SegmentedButton(
             .padding(4.dp)
     ) {
         segmentOptions.forEach { option ->
-            Button(
+            Surface(
                 onClick = { onOptionClick(option) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (option == selectedOption) AppColors.SurfContainerLowest else Color.Transparent,
-                    contentColor = if (option == selectedOption) MaterialTheme.colorScheme.primary else AppColors.OnPrimaryFixed
-                ),
-                modifier = modifier.weight(1f),
+                contentColor = if (option == selectedOption) MaterialTheme.colorScheme.primary else AppColors.OnPrimaryFixed,
+                color = if (option == selectedOption) AppColors.SurfContainerLowest else Color.Transparent,
+                modifier = Modifier.fillMaxHeight().weight(1f),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                option.label()
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    option.label()
+                }
             }
         }
     }
@@ -119,7 +126,7 @@ fun OptionText(
 fun PreviewSegmentedButton() {
     var selectedIndex by remember { mutableIntStateOf(0) }
     SpendLessTheme {
-        SegmentedButton(
+        AppSegmentedButton(
             options = listOf("Label", "Label", "Label"),
             selectedIndex = selectedIndex,
             onOptionSelected = { selectedIndex = it }

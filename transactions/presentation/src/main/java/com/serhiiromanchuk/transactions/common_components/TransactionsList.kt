@@ -40,7 +40,7 @@ import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.presentation.designsystem.IncomeIcon
 import com.serhiiromanchuk.core.presentation.designsystem.NotesIcon
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
+import com.serhiiromanchuk.core.presentation.ui.components.ExpensesFormatUi
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
 import com.serhiiromanchuk.transactions.presentation.R

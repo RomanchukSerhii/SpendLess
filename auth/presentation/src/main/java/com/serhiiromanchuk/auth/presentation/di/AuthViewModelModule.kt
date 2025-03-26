@@ -10,14 +10,17 @@ import org.koin.dsl.module
 
 val authViewModelModule = module {
     viewModelOf(::LoginViewModel)
-    viewModelOf(::PinPromptViewModel)
     viewModelOf(::RegistrationSharedViewModel)
+    viewModel {
+        PinPromptViewModel(get(), get())
+    }
 
     viewModel { (savedStateHandle: SavedStateHandle) ->
         RegistrationSharedViewModel(
             userDataValidator = get(),
             savedStateHandle = savedStateHandle,
-            userRepository = get()
+            userRepository = get(),
+            sessionRepository = get()
         )
     }
 }

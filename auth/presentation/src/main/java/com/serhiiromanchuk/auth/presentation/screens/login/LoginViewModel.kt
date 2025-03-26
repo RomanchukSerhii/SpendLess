@@ -13,6 +13,7 @@ import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiEvent.RegistrationButtonClicked
 import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiEvent.UsernameTextChanged
 import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiState
+import com.serhiiromanchuk.core.domain.repository.SessionRepository
 import com.serhiiromanchuk.core.domain.repository.UserRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val userDataValidator: UserDataValidator,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(LoginUiState())
@@ -30,7 +32,23 @@ class LoginViewModel(
     val actions = _actions.receiveAsFlow()
 
     init {
-        sendAction(LoginAction.RequestFocus)
+        checkUserAuthentication()
+    }
+
+    private fun checkUserAuthentication() {
+        viewModelScope.launch {
+            val username = sessionRepository.getLoggedInUsername()
+
+            if (username != null) {
+                if (sessionRepository.isSessionExpired()) {
+                    _actions.send(LoginAction.NavigateToPinPrompt)
+                } else {
+                    _actions.send(LoginAction.NavigateToTransactions)
+                }
+            } else {
+                sendAction(LoginAction.RequestFocus)
+            }
+        }
     }
 
     fun onEvent(event: LoginUiEvent) {
@@ -57,7 +75,8 @@ class LoginViewModel(
 
                 if (user != null) {
                     if (state.pin == user.pin) {
-                        sendAction(LoginAction.NavigateToTransactions(state.username))
+                        sessionRepository.logIn(state.username)
+                        sendAction(LoginAction.NavigateToTransactions)
                     } else {
                         updateError(true)
                     }

@@ -14,22 +14,31 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.AuthHeader
 import com.serhiiromanchuk.auth.presentation.components.PinKeyboard
-import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.components.PinIndicator
+import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.handling.PinPromptAction
 import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.handling.PinPromptUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.pin_prompt.handling.PinPromptUiState
+import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.components.PinIndicator
 import com.serhiiromanchuk.core.presentation.designsystem.LogoutIcon
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.ErrorIconButton
-import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
-import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
+import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PinPromptScreenRoot(
+    navigateToTransactions: () -> Unit,
     onLogOutClick: () -> Unit,
     viewModel: PinPromptViewModel = koinViewModel()
 ) {
+    ObserveAsActions(viewModel.actions) { action ->
+        when (action) {
+            PinPromptAction.NavigateToTransaction -> navigateToTransactions()
+        }
+    }
+
     PinPromptScreen(
         state = viewModel.state,
         onEvent = viewModel::onEvent
@@ -64,7 +73,7 @@ private fun PinPromptScreen(
                         .padding(top = 36.dp)
                 ) {
                     AuthHeader(
-                        title = state.title.asString(),
+                        title = state.userGreeting.asString(),
                         description = state.description.asString()
                     )
 

@@ -10,19 +10,6 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
-    navController: NavHostController
-): T {
-    val navGraphRoute = destination.parent?.route ?: return koinViewModel<T>()
-
-    val parentEntry = remember(this) {
-        navController.getBackStackEntry(navGraphRoute)
-    }
-
-    return koinViewModel(viewModelStoreOwner = parentEntry)
-}
-
-@Composable
-inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
     navController: NavHostController,
     vararg parameters: Any
 ): T {

@@ -5,5 +5,5 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val settingsViewModelModule = module {
-    viewModel { (username: String) -> SettingsSharedViewModel(username, get()) }
+    viewModel { SettingsSharedViewModel(get(), get()) }
 }

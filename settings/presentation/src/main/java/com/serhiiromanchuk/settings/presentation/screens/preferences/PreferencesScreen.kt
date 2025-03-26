@@ -8,25 +8,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTopBar
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
-import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesSettings
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.designsystem.components.AppFilledButton
+import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
+import com.serhiiromanchuk.core.presentation.ui.components.ExpensesSettings
 import com.serhiiromanchuk.settings.presentation.R
 import com.serhiiromanchuk.settings.presentation.screens.SettingsSharedViewModel
+import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesAction
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PreferencesScreenRoot(
-    onBackClick: () -> Unit,
+    navigateBack: () -> Unit,
+    navigateToPinPrompt: () -> Unit,
     viewModel: SettingsSharedViewModel = koinViewModel()
 ) {
+
+    ObserveAsActions(viewModel.preferencesActions) { action ->
+        when (action) {
+            PreferencesAction.NavigateBack -> navigateBack()
+            PreferencesAction.NavigateToPinPrompt -> navigateToPinPrompt()
+        }
+    }
+
     BaseContentLayout(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.preferences),
-                onBackClick = onBackClick
+                onBackClick = navigateBack
             )
         }
     ) {
@@ -53,7 +64,7 @@ private fun PreferencesScreen(
             onThousandsSeparatorClick = { onEvent(PreferencesUiEvent.ThousandsSeparatorClicked(it)) }
         )
 
-        FilledButton(
+        AppFilledButton(
             text = stringResource(R.string.save),
             onClick = { onEvent(PreferencesUiEvent.SaveButtonClicked) },
             modifier = Modifier.fillMaxWidth(),

@@ -19,9 +19,9 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.han
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiState
 import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
-import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
-import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import org.koin.androidx.compose.koinViewModel

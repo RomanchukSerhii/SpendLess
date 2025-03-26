@@ -28,4 +28,7 @@
     <string name="error_max_username_length">Username cannot exceed 14 characters.</string>
     <string name="error_pin_length">PIN must contain exactly 5 digits.</string>
     <string name="username_or_pin_is_incorrect">Username or PIN is incorrect</string>
+    <string name="user_greeting">Hello, %1$s</string>
+    <string name="try_your_pin_again">Try your PIN again in %1$s</string>
+    <string name="enter_you_pin">Enter you PIN</string>
 </resources>

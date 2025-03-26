@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings
+package com.serhiiromanchuk.core.presentation.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme

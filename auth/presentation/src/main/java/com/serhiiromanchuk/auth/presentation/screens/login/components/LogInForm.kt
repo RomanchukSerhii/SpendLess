@@ -25,7 +25,7 @@ import com.serhiiromanchuk.auth.presentation.components.UsernameLengthError
 import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiState
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextField
-import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
+import com.serhiiromanchuk.core.presentation.designsystem.components.AppFilledButton
 
 @Composable
 fun LogInForm(
@@ -97,7 +97,7 @@ fun LogInForm(
 
 
         // Log in button
-        FilledButton(
+        AppFilledButton(
             text = stringResource(R.string.log_in),
             onClick = { onEvent(LoginUiEvent.LogInButtonClicked) },
             modifier = Modifier

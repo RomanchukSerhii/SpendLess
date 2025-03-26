@@ -5,7 +5,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppFAB
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTopBar
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.transactions.common_components.TransactionsList
 import com.serhiiromanchuk.transactions.presentation.R

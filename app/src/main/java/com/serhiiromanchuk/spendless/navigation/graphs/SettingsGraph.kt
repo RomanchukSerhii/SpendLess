@@ -15,23 +15,13 @@ import com.serhiiromanchuk.spendless.navigation.sharedViewModel
 fun NavGraphBuilder.settingsGraph(navigationState: NavigationState) {
     navigation(
         startDestination = Screen.Settings.route,
-        route = Feature.Settings.routeWithArgs,
-        arguments = Feature.Settings.arguments
+        route = Feature.Settings.route
     ) {
-
         composable(
             route = Screen.Settings.route
-        ) { entry ->
-            val username = entry.arguments?.getString(Feature.Settings.USERNAME)
-                ?: throw IllegalArgumentException("Username must be provided but was missing.")
-
-            entry.sharedViewModel<SettingsSharedViewModel>(
-                navigationState.navController,
-                username
-            )
-
+        ) {
             SettingsScreen(
-                onBackClick = { navigationState.navigateToTransactions(username) },
+                onBackClick = { navigationState.navigateToTransactions() },
                 onPreferencesClick = { navigationState.navigateTo(Screen.Preferences.route) },
                 onSecurityClick = { navigationState.navigateTo(Screen.Security.route) },
                 onLogoutClick = { }
@@ -41,12 +31,12 @@ fun NavGraphBuilder.settingsGraph(navigationState: NavigationState) {
         composable(
             route = Screen.Preferences.route
         ) { entry ->
-            val viewModel = entry.sharedViewModel<SettingsSharedViewModel>(
-                navigationState.navController
-            )
+            val viewModel =
+                entry.sharedViewModel<SettingsSharedViewModel>(navigationState.navController)
 
             PreferencesScreenRoot(
-                onBackClick = { navigationState.popBackStack() },
+                navigateBack = { navigationState.popBackStack() },
+                navigateToPinPrompt = { navigationState.navigateToPinPrompt() },
                 viewModel = viewModel
             )
         }
@@ -54,12 +44,12 @@ fun NavGraphBuilder.settingsGraph(navigationState: NavigationState) {
         composable(
             route = Screen.Security.route
         ) { entry ->
-            val viewModel = entry.sharedViewModel<SettingsSharedViewModel>(
-                navigationState.navController
-            )
+            val viewModel =
+                entry.sharedViewModel<SettingsSharedViewModel>(navigationState.navController)
 
             SecurityScreenRoot(
-                onBackClick = { navigationState.popBackStack() },
+                navigateBack = { navigationState.popBackStack() },
+                navigateToPinPrompt = { navigationState.navigateToPinPrompt() },
                 viewModel = viewModel
             )
         }

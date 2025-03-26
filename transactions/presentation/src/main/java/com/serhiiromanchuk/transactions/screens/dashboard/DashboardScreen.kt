@@ -19,16 +19,18 @@ import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.RepeatType
 import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppFAB
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.DashboardTopBar
-import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
-import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
+import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import com.serhiiromanchuk.transactions.screens.TransactionsSharedViewModel
 import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionBottomSheet
 import com.serhiiromanchuk.transactions.screens.dashboard.components.AccountInfo
 import com.serhiiromanchuk.transactions.screens.dashboard.components.DashboardBackground
 import com.serhiiromanchuk.transactions.screens.dashboard.components.LatestTransactions
+import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardAction
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import org.koin.androidx.compose.koinViewModel
@@ -36,10 +38,19 @@ import java.time.Instant
 
 @Composable
 fun DashboardScreenRoot(
-    onSettingsClick: () -> Unit,
-    onShowAllClick: () -> Unit,
+    navigateToSettings: () -> Unit,
+    navigateToAllTransactions: () -> Unit,
+    navigateToPinPrompt: () -> Unit,
     viewModel: TransactionsSharedViewModel = koinViewModel()
 ) {
+    ObserveAsActions(viewModel.dashboardAction) { actions ->
+        when (actions) {
+            DashboardAction.NavigateToAllTransactions -> navigateToAllTransactions()
+            DashboardAction.NavigateToPinPrompt -> navigateToPinPrompt()
+            DashboardAction.NavigateToSettings -> navigateToSettings()
+        }
+    }
+
     CompositionLocalProvider(
         LocalSystemIconsUiController provides SystemIconsUiController(
             isStatusBarIconsDark = false
@@ -49,7 +60,7 @@ fun DashboardScreenRoot(
             topBar = {
                 DashboardTopBar(
                     name = "rockefeller74",
-                    onSettingsClick = onSettingsClick,
+                    onSettingsClick = { viewModel.onEvent(DashboardUiEvent.SettingsButtonClicked) },
                     onExportClick = {}
                 )
             },
@@ -69,11 +80,10 @@ fun DashboardScreenRoot(
         ) {
             DashboardScreen(
                 state = viewModel.dashboardState,
-                onShowAllClick = onShowAllClick
+                onEvent = viewModel::onEvent
             )
         }
     }
-
 
     if (viewModel.dashboardState.isCreateTransactionOpen) {
         CreateTransactionBottomSheet(
@@ -86,7 +96,7 @@ fun DashboardScreenRoot(
 @Composable
 private fun DashboardScreen(
     state: DashboardUiState,
-    onShowAllClick: () -> Unit
+    onEvent: (DashboardUiEvent) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -103,7 +113,7 @@ private fun DashboardScreen(
             modifier = Modifier.weight(1.4f),
             latestTransactions = state.latestTransactions,
             amountSettings = state.amountSettings,
-            onShowAllClick = onShowAllClick
+            onShowAllClick = { onEvent(DashboardUiEvent.AllTransactionButtonClicked) }
         )
     }
 }
@@ -116,7 +126,7 @@ private fun DashboardScreenPreview() {
             state = DashboardUiState(
                 latestTransactions = createTestTransactions()
             ),
-            onShowAllClick = {}
+            onEvent = {}
         )
     }
 }

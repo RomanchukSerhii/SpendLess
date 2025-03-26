@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings
+package com.serhiiromanchuk.core.presentation.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,9 +13,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppCard
-import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentedButton
-import com.serhiiromanchuk.core.presentation.designsystem.components.SettingItem
+import com.serhiiromanchuk.core.presentation.designsystem.components.AppSegmentedButton
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.SelectCategory
+import com.serhiiromanchuk.core.presentation.ui.states.ExpensesFormatState
 
 @Composable
 fun ExpensesSettings(
@@ -96,7 +96,7 @@ private fun ExpensesFormatSettings(
         title = stringResource(R.string.expenses_format),
         modifier = modifier
     ) {
-        SegmentedButton(
+        AppSegmentedButton(
             segmentOptions = ExpensesFormatUi.entries,
             selectedOption = selectedFormat,
             onOptionClick = { onOptionClick(it as ExpensesFormatUi) }
@@ -132,7 +132,7 @@ private fun DecimalSeparatorSettings(
         title = stringResource(R.string.decimal_separator),
         modifier = modifier
     ) {
-        SegmentedButton(
+        AppSegmentedButton(
             segmentOptions = DecimalSeparatorUi.entries,
             selectedOption = selectedDecimal,
             onOptionClick = { onOptionClick(it as DecimalSeparatorUi) }
@@ -150,7 +150,7 @@ private fun ThousandsSeparatorSettings(
         title = stringResource(R.string.thousands_separator),
         modifier = modifier
     ) {
-        SegmentedButton(
+        AppSegmentedButton(
             segmentOptions = ThousandsSeparatorUi.entries,
             selectedOption = selectedThousands,
             onOptionClick = { onOptionClick(it as ThousandsSeparatorUi) }

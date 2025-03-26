@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
+import com.serhiiromanchuk.core.presentation.designsystem.components.AppFilledButton
 import com.serhiiromanchuk.transactions.presentation.R
 import com.serhiiromanchuk.transactions.screens.create_transaction.components.CreateTransactionHeader
 import com.serhiiromanchuk.transactions.screens.create_transaction.components.TransactionModeSelector
@@ -78,7 +78,7 @@ fun CreateTransactionBottomSheet(
                         onEvent(CreateTransactionUiEvent.RepeatingCategorySelected(it))
                     }
                 )
-                FilledButton(
+                AppFilledButton(
                     text = stringResource(R.string.create),
                     onClick = { onEvent(CreateTransactionUiEvent.CreateButtonClicked) },
                     modifier = Modifier

@@ -7,7 +7,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppCard
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTopBar
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
 import com.serhiiromanchuk.settings.presentation.R
 import com.serhiiromanchuk.settings.presentation.screens.settings.components.LogoutButton
 import com.serhiiromanchuk.settings.presentation.screens.settings.components.PreferencesButton

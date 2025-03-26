@@ -1,7 +1,9 @@
 package com.serhiiromanchuk.auth.presentation.components
 
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -14,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,6 +53,7 @@ internal fun PinKeyboard(
                     onClick = onFingerprintClick,
                     enabled = enabled
                 )
+
                 10 -> PinKey(
                     number = 0,
                     onClick = onNumberClick,
@@ -82,7 +86,9 @@ private fun FingerprintKey(
                 Icon(
                     imageVector = FingerprintIcon,
                     contentDescription = stringResource(R.string.use_biometric_authentication),
-                    tint = if (enabled) AppColors.OnPrimaryFixed else AppColors.OnPrimaryFixed.copy(0.3f)
+                    tint = if (enabled) AppColors.OnPrimaryFixed else AppColors.OnPrimaryFixed.copy(
+                        0.3f
+                    )
                 )
             }
         }
@@ -118,7 +124,8 @@ private fun PinKey(
     KeyButton(
         modifier = modifier,
         onClick = { onClick(number) },
-        color = if (enabled) AppColors.PrimaryFixed else AppColors.PrimaryFixed.copy(alpha = 0.3f)
+        color = if (enabled) AppColors.PrimaryFixed else AppColors.PrimaryFixed.copy(alpha = 0.3f),
+        enabled = enabled
     ) {
         Text(
             text = number.toString(),
@@ -140,9 +147,10 @@ private fun SpecialKey(
             AppColors.PrimaryFixed.copy(alpha = 0.3f)
         } else {
             AppColors.PrimaryFixed.copy(alpha = 0.1f)
-        }            ,
+        },
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
+        enabled = enabled
     ) {
         icon()
     }
@@ -153,6 +161,7 @@ private fun KeyButton(
     onClick: () -> Unit,
     color: Color,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val boxShape = RoundedCornerShape(32.dp)
@@ -164,7 +173,12 @@ private fun KeyButton(
                 shape = boxShape
             )
             .aspectRatio(1f)
-            .clickable { onClick() },
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = if (enabled) LocalIndication.current else null
+            ) {
+                if (enabled) onClick()
+            },
         contentAlignment = Alignment.Center
     ) {
         content()

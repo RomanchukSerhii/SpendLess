@@ -1,7 +1,7 @@
 package com.serhiiromanchuk.transactions.utils
 
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.components.DecimalSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.components.ThousandsSeparatorUi
 import com.serhiiromanchuk.transactions.common_components.AmountSettings
 
 object AmountFormatter {

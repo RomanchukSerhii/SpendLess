@@ -19,16 +19,17 @@ import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginAction.
 import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiState
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextButton
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
-import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
-import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreenRoot(
-    navigateToTransactions: (username: String) -> Unit,
+    navigateToTransactions: () -> Unit,
     navigateToRegistration: () -> Unit,
+    navigateToPinPrompt: () -> Unit,
     viewModel: LoginViewModel = koinViewModel()
 ) {
     val focusManager = LocalFocusManager.current
@@ -39,12 +40,14 @@ fun LoginScreenRoot(
             RequestFocus -> focusRequester.requestFocus()
             is NavigateToTransactions -> {
                 focusManager.clearFocus()
-                navigateToTransactions(action.username)
+                navigateToTransactions()
             }
             NavigateToRegistration -> {
                 focusManager.clearFocus()
                 navigateToRegistration()
             }
+
+            NavigateToPinPrompt -> navigateToPinPrompt()
         }
     }
 

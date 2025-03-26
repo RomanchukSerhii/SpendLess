@@ -20,12 +20,13 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pre
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiState
 import com.serhiiromanchuk.core.domain.entity.User
 import com.serhiiromanchuk.core.domain.entity.UserSettings
+import com.serhiiromanchuk.core.domain.repository.SessionRepository
 import com.serhiiromanchuk.core.domain.repository.UserRepository
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.CurrencyCategoryItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.components.CurrencyCategoryItem
+import com.serhiiromanchuk.core.presentation.ui.components.DecimalSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.states.ExpensesFormatState
+import com.serhiiromanchuk.core.presentation.ui.components.ExpensesFormatUi
+import com.serhiiromanchuk.core.presentation.ui.components.ThousandsSeparatorUi
 import com.serhiiromanchuk.core.presentation.ui.mappers.toDomain
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
 import kotlinx.coroutines.channels.Channel
@@ -38,7 +39,8 @@ import kotlinx.coroutines.launch
 class RegistrationSharedViewModel(
     private val userDataValidator: UserDataValidator,
     private val savedStateHandle: SavedStateHandle,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     var usernameState by mutableStateOf(CreateUsernameUiState())
         private set
@@ -84,9 +86,7 @@ class RegistrationSharedViewModel(
             is OnboardingPrefUiEvent.DecimalSeparatorClicked -> updateDecimalSeparator(event.decimalSeparator)
             is OnboardingPrefUiEvent.ExpensesFormatClicked -> updateExpensesFormat(event.expensesFormat)
             is OnboardingPrefUiEvent.ThousandsSeparatorClicked -> updateThousandsSeparator(event.thousandsSeparator)
-            OnboardingPrefUiEvent.StartButtonClicked -> {
-                saveUser()
-            }
+            OnboardingPrefUiEvent.StartButtonClicked -> saveUser()
         }
     }
 
@@ -109,7 +109,8 @@ class RegistrationSharedViewModel(
 
         viewModelScope.launch {
             userRepository.upsertUser(user)
-            _onboardingPrefActions.send(OnboardingPrefAction.NavigateToTransactions(username))
+            sessionRepository.logIn(user.username)
+            _onboardingPrefActions.send(OnboardingPrefAction.NavigateToTransactions)
         }
      }
 

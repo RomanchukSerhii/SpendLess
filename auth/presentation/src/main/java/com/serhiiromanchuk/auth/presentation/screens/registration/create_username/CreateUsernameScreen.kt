@@ -19,9 +19,9 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.create_usernam
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiState
 import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTextButton
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
-import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
-import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import org.koin.androidx.compose.koinViewModel

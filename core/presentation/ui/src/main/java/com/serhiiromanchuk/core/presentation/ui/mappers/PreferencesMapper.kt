@@ -4,10 +4,10 @@ import com.serhiiromanchuk.core.domain.entity.Currency
 import com.serhiiromanchuk.core.domain.entity.DecimalSeparator
 import com.serhiiromanchuk.core.domain.entity.ExpensesFormat
 import com.serhiiromanchuk.core.domain.entity.ThousandsSeparator
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.CurrencyCategoryItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.components.CurrencyCategoryItem
+import com.serhiiromanchuk.core.presentation.ui.components.DecimalSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.components.ExpensesFormatUi
+import com.serhiiromanchuk.core.presentation.ui.components.ThousandsSeparatorUi
 
 fun ExpensesFormatUi.toDomain(): ExpensesFormat {
     return when (this) {
