@@ -169,17 +169,11 @@ class RegistrationSharedViewModel(
     private fun updatePin(number: Int) {
         pinState = when (pinState.screenMode) {
             ScreenMode.CreatePin -> {
-                pinState.copy(
-                    createdPin = pinState.createdPin + number,
-                    showError = false
-                )
+                pinState.copy(createdPin = pinState.createdPin + number)
             }
 
             ScreenMode.RepeatPin -> {
-                pinState.copy(
-                    repeatedPin = pinState.repeatedPin + number,
-                    showError = false
-                )
+                pinState.copy(repeatedPin = pinState.repeatedPin + number)
             }
         }
         validatePin()
@@ -214,12 +208,18 @@ class RegistrationSharedViewModel(
                         pinState = CreatePinUiState()
                     }
                 } else {
-                    pinState = pinState.copy(
-                        repeatedPin = "",
-                        showError = true
-                    )
+                    pinState = pinState.copy(repeatedPin = "")
+                    showError()
                 }
             }
+        }
+    }
+
+    private fun showError() {
+        viewModelScope.launch {
+            pinState = pinState.copy(showError = true)
+            delay(2000)
+            pinState = pinState.copy(showError = false)
         }
     }
 

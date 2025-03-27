@@ -19,12 +19,16 @@ fun NavGraphBuilder.settingsGraph(navigationState: NavigationState) {
     ) {
         composable(
             route = Screen.Settings.route
-        ) {
+        ) { entry ->
+            val viewModel =
+                entry.sharedViewModel<SettingsSharedViewModel>(navigationState.navController)
+
             SettingsScreen(
-                onBackClick = { navigationState.navigateToTransactions() },
-                onPreferencesClick = { navigationState.navigateTo(Screen.Preferences.route) },
-                onSecurityClick = { navigationState.navigateTo(Screen.Security.route) },
-                onLogoutClick = { }
+                navigateBack = { navigationState.navigateToTransactions() },
+                navigateToPreferences = { navigationState.navigateTo(Screen.Preferences.route) },
+                navigateToSecurity = { navigationState.navigateTo(Screen.Security.route) },
+                navigateToLogin = { navigationState.navigateToLogin() },
+                viewModel = viewModel
             )
         }
 

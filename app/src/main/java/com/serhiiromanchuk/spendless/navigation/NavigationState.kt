@@ -22,19 +22,15 @@ class NavigationState(
         }
     }
 
-    fun navigateToSettings() {
-        navController.navigate(Feature.Settings.route)
-    }
-
     fun navigateToPinPrompt() {
         navController.navigate(Screen.PinPrompt.route) {
-            popUpTo(0) { inclusive = true }
+            popUpTo(Screen.PinPrompt.route) { inclusive = true }
         }
     }
 
     fun navigateToLogin() {
         navController.navigate(Screen.Login.route) {
-            popUpTo(Screen.Login.route) { inclusive = true }
+            popUpTo(0) { inclusive = true }
         }
     }
 }

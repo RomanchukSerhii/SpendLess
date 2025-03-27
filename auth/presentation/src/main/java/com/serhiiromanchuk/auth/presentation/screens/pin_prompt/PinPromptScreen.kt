@@ -29,13 +29,14 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PinPromptScreenRoot(
-    navigateToTransactions: () -> Unit,
-    onLogOutClick: () -> Unit,
+    navigateBack: () -> Unit,
+    navigateToLogin: () -> Unit,
     viewModel: PinPromptViewModel = koinViewModel()
 ) {
     ObserveAsActions(viewModel.actions) { action ->
         when (action) {
-            PinPromptAction.NavigateToTransaction -> navigateToTransactions()
+            PinPromptAction.NavigateNavigateBack -> navigateBack()
+            PinPromptAction.NavigateToLogin -> navigateToLogin()
         }
     }
 
@@ -55,6 +56,7 @@ private fun PinPromptScreen(
             isNavigationBarIconsDark = !state.showError
         )
     ) {
+
         BaseContentLayout(
             errorMessage = if (state.showError) stringResource(R.string.error_wrong_pin) else null
         ) {

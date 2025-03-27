@@ -71,8 +71,8 @@ fun NavGraphBuilder.authGraph(navigationState: NavigationState) {
             route = Screen.PinPrompt.route
         ) {
             PinPromptScreenRoot(
-                navigateToTransactions = { navigationState.navigateToTransactions() } ,
-                onLogOutClick = { navigationState.navigateTo(Screen.Login.route) }
+                navigateBack = { navigationState.popBackStack() } ,
+                navigateToLogin = { navigationState.navigateTo(Screen.Login.route) }
             )
         }
     }

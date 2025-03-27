@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.serhiiromanchuk.core.presentation.designsystem.R
@@ -27,6 +28,7 @@ fun CategoryCard(
     category: DropdownItem,
     onClick: (DropdownItem) -> Unit,
     isExpanded: Boolean,
+    iconSize: Dp,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -45,7 +47,7 @@ fun CategoryCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             category.TextIcon(
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(iconSize),
                 fontSize = 18.sp
             )
 

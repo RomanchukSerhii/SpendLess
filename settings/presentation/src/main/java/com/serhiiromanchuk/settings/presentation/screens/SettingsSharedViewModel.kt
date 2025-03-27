@@ -34,6 +34,8 @@ import com.serhiiromanchuk.settings.presentation.screens.security.handling.Secur
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent.SaveButtonClicked
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent.SessionExpiryClicked
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiState
+import com.serhiiromanchuk.settings.presentation.screens.settings.handling.SettingsAction
+import com.serhiiromanchuk.settings.presentation.screens.settings.handling.SettingsUiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -53,6 +55,9 @@ class SettingsSharedViewModel(
 
     private val _securityActions = Channel<SecurityAction>()
     val securityActions = _securityActions.receiveAsFlow()
+
+    private val _settingsActions = Channel<SettingsAction>()
+    val settingsActions = _settingsActions.receiveAsFlow()
 
     init {
         setUserSettings()
@@ -77,6 +82,12 @@ class SettingsSharedViewModel(
         }
     }
 
+    fun onEvent(event: SettingsUiEvent) {
+        when (event) {
+            SettingsUiEvent.LogOutButtonClicked -> logOutUser()
+        }
+    }
+
     private fun setUserSettings() {
         viewModelScope.launch {
             val user = getUser()
@@ -95,6 +106,13 @@ class SettingsSharedViewModel(
                     thousandsSeparator = ThousandsSeparatorUi.valueOf(user.settings.thousandsSeparator.name)
                 )
             }
+        }
+    }
+
+    private fun logOutUser() {
+        viewModelScope.launch {
+            sessionRepository.logOut()
+            _settingsActions.send(SettingsAction.NavigateToLogin)
         }
     }
 

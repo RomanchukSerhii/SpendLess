@@ -16,6 +16,7 @@ import com.serhiiromanchuk.auth.presentation.screens.login.handling.LoginUiState
 import com.serhiiromanchuk.core.domain.repository.SessionRepository
 import com.serhiiromanchuk.core.domain.repository.UserRepository
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -78,10 +79,10 @@ class LoginViewModel(
                         sessionRepository.logIn(state.username)
                         sendAction(LoginAction.NavigateToTransactions)
                     } else {
-                        updateError(true)
+                        showError()
                     }
                 } else {
-                    updateError(true)
+                    showError()
                 }
             }
         }
@@ -93,11 +94,14 @@ class LoginViewModel(
 
     private fun updateUsername(username: String) {
         state = state.copy(username = username)
-        if (state.showError) updateError(false)
     }
 
-    private fun updateError(showError: Boolean) {
-        state = state.copy(showError = showError)
+    private fun showError() {
+        viewModelScope.launch {
+            state = state.copy(showError = true)
+            delay(2000)
+            state = state.copy(showError = false)
+        }
     }
 
     private fun updatePin(pin: String) {

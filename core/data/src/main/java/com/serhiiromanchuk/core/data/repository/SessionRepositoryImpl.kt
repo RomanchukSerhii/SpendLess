@@ -50,7 +50,7 @@ class SessionRepositoryImpl(
             ?: throw UserNotLoggedInException()
 
         val sessionDurationLong = when (user.settings.sessionExpiryDuration) {
-            SessionExpiryDuration.FIVE_MIN -> 5 * MINUTE_IN_MILLIS
+            SessionExpiryDuration.FIVE_MIN -> 5000
             SessionExpiryDuration.FIFTEEN_MIN -> 5 * MINUTE_IN_MILLIS
             SessionExpiryDuration.THIRTY_MIN -> 30 * MINUTE_IN_MILLIS
             SessionExpiryDuration.HOUR -> HOUR_IN_MILLIS

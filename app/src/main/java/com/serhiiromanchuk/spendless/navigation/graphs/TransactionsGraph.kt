@@ -23,7 +23,7 @@ fun NavGraphBuilder.transactionsGraph(navigationState: NavigationState) {
                 entry.sharedViewModel<TransactionsSharedViewModel>(navigationState.navController)
 
             DashboardScreenRoot(
-                navigateToSettings = { navigationState.navigateToSettings() },
+                navigateToSettings = { navigationState.navigateTo(Screen.Settings.route) },
                 viewModel = transactionsSharedViewModel,
                 navigateToAllTransactions = { navigationState.navigateTo(Screen.AllTransactions.route) },
                 navigateToPinPrompt = { navigationState.navigateToPinPrompt() }

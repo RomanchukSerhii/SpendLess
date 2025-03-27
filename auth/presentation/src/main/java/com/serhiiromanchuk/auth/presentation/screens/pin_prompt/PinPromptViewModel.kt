@@ -44,9 +44,16 @@ class PinPromptViewModel(
 
     fun onEvent(event: PinPromptUiEvent) {
         when (event) {
-            BackspaceButtonClicked -> TODO()
-            LogOutClicked -> TODO()
+            BackspaceButtonClicked -> removePinNumber()
+            LogOutClicked -> logOutUser()
             is NumberButtonClicked -> updatePin(event.number)
+        }
+    }
+
+    private fun logOutUser() {
+        viewModelScope.launch {
+            sessionRepository.logOut()
+            _actions.send(PinPromptAction.NavigateToLogin)
         }
     }
 
@@ -65,7 +72,8 @@ class PinPromptViewModel(
                 ?: throw IllegalArgumentException("User with the provided username does not exist")
 
             if (enteredPin == user.pin) {
-                _actions.send(PinPromptAction.NavigateToTransaction)
+                sessionRepository.startSession()
+                _actions.send(PinPromptAction.NavigateNavigateBack)
             } else {
                 resetEnteredPin()
                 showError()
@@ -76,6 +84,10 @@ class PinPromptViewModel(
                 }
             }
         }
+    }
+
+    private fun removePinNumber() {
+        state = state.copy(enteredPin = state.enteredPin.dropLast(1))
     }
 
     private fun resetEnteredPin() {

@@ -117,7 +117,8 @@ private fun CurrencySettings(
         SelectCategory(
             items = CurrencyCategoryItem.entries,
             selectedItem = selectedCurrency,
-            onItemSelected = { onOptionClick(it as CurrencyCategoryItem) }
+            onItemSelected = { onOptionClick(it as CurrencyCategoryItem) },
+            iconSize = 24.dp
         )
     }
 }
