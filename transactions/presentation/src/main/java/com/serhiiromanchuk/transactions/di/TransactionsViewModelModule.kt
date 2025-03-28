@@ -5,6 +5,5 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val transactionsSharedViewModelModule = module {
-
-    viewModel { (username: String) -> TransactionsSharedViewModel(username, get(), get()) }
+    viewModel { TransactionsSharedViewModel(get(), get(), get()) }
 }

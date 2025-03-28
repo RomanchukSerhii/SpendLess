@@ -14,25 +14,19 @@ import com.serhiiromanchuk.transactions.screens.dashboard.DashboardScreenRoot
 fun NavGraphBuilder.transactionsGraph(navigationState: NavigationState) {
     navigation(
         startDestination = Screen.Dashboard.route,
-        route = Feature.Transactions.routeWithArgs,
-        arguments = Feature.Transactions.arguments
+        route = Feature.Transactions.route
     ) {
         composable(
             route = Screen.Dashboard.route
         ) { entry ->
-            val username = entry.arguments?.getString(Feature.Transactions.USERNAME)
-                ?: throw IllegalArgumentException("Username must be provided but was missing.")
-
             val transactionsSharedViewModel =
-                entry.sharedViewModel<TransactionsSharedViewModel>(
-                    navigationState.navController,
-                    username
-                )
+                entry.sharedViewModel<TransactionsSharedViewModel>(navigationState.navController)
 
             DashboardScreenRoot(
-                onSettingsClick = { navigationState.navigateToSettings(username) },
+                navigateToSettings = { navigationState.navigateTo(Screen.Settings.route) },
                 viewModel = transactionsSharedViewModel,
-                onShowAllClick = { navigationState.navigateTo(Screen.AllTransactions.route)}
+                navigateToAllTransactions = { navigationState.navigateTo(Screen.AllTransactions.route) },
+                navigateToPinPrompt = { navigationState.navigateToPinPrompt() }
             )
         }
 
@@ -41,9 +35,7 @@ fun NavGraphBuilder.transactionsGraph(navigationState: NavigationState) {
         ) { entry ->
 
             val transactionsSharedViewModel =
-                entry.sharedViewModel<TransactionsSharedViewModel>(
-                    navigationState.navController
-                )
+                entry.sharedViewModel<TransactionsSharedViewModel>(navigationState.navController)
 
             AllTransactionsScreenRoot(
                 onBackClick = { navigationState.popBackStack() },

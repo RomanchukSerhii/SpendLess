@@ -1,17 +1,20 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings
+package com.serhiiromanchuk.core.presentation.ui.components
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.components.OptionText
 import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentOption
 import com.serhiiromanchuk.core.presentation.designsystem.components.select.DropdownItem
+import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 enum class ExpensesFormatUi(override val label: @Composable () -> Unit) : SegmentOption {
     MINUS(
@@ -180,12 +183,27 @@ private fun CurrencyIcon(
     modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
-    Text(
-        text = currency,
-        modifier = modifier.padding(start = 16.dp),
-        style = MaterialTheme.typography.labelMedium.copy(
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = fontSize
+    Box(
+        modifier = modifier
+            .fillMaxHeight(),
+        contentAlignment = Alignment.CenterEnd
+    ) {
+        Text(
+            text = currency,
+            style = MaterialTheme.typography.labelMedium.copy(
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = fontSize
+            )
         )
-    )
+    }
+}
+
+@Preview
+@Composable
+private fun CurrencyIconPreview() {
+    SpendLessTheme {
+        CurrencyIcon(
+            currency = "\$"
+        )
+    }
 }

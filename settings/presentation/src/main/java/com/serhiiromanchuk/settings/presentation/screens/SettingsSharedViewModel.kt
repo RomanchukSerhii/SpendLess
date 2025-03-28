@@ -6,30 +6,43 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.serhiiromanchuk.core.domain.entity.User
+import com.serhiiromanchuk.core.domain.exception.UserNotLoggedInException
+import com.serhiiromanchuk.core.domain.repository.SessionRepository
 import com.serhiiromanchuk.core.domain.repository.UserRepository
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.CurrencyCategoryItem
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.components.CurrencyCategoryItem
+import com.serhiiromanchuk.core.presentation.ui.components.DecimalSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.components.ExpensesFormatUi
+import com.serhiiromanchuk.core.presentation.ui.components.ThousandsSeparatorUi
 import com.serhiiromanchuk.core.presentation.ui.mappers.toDomain
+import com.serhiiromanchuk.core.presentation.ui.states.ExpensesFormatState
+import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesAction
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.CurrencyClicked
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.DecimalSeparatorClicked
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.ExpensesFormatClicked
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiEvent.ThousandsSeparatorClicked
 import com.serhiiromanchuk.settings.presentation.screens.preferences.handling.PreferencesUiState
+import com.serhiiromanchuk.settings.presentation.screens.security.components.BiometricsPromptUi
+import com.serhiiromanchuk.settings.presentation.screens.security.components.LockedOutDurationUi
+import com.serhiiromanchuk.settings.presentation.screens.security.components.SessionExpiryDurationUi
+import com.serhiiromanchuk.settings.presentation.screens.security.components.toDomain
+import com.serhiiromanchuk.settings.presentation.screens.security.components.toUi
+import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityAction
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent.BiometricsPromptClicked
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent.LockedOutClicked
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent.SaveButtonClicked
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent.SessionExpiryClicked
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiState
+import com.serhiiromanchuk.settings.presentation.screens.settings.handling.SettingsAction
+import com.serhiiromanchuk.settings.presentation.screens.settings.handling.SettingsUiEvent
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class SettingsSharedViewModel(
-    private val username: String,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     var securityState by mutableStateOf(SecurityUiState())
         private set
@@ -37,29 +50,17 @@ class SettingsSharedViewModel(
     var preferencesState by mutableStateOf(PreferencesUiState())
         private set
 
+    private val _preferencesActions = Channel<PreferencesAction>()
+    val preferencesActions = _preferencesActions.receiveAsFlow()
+
+    private val _securityActions = Channel<SecurityAction>()
+    val securityActions = _securityActions.receiveAsFlow()
+
+    private val _settingsActions = Channel<SettingsAction>()
+    val settingsActions = _settingsActions.receiveAsFlow()
+
     init {
         setUserSettings()
-    }
-
-    private fun setUserSettings() {
-        viewModelScope.launch {
-            val user = getUser()
-
-            securityState = securityState.copy(
-                biometricsPrompt = BiometricsPromptUi.valueOf(user.settings.biometricsPrompt.name),
-                sessionExpiryDuration = SessionExpiryDurationUi.valueOf(user.settings.sessionExpiryDuration.name),
-                lockedOutDuration = LockedOutDurationUi.valueOf(user.settings.lockedOutDuration.name)
-            )
-
-            updateExpensesFormatState {
-                it.copy(
-                    expensesFormat = ExpensesFormatUi.valueOf(user.settings.expensesFormat.name),
-                    currency = CurrencyCategoryItem.valueOf(user.settings.currency.name),
-                    decimalSeparator = DecimalSeparatorUi.valueOf(user.settings.decimalSeparator.name),
-                    thousandsSeparator = ThousandsSeparatorUi.valueOf(user.settings.thousandsSeparator.name)
-                )
-            }
-        }
     }
 
     fun onEvent(event: SecurityUiEvent) {
@@ -78,6 +79,40 @@ class SettingsSharedViewModel(
             is ExpensesFormatClicked -> updateExpensesFormat(event.expensesFormat)
             is ThousandsSeparatorClicked -> updateThousandsSeparator(event.thousandsSeparator)
             PreferencesUiEvent.SaveButtonClicked -> savePreferencesSettings()
+        }
+    }
+
+    fun onEvent(event: SettingsUiEvent) {
+        when (event) {
+            SettingsUiEvent.LogOutButtonClicked -> logOutUser()
+        }
+    }
+
+    private fun setUserSettings() {
+        viewModelScope.launch {
+            val user = getUser()
+
+            securityState = securityState.copy(
+                biometricsPrompt = user.settings.biometricsPrompt.toUi(),
+                sessionExpiryDuration = user.settings.sessionExpiryDuration.toUi(),
+                lockedOutDuration = user.settings.lockedOutDuration.toUi()
+            )
+
+            updateExpensesFormatState {
+                it.copy(
+                    expensesFormat = ExpensesFormatUi.valueOf(user.settings.expensesFormat.name),
+                    currency = CurrencyCategoryItem.valueOf(user.settings.currency.name),
+                    decimalSeparator = DecimalSeparatorUi.valueOf(user.settings.decimalSeparator.name),
+                    thousandsSeparator = ThousandsSeparatorUi.valueOf(user.settings.thousandsSeparator.name)
+                )
+            }
+        }
+    }
+
+    private fun logOutUser() {
+        viewModelScope.launch {
+            sessionRepository.logOut()
+            _settingsActions.send(SettingsAction.NavigateToLogin)
         }
     }
 
@@ -109,6 +144,7 @@ class SettingsSharedViewModel(
         viewModelScope.launch {
             val user = getUser()
             val expensesFormatState = preferencesState.expensesFormatState
+
             userRepository.upsertUser(
                 user.copy(
                     settings = user.settings.copy(
@@ -119,6 +155,14 @@ class SettingsSharedViewModel(
                     )
                 )
             )
+
+            viewModelScope.launch {
+                if (sessionRepository.isSessionExpired()) {
+                    _preferencesActions.send(PreferencesAction.NavigateToPinPrompt)
+                } else {
+                    _preferencesActions.send(PreferencesAction.NavigateBack)
+                }
+            }
         }
     }
 
@@ -135,10 +179,32 @@ class SettingsSharedViewModel(
     }
 
     private fun saveSecuritySettings() {
+        viewModelScope.launch {
+            val user = getUser()
 
+            userRepository.upsertUser(
+                user.copy(
+                    settings = user.settings.copy(
+                        biometricsPrompt = securityState.biometricsPrompt.toDomain(),
+                        sessionExpiryDuration = securityState.sessionExpiryDuration.toDomain(),
+                        lockedOutDuration = securityState.lockedOutDuration.toDomain()
+                    )
+                )
+            )
+
+            viewModelScope.launch {
+                if (sessionRepository.isSessionExpired()) {
+                    _securityActions.send(SecurityAction.NavigateToPinPrompt)
+                } else {
+                    _securityActions.send(SecurityAction.NavigateBack)
+                }
+            }
+        }
     }
 
     private suspend fun getUser(): User {
+        val username = sessionRepository.getLoggedInUsername() ?: throw UserNotLoggedInException()
+
         return userRepository.getUser(username)
             ?: throw IllegalArgumentException("User with username $username not found")
     }

@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.domain.entity.User
+import com.serhiiromanchuk.core.domain.exception.UserNotLoggedInException
+import com.serhiiromanchuk.core.domain.repository.SessionRepository
 import com.serhiiromanchuk.core.domain.repository.TransactionRepository
 import com.serhiiromanchuk.core.domain.repository.UserRepository
 import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
@@ -16,8 +18,8 @@ import com.serhiiromanchuk.core.presentation.ui.mappers.toUi
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
-import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiState
 import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiEvent
+import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiState
 import com.serhiiromanchuk.transactions.screens.create_transaction.components.TransactionModeOptions
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.CreateButtonClicked
@@ -25,24 +27,32 @@ import com.serhiiromanchuk.transactions.screens.create_transaction.handling.Crea
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.SpendCategorySelected
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiEvent.TransactionModeSelected
 import com.serhiiromanchuk.transactions.screens.create_transaction.handling.CreateTransactionUiState
+import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardAction
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent
+import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent.AllTransactionButtonClicked
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent.CreateTransactionSheetToggled
+import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent.SettingsButtonClicked
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import com.serhiiromanchuk.transactions.utils.AmountFormatter
 import com.serhiiromanchuk.transactions.utils.TransactionAnalytics
 import com.serhiiromanchuk.transactions.utils.toDomain
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class TransactionsSharedViewModel(
-    private val username: String,
     private val userRepository: UserRepository,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
     var dashboardState by mutableStateOf(DashboardUiState())
         private set
+
+    private val _dashboardAction = Channel<DashboardAction>()
+    val dashboardAction = _dashboardAction.receiveAsFlow()
 
     var createTransactionState by mutableStateOf(CreateTransactionUiState())
         private set
@@ -53,13 +63,24 @@ class TransactionsSharedViewModel(
     private var userId: Long? = null
 
     init {
+        sessionRepository.startSession()
         setDashboardInfo()
         observeTextFields()
     }
 
     fun onEvent(event: DashboardUiEvent) {
         when (event) {
-            CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
+            CreateTransactionSheetToggled -> handleSessionExpiration {
+                toggleCreateTransactionSheet()
+            }
+
+            AllTransactionButtonClicked -> handleSessionExpiration {
+                _dashboardAction.send(DashboardAction.NavigateToAllTransactions)
+            }
+
+            SettingsButtonClicked -> handleSessionExpiration {
+                _dashboardAction.send(DashboardAction.NavigateToSettings)
+            }
         }
     }
 
@@ -69,24 +90,28 @@ class TransactionsSharedViewModel(
             is SpendCategorySelected -> updateSpendCategory(event.spendCategory)
             is RepeatingCategorySelected -> updateRepeatingCategory(event.repeatingCategory)
 
-            CreateButtonClicked -> createTransaction()
+            CreateButtonClicked -> handleSessionExpiration { createTransaction() }
             CreateTransactionUiEvent.CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
         }
     }
 
     fun onEvent(event: AllTransactionsUiEvent) {
         when (event) {
-            AllTransactionsUiEvent.CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
+            AllTransactionsUiEvent.CreateTransactionSheetToggled -> handleSessionExpiration {
+                toggleCreateTransactionSheet()
+            }
             AllTransactionsUiEvent.ExportTransactionsSheetToggled -> TODO()
         }
     }
 
     private fun setDashboardInfo() {
         viewModelScope.launch {
+            val username = getUsername()
             userRepository.getFlowUser(username = username).collectLatest { user ->
                 user?.let {
+                    userId = user.id
                     setAmountSettings(user)
-                    setTransactionsAnalytics(user.id)
+                    setTransactionsAnalytics()
                 }
             }
         }
@@ -107,28 +132,30 @@ class TransactionsSharedViewModel(
         )
     }
 
-    private suspend fun setTransactionsAnalytics(userId: Long) {
-        transactionRepository.getTransactionsByUser(userId).collectLatest { transactions ->
-            if (transactions.isNotEmpty()) {
-                val latestTransactions = TransactionAnalytics
-                    .getLatestTransactions(transactions)
-                    .groupBy { InstantFormatter.convertInstantToLocalDate(it.transactionDate) }
-
-                val accountInfoState = TransactionAnalytics.getAccountInfoState(
-                    transactions = transactions,
-                    amountSettings = dashboardState.amountSettings
-                )
-
-                dashboardState = dashboardState.copy(
-                    latestTransactions = latestTransactions,
-                    accountInfoState = accountInfoState
-                )
-
-                allTransactionsState = allTransactionsState.copy(
-                    transactions = transactions
-                        .reversed()
+    private suspend fun setTransactionsAnalytics() {
+        userId?.let { id ->
+            transactionRepository.getTransactionsByUser(id).collectLatest { transactions ->
+                if (transactions.isNotEmpty()) {
+                    val latestTransactions = TransactionAnalytics
+                        .getLatestTransactions(transactions)
                         .groupBy { InstantFormatter.convertInstantToLocalDate(it.transactionDate) }
-                )
+
+                    val accountInfoState = TransactionAnalytics.getAccountInfoState(
+                        transactions = transactions,
+                        amountSettings = dashboardState.amountSettings
+                    )
+
+                    dashboardState = dashboardState.copy(
+                        latestTransactions = latestTransactions,
+                        accountInfoState = accountInfoState
+                    )
+
+                    allTransactionsState = allTransactionsState.copy(
+                        transactions = transactions
+                            .reversed()
+                            .groupBy { InstantFormatter.convertInstantToLocalDate(it.transactionDate) }
+                    )
+                }
             }
         }
     }
@@ -198,7 +225,7 @@ class TransactionsSharedViewModel(
     private fun handleCounterpartyInput(newText: CharSequence) {
         val counterpartyState = createTransactionState.transactionFieldsState.title
 
-        val filteredText = newText.filter { it.isLetter() }
+        val filteredText = newText.filter { it.isLetterOrDigit() }
         val limitedText = filteredText.take(MAX_COUNTERPARTY_LENGTH)
 
         if (limitedText != counterpartyState.text) {
@@ -223,6 +250,16 @@ class TransactionsSharedViewModel(
         noteState.edit { replace(0, noteState.text.length, filteredText) }
     }
 
+    private fun handleSessionExpiration(onValidSession: suspend () -> Unit) {
+        viewModelScope.launch {
+            if (sessionRepository.isSessionExpired()) {
+                _dashboardAction.send(DashboardAction.NavigateToPinPrompt)
+            } else {
+                onValidSession()
+            }
+        }
+    }
+
     private fun toggleCreateTransactionSheet() {
         dashboardState = dashboardState.copy(
             isCreateTransactionOpen = !dashboardState.isCreateTransactionOpen
@@ -239,6 +276,10 @@ class TransactionsSharedViewModel(
 
     private fun updateRepeatingCategory(repeatingCategory: RepeatingCategory) {
         createTransactionState = createTransactionState.copy(repeatingCategory = repeatingCategory)
+    }
+
+    private fun getUsername(): String {
+        return sessionRepository.getLoggedInUsername() ?: throw UserNotLoggedInException()
     }
 
     companion object {

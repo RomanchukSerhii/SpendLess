@@ -35,7 +35,7 @@ import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.UsernameLengthError
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_username.handling.CreateUsernameUiState
-import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
+import com.serhiiromanchuk.core.presentation.designsystem.components.AppFilledButton
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
@@ -51,7 +51,7 @@ internal fun UsernameForm(
     ) {
         UsernameTextField(state = state)
 
-        FilledButton(
+        AppFilledButton(
             text = stringResource(R.string.next),
             onClick = { onEvent(CreateUsernameUiEvent.NextButtonClicked) },
             modifier = Modifier.fillMaxWidth(),

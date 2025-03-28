@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components
+package com.serhiiromanchuk.core.presentation.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

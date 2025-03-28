@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components
+package com.serhiiromanchuk.core.presentation.ui.components
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler

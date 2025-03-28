@@ -8,25 +8,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppTopBar
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
-import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.designsystem.components.AppFilledButton
+import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import com.serhiiromanchuk.settings.presentation.R
 import com.serhiiromanchuk.settings.presentation.screens.SettingsSharedViewModel
 import com.serhiiromanchuk.settings.presentation.screens.security.components.SecurityContent
+import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityAction
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SecurityScreenRoot(
-    onBackClick: () -> Unit,
+    navigateBack: () -> Unit,
+    navigateToPinPrompt: () -> Unit,
     viewModel: SettingsSharedViewModel = koinViewModel()
 ) {
+    ObserveAsActions(viewModel.securityActions) { action ->
+        when (action) {
+            SecurityAction.NavigateBack -> navigateBack()
+            SecurityAction.NavigateToPinPrompt -> navigateToPinPrompt()
+        }
+    }
     BaseContentLayout(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.security),
-                onBackClick = onBackClick
+                onBackClick = navigateBack
             )
         }
     ) {
@@ -50,7 +59,7 @@ private fun SecurityScreen(
             onEvent = onEvent
         )
 
-        FilledButton(
+        AppFilledButton(
             text = stringResource(R.string.save),
             onClick = { onEvent(SecurityUiEvent.SaveButtonClicked) },
             modifier = Modifier.fillMaxWidth()

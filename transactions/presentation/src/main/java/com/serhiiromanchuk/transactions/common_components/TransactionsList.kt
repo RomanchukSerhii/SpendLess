@@ -1,7 +1,11 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.serhiiromanchuk.transactions.common_components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -40,7 +44,7 @@ import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.presentation.designsystem.IncomeIcon
 import com.serhiiromanchuk.core.presentation.designsystem.NotesIcon
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
+import com.serhiiromanchuk.core.presentation.ui.components.ExpensesFormatUi
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
 import com.serhiiromanchuk.transactions.presentation.R
@@ -61,9 +65,13 @@ fun TransactionsList(
     ) {
         transactions.forEach { (instant, transactions) ->
             // DataHeader
-            item {
+            stickyHeader {
                 Text(
-                    modifier = Modifier.padding(horizontal = 4.dp).padding(top = 8.dp, bottom = 4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(horizontal = 4.dp)
+                        .padding(top = 8.dp, bottom = 4.dp),
                     text = InstantFormatter.formatToRelativeDay(instant).asString(),
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Medium,
@@ -121,7 +129,7 @@ private fun TransactionItem(
                 horizontalArrangement = Arrangement.spacedBy(horizontalSpace)
             ) {
                 val formattedAmount = AmountFormatter.getFormatedAmount(
-                    newText = transaction.amount.toString(),
+                    amount = transaction.amount,
                     amountSettings = amountSettings,
                     enforceTwoDecimalPlaces = true
                 )

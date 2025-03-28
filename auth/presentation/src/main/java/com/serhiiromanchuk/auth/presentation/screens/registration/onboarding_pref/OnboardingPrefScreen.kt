@@ -15,9 +15,9 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pre
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefAction
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling.OnboardingPrefUiState
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
-import com.serhiiromanchuk.core.presentation.designsystem.components.FilledButton
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesSettings
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.designsystem.components.AppFilledButton
+import com.serhiiromanchuk.core.presentation.ui.components.ExpensesSettings
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import org.koin.androidx.compose.koinViewModel
@@ -25,12 +25,12 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun OnboardingPrefScreenRoot(
     navigateBack: () -> Unit,
-    navigateToTransactions: (username: String) -> Unit,
+    navigateToTransactions: () -> Unit,
     viewModel: RegistrationSharedViewModel = koinViewModel()
 ) {
     ObserveAsActions(viewModel.onboardingPrefAction) { action ->
         when (action) {
-            is OnboardingPrefAction.NavigateToTransactions -> navigateToTransactions(action.username)
+            is OnboardingPrefAction.NavigateToTransactions -> navigateToTransactions()
         }
     }
     OnboardingPrefScreen(
@@ -63,7 +63,7 @@ private fun OnboardingPrefScreen(
                 modifier = Modifier.padding(vertical = 24.dp)
             )
 
-            FilledButton(
+            AppFilledButton(
                 text = stringResource(R.string.start_tracking),
                 onClick = { onEvent(OnboardingPrefUiEvent.StartButtonClicked) },
                 modifier = Modifier.fillMaxWidth().padding(top = 10.dp, bottom = 24.dp),

@@ -2,7 +2,7 @@ package com.serhiiromanchuk.transactions.utils
 
 import com.serhiiromanchuk.core.domain.entity.Expense
 import com.serhiiromanchuk.core.domain.entity.Transaction
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatUi
+import com.serhiiromanchuk.core.presentation.ui.components.ExpensesFormatUi
 import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
 import com.serhiiromanchuk.transactions.common_components.AmountSettings
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
@@ -18,6 +18,7 @@ object TransactionAnalytics {
         transactions: List<Transaction>,
         amountSettings: AmountSettings
     ): DashboardUiState.AccountInfoState = coroutineScope {
+
         val balanceDeferred =
             async { formatAmount(getAccountBalance(transactions), amountSettings) }
 
@@ -126,7 +127,7 @@ object TransactionAnalytics {
         amountSettings: AmountSettings
     ): String {
         val formattedAmount = AmountFormatter.getFormatedAmount(
-            newText = amount.toString(),
+            amount = amount,
             amountSettings = amountSettings,
             enforceTwoDecimalPlaces = true
         )

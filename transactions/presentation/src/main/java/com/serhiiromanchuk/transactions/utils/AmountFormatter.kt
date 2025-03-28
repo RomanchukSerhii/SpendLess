@@ -1,7 +1,7 @@
 package com.serhiiromanchuk.transactions.utils
 
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.DecimalSeparatorUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ThousandsSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.components.DecimalSeparatorUi
+import com.serhiiromanchuk.core.presentation.ui.components.ThousandsSeparatorUi
 import com.serhiiromanchuk.transactions.common_components.AmountSettings
 
 object AmountFormatter {
@@ -11,14 +11,14 @@ object AmountFormatter {
     private const val MAX_DECIMAL_LENGTH = 2
 
     fun getFormatedAmount(
-        newText: CharSequence,
+        amount: CharSequence,
         amountSettings: AmountSettings,
         enforceTwoDecimalPlaces: Boolean = false
     ): String {
         val decimalSeparator = amountSettings.decimalSeparator.separator
         val thousandSeparator = amountSettings.thousandsSeparator.separator
 
-        var filteredText = newText.filter { it.isDigit() || it == '.' || it == ',' }
+        var filteredText = amount.filter { it.isDigit() || it == '.' || it == ',' }
 
         filteredText = replaceDecimalSeparator(filteredText, decimalSeparator)
         val parts = filteredText.split(decimalSeparator)
@@ -42,6 +42,19 @@ object AmountFormatter {
         }
 
         return resultText
+    }
+
+    fun getFormatedAmount(
+        amount: Float,
+        amountSettings: AmountSettings,
+        enforceTwoDecimalPlaces: Boolean = false
+    ): String {
+        return getFormatedAmount(
+            amount = amount.toString()
+                .replace(".", amountSettings.decimalSeparator.separator),
+            amountSettings = amountSettings,
+            enforceTwoDecimalPlaces = enforceTwoDecimalPlaces
+        )
     }
 
     fun parseAmountToFloat(

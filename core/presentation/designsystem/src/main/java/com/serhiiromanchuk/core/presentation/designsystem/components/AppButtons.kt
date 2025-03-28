@@ -24,7 +24,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.theme.ButtonColors
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
-fun FilledButton(
+fun AppFilledButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -77,8 +77,8 @@ fun ButtonExamples() {
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        FilledButton(text = "Filled Button", onClick = {  })
-        FilledButton(text = "Disabled Button", onClick = {}, enabled = false)
+        AppFilledButton(text = "Filled Button", onClick = {  })
+        AppFilledButton(text = "Disabled Button", onClick = {}, enabled = false)
 
         AppTextButton(text = "Text Button", onClick = {  })
         AppTextButton(text = "Disabled Text Button", onClick = {}, enabled = false)

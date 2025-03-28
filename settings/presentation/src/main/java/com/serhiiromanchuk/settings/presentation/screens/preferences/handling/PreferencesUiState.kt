@@ -1,6 +1,6 @@
 package com.serhiiromanchuk.settings.presentation.screens.preferences.handling
 
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
+import com.serhiiromanchuk.core.presentation.ui.states.ExpensesFormatState
 
 data class PreferencesUiState(
     val expensesFormatState: ExpensesFormatState = ExpensesFormatState()

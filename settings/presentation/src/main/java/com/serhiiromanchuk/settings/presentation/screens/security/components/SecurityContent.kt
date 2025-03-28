@@ -8,13 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentedButton
+import com.serhiiromanchuk.core.presentation.designsystem.components.AppSegmentedButton
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.settings.presentation.R
-import com.serhiiromanchuk.settings.presentation.screens.BiometricsPromptUi
-import com.serhiiromanchuk.settings.presentation.screens.LockedOutDurationUi
-import com.serhiiromanchuk.settings.presentation.screens.SessionExpiryDurationUi
-import com.serhiiromanchuk.core.presentation.designsystem.components.SettingItem
+import com.serhiiromanchuk.core.presentation.ui.components.SettingItem
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiEvent
 import com.serhiiromanchuk.settings.presentation.screens.security.handling.SecurityUiState
 
@@ -54,7 +51,7 @@ private fun BiometricsSettings(
         title = stringResource(R.string.biometrics_for_pin_prompt),
         modifier = modifier
     ) {
-        SegmentedButton(
+        AppSegmentedButton(
             segmentOptions = BiometricsPromptUi.entries,
             selectedOption = selectedOption,
             onOptionClick = { onOptionClick(it as BiometricsPromptUi) }
@@ -72,7 +69,7 @@ private fun SessionSettings(
         title = stringResource(R.string.session_expiry_duration),
         modifier = modifier
     ) {
-        SegmentedButton(
+        AppSegmentedButton(
             segmentOptions = SessionExpiryDurationUi.entries,
             selectedOption = selectedOption,
             onOptionClick = { onOptionClick(it as SessionExpiryDurationUi) }
@@ -90,7 +87,7 @@ private fun LockedOutSettings(
         title = stringResource(R.string.locked_out_duration),
         modifier = modifier
     ) {
-        SegmentedButton(
+        AppSegmentedButton(
             segmentOptions = LockedOutDurationUi.entries,
             selectedOption = selectedOption,
             onOptionClick = { onOptionClick(it as LockedOutDurationUi) }

@@ -1,6 +1,6 @@
 package com.serhiiromanchuk.auth.presentation.screens.registration.onboarding_pref.handling
 
-import com.serhiiromanchuk.core.presentation.designsystem.components.expenses_settings.ExpensesFormatState
+import com.serhiiromanchuk.core.presentation.ui.states.ExpensesFormatState
 
 data class OnboardingPrefUiState(
     val expensesFormatState: ExpensesFormatState = ExpensesFormatState()

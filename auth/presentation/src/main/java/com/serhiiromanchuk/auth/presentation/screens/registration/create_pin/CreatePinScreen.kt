@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,9 +20,9 @@ import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.han
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiEvent
 import com.serhiiromanchuk.auth.presentation.screens.registration.create_pin.handling.CreatePinUiState
 import com.serhiiromanchuk.auth.presentation.screens.registration.RegistrationSharedViewModel
-import com.serhiiromanchuk.core.presentation.designsystem.components.BaseContentLayout
-import com.serhiiromanchuk.core.presentation.designsystem.components.LocalSystemIconsUiController
-import com.serhiiromanchuk.core.presentation.designsystem.components.SystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import org.koin.androidx.compose.koinViewModel
@@ -67,7 +68,8 @@ private fun CreatePinScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 36.dp)
+                        .padding(top = 36.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CreatePinHeader(screenMode = state.screenMode)
 

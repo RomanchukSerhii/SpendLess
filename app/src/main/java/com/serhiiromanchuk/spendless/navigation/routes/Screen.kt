@@ -6,7 +6,7 @@ sealed class Screen(val route: String) {
     data object CreateUsername : Screen(ROUTE_CREATE_USERNAME)
     data object CreatePIN : Screen(ROUTE_CREATE_PIN)
     data object OnboardingPreferences : Screen(ROUTE_ONBOARDING_PREFERENCES)
-    data object PINPrompt : Screen(ROUTE_PIN_PROMPT)
+    data object PinPrompt : Screen(ROUTE_PIN_PROMPT)
 
     data object Dashboard : Screen(ROUTE_DASHBOARD)
     data object AllTransactions : Screen(ROUTE_ALL_TRANSACTIONS)

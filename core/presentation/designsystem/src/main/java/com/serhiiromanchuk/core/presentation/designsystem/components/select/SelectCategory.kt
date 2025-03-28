@@ -37,7 +37,8 @@ fun SelectCategory(
     items: List<DropdownItem>,
     selectedItem: DropdownItem,
     onItemSelected: (DropdownItem) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    iconSize: Dp = 40.dp
 ) {
     var expanded by remember { mutableStateOf(false) }
     var categoryWidth by remember { mutableStateOf(0.dp) }
@@ -50,6 +51,7 @@ fun SelectCategory(
             category = selectedItem,
             onClick = { expanded = !expanded },
             isExpanded = expanded,
+            iconSize = iconSize,
             modifier = Modifier.onSizeChanged { size ->
                 categoryWidth = with(density) { size.width.toDp() }
             }
@@ -66,7 +68,8 @@ fun SelectCategory(
                 onItemSelected(it)
                 expanded = !expanded
             },
-            dropdownWidth = categoryWidth
+            dropdownWidth = categoryWidth,
+            iconSize = iconSize
         )
     }
 }
@@ -79,6 +82,7 @@ private fun SelectDropdown(
     selectedItem: DropdownItem,
     onItemSelected: (DropdownItem) -> Unit,
     dropdownWidth: Dp,
+    iconSize: Dp,
     modifier: Modifier = Modifier
 ) {
     DropdownMenu(
@@ -104,7 +108,7 @@ private fun SelectDropdown(
                 onClick = { onItemSelected(categoryItem) },
                 leadingIcon = {
                     categoryItem.TextIcon(
-                        modifier = Modifier.size(40.dp),
+                        modifier = Modifier.size(iconSize),
                         fontSize = 18.sp
                     )
                 },

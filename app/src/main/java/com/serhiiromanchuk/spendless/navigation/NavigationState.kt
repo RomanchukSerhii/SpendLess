@@ -14,25 +14,27 @@ class NavigationState(
         navController.navigate(route)
     }
 
+    fun canNavigateBack(): Boolean {
+        return navController.previousBackStackEntry != null
+    }
+
     fun popBackStack() = navController.popBackStack()
 
-    fun navigateToTransactions(
-        username: String
-    ) {
-        navController.navigate("${Feature.Transactions.route}/$username") {
+    fun navigateToTransactions() {
+        navController.navigate(Feature.Transactions.route) {
             popUpTo(0) { inclusive = true }
         }
     }
 
-    fun navigateToSettings(
-        username: String
-    ) {
-        navController.navigate("${Feature.Settings.route}/$username")
+    fun navigateToPinPrompt() {
+        navController.navigate(Screen.PinPrompt.route) {
+            popUpTo(Screen.PinPrompt.route) { inclusive = true }
+        }
     }
 
     fun navigateToLogin() {
         navController.navigate(Screen.Login.route) {
-            popUpTo(Screen.Login.route) { inclusive = true }
+            popUpTo(0) { inclusive = true }
         }
     }
 }
