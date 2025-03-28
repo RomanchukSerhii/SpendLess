@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.bundles.koin.compose)
 
     api(libs.core)
+    implementation(libs.androidx.glance.appwidget)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

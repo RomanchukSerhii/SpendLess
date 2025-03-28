@@ -19,12 +19,12 @@ import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.RepeatType
 import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppFAB
-import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
 import com.serhiiromanchuk.core.presentation.designsystem.components.DashboardTopBar
-import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
-import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
+import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
+import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import com.serhiiromanchuk.transactions.screens.TransactionsSharedViewModel
 import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionBottomSheet
 import com.serhiiromanchuk.transactions.screens.dashboard.components.AccountInfo

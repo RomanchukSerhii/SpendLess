@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NavigationRoot(
     navigationState: NavigationState,
+    isLaunchedFromWidget: Boolean,
     sessionRepository: SessionRepository
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -45,7 +46,7 @@ fun NavigationRoot(
         startDestination = Feature.Auth.route
     ) {
         authGraph(navigationState, sessionRepository.isUserLoggedIn())
-        transactionsGraph(navigationState)
+        transactionsGraph(navigationState, isLaunchedFromWidget)
         settingsGraph(navigationState)
     }
 }

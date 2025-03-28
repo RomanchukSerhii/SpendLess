@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class TransactionsSharedViewModel(
+    isLaunchedFromWidget: Boolean,
     private val userRepository: UserRepository,
     private val transactionRepository: TransactionRepository,
     private val sessionRepository: SessionRepository
@@ -64,8 +65,12 @@ class TransactionsSharedViewModel(
 
     init {
         sessionRepository.startSession()
+        if (isLaunchedFromWidget) {
+            toggleCreateTransactionSheet()
+        }
         setDashboardInfo()
         observeTextFields()
+
     }
 
     fun onEvent(event: DashboardUiEvent) {

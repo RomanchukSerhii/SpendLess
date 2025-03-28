@@ -71,7 +71,7 @@ fun NavGraphBuilder.authGraph(
         }
 
         composable(
-            route = Screen.PinPrompt.route
+            route = Screen.PinPrompt.route,
         ) {
             PinPromptScreenRoot(
                 navigateBack = {

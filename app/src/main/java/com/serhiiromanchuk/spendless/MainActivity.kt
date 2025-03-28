@@ -8,6 +8,7 @@ import com.serhiiromanchuk.core.domain.repository.SessionRepository
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.spendless.navigation.NavigationRoot
 import com.serhiiromanchuk.spendless.navigation.rememberNavigationState
+import com.serhiiromanchuk.spendless.widget.SpendLessWidget
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
@@ -17,12 +18,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val isLaunchedFromWidget = intent.getBooleanExtra(SpendLessWidget.KEY_WIDGET_INTENT, false)
+
         enableEdgeToEdge()
         setContent {
             SpendLessTheme {
                 val navigationState = rememberNavigationState()
                 NavigationRoot(
                     navigationState = navigationState,
+                    isLaunchedFromWidget = isLaunchedFromWidget,
                     sessionRepository = sessionRepository
                 )
             }
