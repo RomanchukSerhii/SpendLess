@@ -21,9 +21,7 @@ fun AppCard(
         containerColor = Color.White,
         contentColor = MaterialTheme.colorScheme.onSurface
     ),
-    elevation: CardElevation = CardDefaults.cardElevation(
-        defaultElevation = 6.dp
-    ),
+    elevation: CardElevation = CardDefaults.cardElevation(),
     border: BorderStroke? = null,
     content: @Composable () -> Unit,
 ) {

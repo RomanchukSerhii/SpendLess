@@ -1,16 +1,23 @@
 package com.serhiiromanchuk.auth.presentation.screens.pin_prompt
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.serhiiromanchuk.auth.presentation.R
 import com.serhiiromanchuk.auth.presentation.components.AuthHeader
 import com.serhiiromanchuk.auth.presentation.components.PinKeyboard
@@ -33,6 +40,22 @@ fun PinPromptScreenRoot(
     navigateToLogin: () -> Unit,
     viewModel: PinPromptViewModel = koinViewModel()
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val lifecycle = lifecycleOwner.lifecycle
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_START) {
+                viewModel.onEvent(PinPromptUiEvent.CheckPinLockStatus)
+            }
+        }
+        lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycle.removeObserver(observer)
+        }
+    }
+
     ObserveAsActions(viewModel.actions) { action ->
         when (action) {
             PinPromptAction.NavigateNavigateBack -> navigateBack()
@@ -40,10 +63,14 @@ fun PinPromptScreenRoot(
         }
     }
 
-    PinPromptScreen(
-        state = viewModel.state,
-        onEvent = viewModel::onEvent
-    )
+    if (viewModel.state.userGreeting.asString().isEmpty()) {
+        EmptyScreen()
+    } else {
+        PinPromptScreen(
+            state = viewModel.state,
+            onEvent = viewModel::onEvent
+        )
+    }
 }
 
 @Composable
@@ -66,13 +93,16 @@ private fun PinPromptScreen(
                     icon = LogoutIcon,
                     contentDescription = stringResource(R.string.log_out),
                     onClick = { onEvent(PinPromptUiEvent.LogOutClicked) },
-                    modifier = Modifier.padding(top = 16.dp).align(Alignment.TopEnd),
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .align(Alignment.TopEnd),
                 )
 
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 36.dp)
+                        .padding(top = 36.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AuthHeader(
                         title = state.userGreeting.asString(),
@@ -94,6 +124,15 @@ private fun PinPromptScreen(
             }
         }
     }
+}
+
+@Composable
+fun EmptyScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    )
 }
 
 @Preview

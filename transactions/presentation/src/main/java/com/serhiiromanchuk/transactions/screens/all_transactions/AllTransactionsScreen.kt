@@ -12,6 +12,7 @@ import com.serhiiromanchuk.transactions.presentation.R
 import com.serhiiromanchuk.transactions.screens.TransactionsSharedViewModel
 import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiState
 import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiEvent
+import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionBottomSheet
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -35,6 +36,13 @@ fun AllTransactionsScreenRoot(
     ) {
         AllTransactionsScreen(
             state = viewModel.allTransactionsState
+        )
+    }
+
+    if (viewModel.dashboardState.isCreateTransactionOpen) {
+        CreateTransactionBottomSheet(
+            state = viewModel.createTransactionState,
+            onEvent = viewModel::onEvent
         )
     }
 }

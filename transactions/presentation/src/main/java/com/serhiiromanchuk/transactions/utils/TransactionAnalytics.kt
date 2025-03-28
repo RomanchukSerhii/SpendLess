@@ -18,6 +18,7 @@ object TransactionAnalytics {
         transactions: List<Transaction>,
         amountSettings: AmountSettings
     ): DashboardUiState.AccountInfoState = coroutineScope {
+
         val balanceDeferred =
             async { formatAmount(getAccountBalance(transactions), amountSettings) }
 
@@ -126,7 +127,7 @@ object TransactionAnalytics {
         amountSettings: AmountSettings
     ): String {
         val formattedAmount = AmountFormatter.getFormatedAmount(
-            newText = amount.toString(),
+            amount = amount,
             amountSettings = amountSettings,
             enforceTwoDecimalPlaces = true
         )

@@ -14,6 +14,10 @@ class NavigationState(
         navController.navigate(route)
     }
 
+    fun canNavigateBack(): Boolean {
+        return navController.previousBackStackEntry != null
+    }
+
     fun popBackStack() = navController.popBackStack()
 
     fun navigateToTransactions() {

@@ -33,21 +33,24 @@ class PinPromptViewModel(
     private val _actions = Channel<PinPromptAction>()
     val actions = _actions.receiveAsFlow()
 
-    init {
+    fun onEvent(event: PinPromptUiEvent) {
+        when (event) {
+            BackspaceButtonClicked -> removePinNumber()
+            LogOutClicked -> logOutUser()
+            is NumberButtonClicked -> updatePin(event.number)
+            PinPromptUiEvent.CheckPinLockStatus -> checkPinLockStatus()
+        }
+    }
+
+    private fun checkPinLockStatus() {
+        val pinLockDuration = sessionRepository.getPinLockRemainingTime()
+        if (pinLockDuration > 0) disableKeyboard(pinLockDuration)
         setGreeting()
     }
 
     private fun setGreeting() {
         val username = getUsername()
         state = state.copy(userGreeting = UiText.StringResource(R.string.user_greeting, username))
-    }
-
-    fun onEvent(event: PinPromptUiEvent) {
-        when (event) {
-            BackspaceButtonClicked -> removePinNumber()
-            LogOutClicked -> logOutUser()
-            is NumberButtonClicked -> updatePin(event.number)
-        }
     }
 
     private fun logOutUser() {
@@ -96,18 +99,19 @@ class PinPromptViewModel(
 
     private fun lockKeyboard(lockedOutDuration: LockedOutDuration) {
         updateAttempt(resetAttempt = true)
-        disableKeyboard(lockedOutDuration)
+        val durationInSeconds = when (lockedOutDuration) {
+            LockedOutDuration.FIFTEEN_SEC -> FIFTEEN_SECONDS
+            LockedOutDuration.THIRTY_SEC -> THIRTY_SECONDS
+            LockedOutDuration.ONE_MIN -> ONE_MINUTE
+            LockedOutDuration.FIVE_MIN -> FIVE_MINUTES
+        }
+        sessionRepository.setPinLockTimestamp(lockedOutDuration)
+        disableKeyboard(durationInSeconds)
     }
 
-    private fun disableKeyboard(lockedOutDuration: LockedOutDuration) {
+    private fun disableKeyboard(durationInSeconds: Int) {
         viewModelScope.launch {
             toggleKeyboardState()
-            val durationInSeconds = when (lockedOutDuration) {
-                LockedOutDuration.FIFTEEN_SEC -> FIFTEEN_SECONDS
-                LockedOutDuration.THIRTY_SEC -> THIRTY_SECONDS
-                LockedOutDuration.ONE_MIN -> ONE_MINUTE
-                LockedOutDuration.FIVE_MIN -> FIVE_MINUTES
-            }
 
             for (i in durationInSeconds downTo 0) {
                 val timerValue = formatTimeToMinuteSecond(i)
@@ -117,6 +121,7 @@ class PinPromptViewModel(
                     delay(1000)
                 } else {
                     toggleKeyboardState()
+                    sessionRepository.restorePinLockTimestamp()
                     updateDescription(R.string.enter_you_pin)
                 }
             }

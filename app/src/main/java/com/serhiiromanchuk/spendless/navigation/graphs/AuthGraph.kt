@@ -14,9 +14,12 @@ import com.serhiiromanchuk.spendless.navigation.routes.Feature
 import com.serhiiromanchuk.spendless.navigation.routes.Screen
 import com.serhiiromanchuk.spendless.navigation.sharedViewModel
 
-fun NavGraphBuilder.authGraph(navigationState: NavigationState) {
+fun NavGraphBuilder.authGraph(
+    navigationState: NavigationState,
+    isUserLoggedIng: Boolean
+) {
     navigation(
-        startDestination = Screen.Login.route,
+        startDestination = if (isUserLoggedIng) Screen.PinPrompt.route else Screen.Login.route,
         route = Feature.Auth.route
     ) {
         composable(
@@ -71,7 +74,13 @@ fun NavGraphBuilder.authGraph(navigationState: NavigationState) {
             route = Screen.PinPrompt.route
         ) {
             PinPromptScreenRoot(
-                navigateBack = { navigationState.popBackStack() } ,
+                navigateBack = {
+                    if (navigationState.canNavigateBack()) {
+                        navigationState.popBackStack()
+                    } else {
+                        navigationState.navigateToTransactions()
+                    }
+                },
                 navigateToLogin = { navigationState.navigateTo(Screen.Login.route) }
             )
         }

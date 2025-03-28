@@ -90,16 +90,16 @@ class TransactionsSharedViewModel(
             is SpendCategorySelected -> updateSpendCategory(event.spendCategory)
             is RepeatingCategorySelected -> updateRepeatingCategory(event.repeatingCategory)
 
-            CreateButtonClicked -> handleSessionExpiration {
-                createTransaction()
-            }
+            CreateButtonClicked -> handleSessionExpiration { createTransaction() }
             CreateTransactionUiEvent.CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
         }
     }
 
     fun onEvent(event: AllTransactionsUiEvent) {
         when (event) {
-            AllTransactionsUiEvent.CreateTransactionSheetToggled -> toggleCreateTransactionSheet()
+            AllTransactionsUiEvent.CreateTransactionSheetToggled -> handleSessionExpiration {
+                toggleCreateTransactionSheet()
+            }
             AllTransactionsUiEvent.ExportTransactionsSheetToggled -> TODO()
         }
     }
@@ -225,7 +225,7 @@ class TransactionsSharedViewModel(
     private fun handleCounterpartyInput(newText: CharSequence) {
         val counterpartyState = createTransactionState.transactionFieldsState.title
 
-        val filteredText = newText.filter { it.isLetter() }
+        val filteredText = newText.filter { it.isLetterOrDigit() }
         val limitedText = filteredText.take(MAX_COUNTERPARTY_LENGTH)
 
         if (limitedText != counterpartyState.text) {
