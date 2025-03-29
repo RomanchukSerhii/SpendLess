@@ -1,12 +1,9 @@
 package com.serhiiromanchuk.auth.presentation.screens.pin_prompt
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -30,6 +27,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.ErrorIconBu
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.EmptyScreen
 import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
 import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import org.koin.androidx.compose.koinViewModel
@@ -124,15 +122,6 @@ private fun PinPromptScreen(
             }
         }
     }
-}
-
-@Composable
-fun EmptyScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    )
 }
 
 @Preview

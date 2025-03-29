@@ -188,6 +188,7 @@ class TransactionsSharedViewModel(
                     )
 
                     dashboardState = dashboardState.copy(
+                        isDataLoaded = true,
                         latestTransactions = latestTransactions,
                         accountInfoState = accountInfoState
                     )

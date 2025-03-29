@@ -1,5 +1,6 @@
 package com.serhiiromanchuk.core.presentation.designsystem.components.dropdown
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.DropdownMenu
@@ -41,11 +44,12 @@ fun AppDropdown(
     iconSize: Dp = 40.dp
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var categoryWidth by remember { mutableStateOf(0.dp) }
+    var dropdownWidth by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
 
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth(),
     ) {
         CategoryCard(
             category = selectedItem,
@@ -53,7 +57,7 @@ fun AppDropdown(
             isExpanded = expanded,
             iconSize = iconSize,
             modifier = Modifier.onSizeChanged { size ->
-                categoryWidth = with(density) { size.width.toDp() }
+                dropdownWidth = with(density) { size.width.toDp() }
             }
         )
 
@@ -68,7 +72,7 @@ fun AppDropdown(
                 onItemSelected(it)
                 expanded = !expanded
             },
-            dropdownWidth = categoryWidth,
+            dropdownWidth = dropdownWidth,
             iconSize = iconSize
         )
     }
@@ -85,6 +89,7 @@ private fun SelectDropdown(
     iconSize: Dp,
     modifier: Modifier = Modifier
 ) {
+    val scrollState = rememberScrollState()
     DropdownMenu(
         modifier = modifier
             .width(dropdownWidth)
@@ -95,37 +100,52 @@ private fun SelectDropdown(
         containerColor = Color.White,
         shadowElevation = 6.dp
     ) {
-        items.forEach { categoryItem ->
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        text = stringResource(categoryItem.titleRes, *categoryItem.titleArgs),
-                        modifier = Modifier.offset(x = (-4).dp),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 240.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .verticalColumnScrollbar(scrollState)
+                    .verticalScroll(scrollState)
+            ) {
+                items.forEach { categoryItem ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = stringResource(
+                                    categoryItem.titleRes,
+                                    *categoryItem.titleArgs
+                                ),
+                                modifier = Modifier.offset(x = (-4).dp),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        },
+                        onClick = { onItemSelected(categoryItem) },
+                        leadingIcon = {
+                            categoryItem.TextIcon(
+                                modifier = Modifier.size(iconSize),
+                                fontSize = 18.sp
+                            )
+                        },
+                        trailingIcon = {
+                            if (categoryItem == selectedItem) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .padding(end = 12.dp)
+                                        .size(18.dp),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        },
+                        contentPadding = PaddingValues(horizontal = 4.dp)
                     )
-                },
-                onClick = { onItemSelected(categoryItem) },
-                leadingIcon = {
-                    categoryItem.TextIcon(
-                        modifier = Modifier.size(iconSize),
-                        fontSize = 18.sp
-                    )
-                },
-                trailingIcon = {
-                    if (categoryItem == selectedItem) {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(end = 12.dp)
-                                .size(18.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                },
-                contentPadding = PaddingValues(horizontal = 4.dp)
-            )
+                }
+            }
         }
     }
 }

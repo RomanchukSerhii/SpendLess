@@ -6,6 +6,7 @@ import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import java.time.Instant
 
 data class DashboardUiState(
+    val isDataLoaded: Boolean = false,
     val username: String = "",
     val latestTransactions: Map<Instant, List<Transaction>> = emptyMap(),
     val accountInfoState: AccountInfoState = AccountInfoState(),

@@ -23,6 +23,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.components.DashboardTo
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 import com.serhiiromanchuk.core.presentation.ui.ObserveAsActions
 import com.serhiiromanchuk.core.presentation.ui.components.BaseContentLayout
+import com.serhiiromanchuk.core.presentation.ui.components.EmptyScreen
 import com.serhiiromanchuk.core.presentation.ui.components.LocalSystemIconsUiController
 import com.serhiiromanchuk.core.presentation.ui.components.SystemIconsUiController
 import com.serhiiromanchuk.transactions.screens.TransactionsSharedViewModel
@@ -52,52 +53,56 @@ fun DashboardScreenRoot(
         }
     }
 
-    CompositionLocalProvider(
-        LocalSystemIconsUiController provides SystemIconsUiController(
-            isStatusBarIconsDark = false
-        )
-    ) {
-        BaseContentLayout(
-            topBar = {
-                DashboardTopBar(
-                    name = viewModel.dashboardState.username,
-                    onSettingsClick = { viewModel.onEvent(DashboardUiEvent.SettingsButtonClicked) },
-                    onExportClick = { viewModel.onEvent(DashboardUiEvent.ExportSheetToggled) }
-                )
-            },
-            floatingActionButton = {
-                AppFAB(
-                    onClick = { viewModel.onEvent(DashboardUiEvent.CreateTransactionSheetToggled) },
-                    modifier = Modifier.padding(
-                        bottom = LocalDensity.current.run {
-                            WindowInsets.navigationBars.getBottom(this).toDp()
-                        }
-                    )
-                )
-            },
-            background = { DashboardBackground() },
-            contentWindowInsets = WindowInsets.statusBars,
-            horizontalPadding = Dp.Unspecified
+    if (!viewModel.dashboardState.isDataLoaded) {
+        EmptyScreen()
+    } else {
+        CompositionLocalProvider(
+            LocalSystemIconsUiController provides SystemIconsUiController(
+                isStatusBarIconsDark = false
+            )
         ) {
-            DashboardScreen(
-                state = viewModel.dashboardState,
+            BaseContentLayout(
+                topBar = {
+                    DashboardTopBar(
+                        name = viewModel.dashboardState.username,
+                        onSettingsClick = { viewModel.onEvent(DashboardUiEvent.SettingsButtonClicked) },
+                        onExportClick = { viewModel.onEvent(DashboardUiEvent.ExportSheetToggled) }
+                    )
+                },
+                floatingActionButton = {
+                    AppFAB(
+                        onClick = { viewModel.onEvent(DashboardUiEvent.CreateTransactionSheetToggled) },
+                        modifier = Modifier.padding(
+                            bottom = LocalDensity.current.run {
+                                WindowInsets.navigationBars.getBottom(this).toDp()
+                            }
+                        )
+                    )
+                },
+                background = { DashboardBackground() },
+                contentWindowInsets = WindowInsets.statusBars,
+                horizontalPadding = Dp.Unspecified
+            ) {
+                DashboardScreen(
+                    state = viewModel.dashboardState,
+                    onEvent = viewModel::onEvent
+                )
+            }
+        }
+
+        if (viewModel.createTransactionState.isCreateTransactionSheetOpen) {
+            CreateTransactionBottomSheet(
+                state = viewModel.createTransactionState,
                 onEvent = viewModel::onEvent
             )
         }
-    }
 
-    if (viewModel.createTransactionState.isCreateTransactionSheetOpen) {
-        CreateTransactionBottomSheet(
-            state = viewModel.createTransactionState,
-            onEvent = viewModel::onEvent
-        )
-    }
-
-    if (viewModel.exportTransactionState.isExportSheetOpen) {
-        ExportBottomSheet(
-            state = viewModel.exportTransactionState,
-            onEvent = viewModel::onEvent
-        )
+        if (viewModel.exportTransactionState.isExportSheetOpen) {
+            ExportBottomSheet(
+                state = viewModel.exportTransactionState,
+                onEvent = viewModel::onEvent
+            )
+        }
     }
 }
 
