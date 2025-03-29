@@ -44,9 +44,9 @@ import com.serhiiromanchuk.core.domain.entity.Income
 import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.presentation.designsystem.IncomeIcon
 import com.serhiiromanchuk.core.presentation.designsystem.NotesIcon
-import com.serhiiromanchuk.core.presentation.ui.components.ExpensesFormatUi
 import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
-import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
+import com.serhiiromanchuk.core.presentation.ui.InstantFormatterUi
+import com.serhiiromanchuk.core.presentation.ui.components.ExpensesFormatUi
 import com.serhiiromanchuk.transactions.presentation.R
 import com.serhiiromanchuk.transactions.utils.AmountFormatter
 import com.serhiiromanchuk.transactions.utils.toUi
@@ -72,7 +72,7 @@ fun TransactionsList(
                         .background(MaterialTheme.colorScheme.background)
                         .padding(horizontal = 4.dp)
                         .padding(top = 8.dp, bottom = 4.dp),
-                    text = InstantFormatter.formatToRelativeDay(instant).asString(),
+                    text = InstantFormatterUi.formatToRelativeDay(instant).asString(),
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)

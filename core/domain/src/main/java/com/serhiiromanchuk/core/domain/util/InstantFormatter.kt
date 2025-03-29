@@ -1,8 +1,7 @@
-package com.serhiiromanchuk.core.presentation.ui
+package com.serhiiromanchuk.core.domain.util
 
 import java.time.DayOfWeek
 import java.time.Instant
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -11,31 +10,20 @@ import java.util.Locale
 
 object InstantFormatter {
     private val zoneId: ZoneId = ZoneId.systemDefault()
-    private val englishLocal: Locale = Locale("en", "US")
-
-    fun formatToRelativeDay(instant: Instant): UiText {
-        val today = LocalDate.now(zoneId)
-        val yesterday = today.minusDays(1)
-
-        return when (val date = instant.atZone(zoneId).toLocalDate()) {
-            today -> UiText.StringResource(R.string.today)
-            yesterday -> UiText.StringResource(R.string.yesterday)
-            else -> UiText.DynamicString(
-                date.format(
-                    DateTimeFormatter.ofPattern(
-                        "MMM d, EEEE",
-                        englishLocal
-                    )
-                )
-            )
-        }
-    }
+    private val englishLocal: Locale = Locale.forLanguageTag("en-US")
 
     fun formatDateString(timestamp: Long): String {
         val instant = Instant.ofEpochMilli(timestamp)
         val date = instant.atZone(zoneId).toLocalDate()
 
         return date.format(DateTimeFormatter.ofPattern("MMM d, yyyy", englishLocal))
+    }
+
+    fun formatDateTimeString(timestamp: Long): String {
+        val instant = Instant.ofEpochMilli(timestamp)
+        val dateTime = instant.atZone(zoneId).toLocalDateTime()
+
+        return dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", englishLocal))
     }
 
     fun convertInstantToLocalDate(timestamp: Long): Instant {

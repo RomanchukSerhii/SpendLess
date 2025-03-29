@@ -33,6 +33,7 @@ import com.serhiiromanchuk.transactions.screens.dashboard.components.LatestTrans
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardAction
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
+import com.serhiiromanchuk.transactions.screens.export_transactions.ExportBottomSheet
 import org.koin.androidx.compose.koinViewModel
 import java.time.Instant
 
@@ -59,9 +60,9 @@ fun DashboardScreenRoot(
         BaseContentLayout(
             topBar = {
                 DashboardTopBar(
-                    name = "rockefeller74",
+                    name = viewModel.dashboardState.username,
                     onSettingsClick = { viewModel.onEvent(DashboardUiEvent.SettingsButtonClicked) },
-                    onExportClick = {}
+                    onExportClick = { viewModel.onEvent(DashboardUiEvent.ExportSheetToggled) }
                 )
             },
             floatingActionButton = {
@@ -85,9 +86,16 @@ fun DashboardScreenRoot(
         }
     }
 
-    if (viewModel.dashboardState.isCreateTransactionOpen) {
+    if (viewModel.createTransactionState.isCreateTransactionSheetOpen) {
         CreateTransactionBottomSheet(
             state = viewModel.createTransactionState,
+            onEvent = viewModel::onEvent
+        )
+    }
+
+    if (viewModel.exportTransactionState.isExportSheetOpen) {
+        ExportBottomSheet(
+            state = viewModel.exportTransactionState,
             onEvent = viewModel::onEvent
         )
     }

@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.SelectCategory
+import com.serhiiromanchuk.core.presentation.designsystem.components.dropdown.AppDropdown
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
 
@@ -24,7 +24,7 @@ fun TransactionOptions(
     ) {
         // Select spend category
         if (isExpense) {
-            SelectCategory(
+            AppDropdown(
                 items = ExpenseCategory.entries,
                 selectedItem = selectedSpendCategory,
                 onItemSelected = { onSpendCategoryClick(it as ExpenseCategory) },
@@ -33,7 +33,7 @@ fun TransactionOptions(
         }
 
         // Select repeat category
-        SelectCategory(
+        AppDropdown(
             items = RepeatingCategory.entries,
             selectedItem = selectedRepeatingCategory,
             onItemSelected = { onRepeatingCategoryClick(it as RepeatingCategory)}

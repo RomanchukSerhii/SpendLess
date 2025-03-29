@@ -7,6 +7,7 @@ import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
 import com.serhiiromanchuk.transactions.screens.create_transaction.components.TransactionModeOptions
 
 data class CreateTransactionUiState(
+    val isCreateTransactionSheetOpen: Boolean = false,
     val transactionMode: TransactionModeOptions = TransactionModeOptions.EXPENSE,
     val expenseCategory: ExpenseCategory = ExpenseCategory.OTHER,
     val repeatingCategory: RepeatingCategory = RepeatingCategory.NOT_REPEAT,

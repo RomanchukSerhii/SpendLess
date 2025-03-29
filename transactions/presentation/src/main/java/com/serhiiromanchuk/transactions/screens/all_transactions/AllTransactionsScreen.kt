@@ -13,6 +13,7 @@ import com.serhiiromanchuk.transactions.screens.TransactionsSharedViewModel
 import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiState
 import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiEvent
 import com.serhiiromanchuk.transactions.screens.create_transaction.CreateTransactionBottomSheet
+import com.serhiiromanchuk.transactions.screens.export_transactions.ExportBottomSheet
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -25,7 +26,9 @@ fun AllTransactionsScreenRoot(
             AppTopBar(
                 title = stringResource(R.string.all_transactions),
                 onBackClick = onBackClick,
-                onDownloadClick = { }
+                onExportClick = {
+                    viewModel.onEvent(AllTransactionsUiEvent.ExportSheetToggled)
+                }
             )
         },
         floatingActionButton = {
@@ -39,9 +42,16 @@ fun AllTransactionsScreenRoot(
         )
     }
 
-    if (viewModel.dashboardState.isCreateTransactionOpen) {
+    if (viewModel.createTransactionState.isCreateTransactionSheetOpen) {
         CreateTransactionBottomSheet(
             state = viewModel.createTransactionState,
+            onEvent = viewModel::onEvent
+        )
+    }
+
+    if (viewModel.exportTransactionState.isExportSheetOpen) {
+        ExportBottomSheet(
+            state = viewModel.exportTransactionState,
             onEvent = viewModel::onEvent
         )
     }

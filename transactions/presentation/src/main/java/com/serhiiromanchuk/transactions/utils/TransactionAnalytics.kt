@@ -2,14 +2,17 @@ package com.serhiiromanchuk.transactions.utils
 
 import com.serhiiromanchuk.core.domain.entity.Expense
 import com.serhiiromanchuk.core.domain.entity.Transaction
+import com.serhiiromanchuk.core.domain.util.InstantFormatter
 import com.serhiiromanchuk.core.presentation.ui.components.ExpensesFormatUi
-import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
 import com.serhiiromanchuk.transactions.common_components.AmountSettings
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
+import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportRange
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 object TransactionAnalytics {
@@ -47,7 +50,51 @@ object TransactionAnalytics {
         )
     }
 
-    fun getAccountBalance(transactions: List<Transaction>): Float {
+    fun getLatestTransactions(transactions: List<Transaction>): List<Transaction> {
+        requireNonEmptyTransactions(transactions)
+
+        return transactions
+            .sortedByDescending { it.transactionDate }
+            .take(20)
+    }
+
+    fun filterTransactionsByRange(
+        transactions: List<Transaction>,
+        range: ExportRange
+    ): List<Transaction> {
+        val zoneId = ZoneId.systemDefault()
+        val now = LocalDate.now(zoneId)
+        val startDate: Instant
+
+        when (range) {
+            ExportRange.LAST_MONTH -> {
+                val lastMonth = now.minusMonths(1)
+                startDate = lastMonth.withDayOfMonth(1).atStartOfDay(zoneId).toInstant()
+            }
+
+            ExportRange.THREE_MONTH -> {
+                val threeMonthsAgo = now.minusMonths(3)
+                startDate = threeMonthsAgo.withDayOfMonth(1).atStartOfDay(zoneId).toInstant()
+            }
+
+            ExportRange.CURRENT_MONTH -> {
+                startDate = now.withDayOfMonth(1).atStartOfDay(zoneId).toInstant()
+            }
+
+            ExportRange.ALL -> {
+                startDate = Instant.MIN
+            }
+        }
+
+        return transactions
+            .filter {
+                val transactionInstant = Instant.ofEpochMilli(it.transactionDate)
+                transactionInstant in startDate..Instant.now()
+            }
+            .reversed()
+    }
+
+    private fun getAccountBalance(transactions: List<Transaction>): Float {
         requireNonEmptyTransactions(transactions)
 
         return transactions.fold(0f) { aac, transaction ->
@@ -55,7 +102,7 @@ object TransactionAnalytics {
         }
     }
 
-    fun getMostPopularCategory(transactions: List<Transaction>): ExpenseCategory {
+    private fun getMostPopularCategory(transactions: List<Transaction>): ExpenseCategory {
         requireNonEmptyTransactions(transactions)
 
         return transactions
@@ -67,7 +114,7 @@ object TransactionAnalytics {
             ?: throw IllegalStateException("No expense categories found in transactions")
     }
 
-    fun getLargestTransactionAmount(transactions: List<Transaction>): Float {
+    private fun getLargestTransactionAmount(transactions: List<Transaction>): Float {
         requireNonEmptyTransactions(transactions)
 
         return transactions
@@ -75,7 +122,7 @@ object TransactionAnalytics {
             .minOfOrNull { it.amount } ?: throw IllegalStateException("No transactions found")
     }
 
-    fun getLargestTransactionName(transactions: List<Transaction>): String {
+    private fun getLargestTransactionName(transactions: List<Transaction>): String {
         requireNonEmptyTransactions(transactions)
 
         return transactions
@@ -84,7 +131,7 @@ object TransactionAnalytics {
             ?.title ?: throw IllegalStateException("No transactions found")
     }
 
-    fun getLargestTransactionDate(transactions: List<Transaction>): Long {
+    private fun getLargestTransactionDate(transactions: List<Transaction>): Long {
         requireNonEmptyTransactions(transactions)
 
         return transactions
@@ -93,7 +140,7 @@ object TransactionAnalytics {
             ?.transactionDate ?: throw IllegalStateException("No transactions found")
     }
 
-    fun getPreviousWeekExpenseAmount(transactions: List<Transaction>): Float {
+    private fun getPreviousWeekExpenseAmount(transactions: List<Transaction>): Float {
         requireNonEmptyTransactions(transactions)
 
         val (lastMonday, lastSunday) = InstantFormatter.getPreviousWeekRange()
@@ -112,14 +159,6 @@ object TransactionAnalytics {
             .fold(0f) { aac, transaction ->
                 aac + transaction.amount
             }
-    }
-
-    fun getLatestTransactions(transactions: List<Transaction>): List<Transaction> {
-        requireNonEmptyTransactions(transactions)
-
-        return transactions
-            .sortedByDescending { it.transactionDate }
-            .take(20)
     }
 
     private fun formatAmount(

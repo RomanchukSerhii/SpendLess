@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components.select
+package com.serhiiromanchuk.core.presentation.designsystem.components.dropdown
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

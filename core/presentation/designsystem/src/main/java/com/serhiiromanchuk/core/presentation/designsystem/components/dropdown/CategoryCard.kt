@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components.select
+package com.serhiiromanchuk.core.presentation.designsystem.components.dropdown
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.clickable
@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
@@ -38,7 +39,6 @@ fun CategoryCard(
 ) {
     Card(
         modifier = modifier
-            .clickable { onClick(category) }
             // Shadow
             .drawBehind {
                 drawIntoCanvas { canvas ->
@@ -65,6 +65,8 @@ fun CategoryCard(
                     )
                 }
             }
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onClick(category) }
         ,
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(

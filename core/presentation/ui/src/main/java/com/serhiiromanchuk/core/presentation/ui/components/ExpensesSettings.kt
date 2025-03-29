@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppCard
 import com.serhiiromanchuk.core.presentation.designsystem.components.AppSegmentedButton
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.SelectCategory
+import com.serhiiromanchuk.core.presentation.designsystem.components.dropdown.AppDropdown
 import com.serhiiromanchuk.core.presentation.ui.states.ExpensesFormatState
 
 @Composable
@@ -147,7 +147,7 @@ private fun CurrencySettings(
         title = stringResource(R.string.currency),
         modifier = modifier
     ) {
-        SelectCategory(
+        AppDropdown(
             items = CurrencyCategoryItem.entries,
             selectedItem = selectedCurrency,
             onItemSelected = { onOptionClick(it as CurrencyCategoryItem) },

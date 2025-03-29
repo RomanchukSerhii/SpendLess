@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 val transactionsSharedViewModelModule = module {
     viewModel { (isLaunchedFromWidget: Boolean) ->
-        TransactionsSharedViewModel(isLaunchedFromWidget, get(), get(), get())
+        TransactionsSharedViewModel(isLaunchedFromWidget, get(), get(), get(), get())
     }
 }

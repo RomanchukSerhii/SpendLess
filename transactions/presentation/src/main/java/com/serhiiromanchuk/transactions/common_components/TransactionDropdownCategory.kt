@@ -14,8 +14,8 @@ import com.serhiiromanchuk.core.presentation.designsystem.PersonalCareIcon
 import com.serhiiromanchuk.core.presentation.designsystem.RepeatIcon
 import com.serhiiromanchuk.core.presentation.designsystem.SavingIcon
 import com.serhiiromanchuk.core.presentation.designsystem.TransportationIcon
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.DropdownItem
-import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
+import com.serhiiromanchuk.core.presentation.designsystem.components.dropdown.DropdownItem
+import com.serhiiromanchuk.core.domain.util.InstantFormatter
 import com.serhiiromanchuk.transactions.presentation.R
 
 

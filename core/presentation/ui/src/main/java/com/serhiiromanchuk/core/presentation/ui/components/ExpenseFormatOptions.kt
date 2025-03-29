@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.TextUnit
 import com.serhiiromanchuk.core.presentation.designsystem.R
 import com.serhiiromanchuk.core.presentation.designsystem.components.OptionText
 import com.serhiiromanchuk.core.presentation.designsystem.components.SegmentOption
-import com.serhiiromanchuk.core.presentation.designsystem.components.select.DropdownItem
+import com.serhiiromanchuk.core.presentation.designsystem.components.dropdown.DropdownItem
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 enum class ExpensesFormatUi(override val label: @Composable () -> Unit) : SegmentOption {

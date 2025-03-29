@@ -4,10 +4,11 @@ import android.app.Application
 import com.google.android.play.core.ktx.BuildConfig
 import com.serhiiromanchuk.auth.data.di.authDataModule
 import com.serhiiromanchuk.auth.presentation.di.authViewModelModule
-import com.serhiiromanchuk.core.data.di.sessionModule
+import com.serhiiromanchuk.core.data.di.coreDataModule
 import com.serhiiromanchuk.core.database.di.databaseModule
 import com.serhiiromanchuk.settings.presentation.di.settingsViewModelModule
 import com.serhiiromanchuk.spendless.di.appModule
+import com.serhiiromanchuk.transactions.data.transactionsDataModule
 import com.serhiiromanchuk.transactions.di.transactionsSharedViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -31,8 +32,9 @@ class SpendLessApp : Application() {
                 authDataModule,
                 databaseModule,
                 settingsViewModelModule,
+                transactionsDataModule,
                 transactionsSharedViewModelModule,
-                sessionModule
+                coreDataModule
             )
         }
     }

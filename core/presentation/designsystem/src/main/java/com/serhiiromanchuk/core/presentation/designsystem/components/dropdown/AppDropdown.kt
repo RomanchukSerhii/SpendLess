@@ -1,4 +1,4 @@
-package com.serhiiromanchuk.core.presentation.designsystem.components.select
+package com.serhiiromanchuk.core.presentation.designsystem.components.dropdown
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SelectCategory(
+fun AppDropdown(
     items: List<DropdownItem>,
     selectedItem: DropdownItem,
     onItemSelected: (DropdownItem) -> Unit,

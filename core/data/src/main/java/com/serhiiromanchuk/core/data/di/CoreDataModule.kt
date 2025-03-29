@@ -7,7 +7,7 @@ import com.serhiiromanchuk.core.domain.repository.SessionRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val sessionModule = module {
+val coreDataModule = module {
     single { provideSharedPreferences(androidContext()) }
     single<SessionRepository> { SessionRepositoryImpl(get(), get()) }
 }

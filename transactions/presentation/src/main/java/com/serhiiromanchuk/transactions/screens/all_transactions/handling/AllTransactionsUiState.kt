@@ -6,5 +6,5 @@ import java.time.Instant
 
 data class AllTransactionsUiState(
     val transactions: Map<Instant, List<Transaction>> = emptyMap(),
-    val amountSettings: AmountSettings = AmountSettings()
+    val amountSettings: AmountSettings = AmountSettings(),
 )

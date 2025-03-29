@@ -22,7 +22,7 @@ import com.serhiiromanchuk.core.presentation.designsystem.theme.AppColors
 import com.serhiiromanchuk.core.presentation.designsystem.theme.SpendLessTheme
 
 @Composable
-private fun SpendLessIconButton(
+private fun AppIconButton(
     icon: ImageVector,
     contentDescription: String?,
     onClick: () -> Unit,
@@ -52,7 +52,7 @@ fun OnPrimaryIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SpendLessIconButton(
+    AppIconButton(
         icon = icon,
         contentDescription = contentDescription,
         onClick = onClick,
@@ -71,7 +71,7 @@ fun StandardIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SpendLessIconButton(
+    AppIconButton(
         icon = icon,
         contentDescription = contentDescription,
         onClick = onClick,
@@ -90,7 +90,7 @@ fun ErrorIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SpendLessIconButton(
+    AppIconButton(
         icon = icon,
         contentDescription = contentDescription,
         onClick = onClick,

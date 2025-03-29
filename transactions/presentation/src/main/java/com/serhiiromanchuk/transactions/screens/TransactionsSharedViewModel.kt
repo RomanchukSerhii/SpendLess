@@ -13,11 +13,12 @@ import com.serhiiromanchuk.core.domain.exception.UserNotLoggedInException
 import com.serhiiromanchuk.core.domain.repository.SessionRepository
 import com.serhiiromanchuk.core.domain.repository.TransactionRepository
 import com.serhiiromanchuk.core.domain.repository.UserRepository
-import com.serhiiromanchuk.core.presentation.ui.InstantFormatter
+import com.serhiiromanchuk.core.domain.util.InstantFormatter
 import com.serhiiromanchuk.core.presentation.ui.mappers.toUi
 import com.serhiiromanchuk.core.presentation.ui.textAsFlow
 import com.serhiiromanchuk.transactions.common_components.ExpenseCategory
 import com.serhiiromanchuk.transactions.common_components.RepeatingCategory
+import com.serhiiromanchuk.transactions.domain.CsvExporter
 import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiEvent
 import com.serhiiromanchuk.transactions.screens.all_transactions.handling.AllTransactionsUiState
 import com.serhiiromanchuk.transactions.screens.create_transaction.components.TransactionModeOptions
@@ -33,6 +34,10 @@ import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEv
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent.CreateTransactionSheetToggled
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEvent.SettingsButtonClicked
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
+import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportRange
+import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportUiEvent
+import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportUiEvent.*
+import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportUiState
 import com.serhiiromanchuk.transactions.utils.AmountFormatter
 import com.serhiiromanchuk.transactions.utils.TransactionAnalytics
 import com.serhiiromanchuk.transactions.utils.toDomain
@@ -42,12 +47,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class TransactionsSharedViewModel(
     isLaunchedFromWidget: Boolean,
     private val userRepository: UserRepository,
     private val transactionRepository: TransactionRepository,
-    private val sessionRepository: SessionRepository
+    private val sessionRepository: SessionRepository,
+    private val csvExporter: CsvExporter,
 ) : ViewModel() {
     var dashboardState by mutableStateOf(DashboardUiState())
         private set
@@ -55,10 +63,13 @@ class TransactionsSharedViewModel(
     private val _dashboardAction = Channel<DashboardAction>()
     val dashboardAction = _dashboardAction.receiveAsFlow()
 
+    var allTransactionsState by mutableStateOf(AllTransactionsUiState())
+        private set
+
     var createTransactionState by mutableStateOf(CreateTransactionUiState())
         private set
 
-    var allTransactionsState by mutableStateOf(AllTransactionsUiState())
+    var exportTransactionState by mutableStateOf(ExportUiState())
         private set
 
     private var userId: Long? = null
@@ -70,7 +81,6 @@ class TransactionsSharedViewModel(
         }
         setDashboardInfo()
         observeTextFields()
-
     }
 
     fun onEvent(event: DashboardUiEvent) {
@@ -85,6 +95,10 @@ class TransactionsSharedViewModel(
 
             SettingsButtonClicked -> handleSessionExpiration {
                 _dashboardAction.send(DashboardAction.NavigateToSettings)
+            }
+
+            DashboardUiEvent.ExportSheetToggled -> handleSessionExpiration {
+                toggleExportSheet()
             }
         }
     }
@@ -105,13 +119,36 @@ class TransactionsSharedViewModel(
             AllTransactionsUiEvent.CreateTransactionSheetToggled -> handleSessionExpiration {
                 toggleCreateTransactionSheet()
             }
-            AllTransactionsUiEvent.ExportTransactionsSheetToggled -> TODO()
+
+            AllTransactionsUiEvent.ExportSheetToggled -> handleSessionExpiration {
+                toggleExportSheet()
+            }
         }
+    }
+
+    fun onEvent(event: ExportUiEvent) {
+        when (event) {
+            ExportButtonClicked -> exportTransactions()
+            is ExportRangeClicked -> updateExportRange(event.exportRange)
+            ExportSheetToggled -> toggleExportSheet()
+        }
+    }
+
+    private fun exportTransactions() {
+        val transactionsInRange = TransactionAnalytics.filterTransactionsByRange(
+            allTransactionsState.transactions.values.flatten(),
+            exportTransactionState.exportRange
+        )
+
+        csvExporter.exportToCsv(generateCsvFileName(), transactionsInRange)
+        toggleExportSheet()
     }
 
     private fun setDashboardInfo() {
         viewModelScope.launch {
             val username = getUsername()
+            updateUsername(username)
+
             userRepository.getFlowUser(username = username).collectLatest { user ->
                 user?.let {
                     userId = user.id
@@ -266,9 +303,25 @@ class TransactionsSharedViewModel(
     }
 
     private fun toggleCreateTransactionSheet() {
-        dashboardState = dashboardState.copy(
-            isCreateTransactionOpen = !dashboardState.isCreateTransactionOpen
+        createTransactionState = createTransactionState.copy(
+            isCreateTransactionSheetOpen = !createTransactionState.isCreateTransactionSheetOpen
         )
+    }
+
+    private fun toggleExportSheet() {
+        exportTransactionState = exportTransactionState.copy(
+            isExportSheetOpen = !exportTransactionState.isExportSheetOpen
+        )
+    }
+
+    private fun updateExportRange(exportRange: ExportRange) {
+        exportTransactionState = exportTransactionState.copy(
+            exportRange = exportRange
+        )
+    }
+
+    private fun updateUsername(username: String) {
+        dashboardState = dashboardState.copy(username = username)
     }
 
     private fun updateTransactionMode(transactionMode: TransactionModeOptions) {
@@ -285,6 +338,18 @@ class TransactionsSharedViewModel(
 
     private fun getUsername(): String {
         return sessionRepository.getLoggedInUsername() ?: throw UserNotLoggedInException()
+    }
+
+    private fun generateCsvFileName(): String {
+        val currentDateTime = LocalDateTime.now()
+        val formattedDate = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm"))
+        val title = when (exportTransactionState.exportRange) {
+            ExportRange.THREE_MONTH -> "three_month_transactions"
+            ExportRange.LAST_MONTH -> "last_month_transactions"
+            ExportRange.CURRENT_MONTH -> "current_month_transactions"
+            ExportRange.ALL -> "all_transactions"
+        }
+        return "${title}_$formattedDate.csv"
     }
 
     companion object {
