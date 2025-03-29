@@ -2,7 +2,6 @@ package com.serhiiromanchuk.spendless.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -12,7 +11,6 @@ import com.serhiiromanchuk.spendless.navigation.graphs.authGraph
 import com.serhiiromanchuk.spendless.navigation.graphs.settingsGraph
 import com.serhiiromanchuk.spendless.navigation.graphs.transactionsGraph
 import com.serhiiromanchuk.spendless.navigation.routes.Feature
-import kotlinx.coroutines.launch
 
 @Composable
 fun NavigationRoot(
@@ -21,17 +19,13 @@ fun NavigationRoot(
     sessionRepository: SessionRepository
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    val coroutineScope = rememberCoroutineScope()
+    val isUserSessionExpired = sessionRepository.isUserLoggedIn() && sessionRepository.isSessionExpired()
 
     DisposableEffect(lifecycleOwner) {
         val lifecycle = lifecycleOwner.lifecycle
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_START) {
-                coroutineScope.launch {
-                    if (sessionRepository.isUserLoggedIn() && sessionRepository.isSessionExpired()) {
-                        navigationState.navigateToPinPrompt()
-                    }
-                }
+            if (event == Lifecycle.Event.ON_START && isUserSessionExpired) {
+                navigationState.navigateToPinPrompt()
             }
         }
         lifecycle.addObserver(observer)
@@ -43,9 +37,13 @@ fun NavigationRoot(
 
     NavHost(
         navController = navigationState.navController,
-        startDestination = Feature.Auth.route
+        startDestination = if (!sessionRepository.isUserLoggedIn() || isUserSessionExpired) {
+            Feature.Auth.route
+        } else {
+            Feature.Transactions.route
+        }
     ) {
-        authGraph(navigationState, sessionRepository.isUserLoggedIn())
+        authGraph(navigationState, isUserSessionExpired)
         transactionsGraph(navigationState, isLaunchedFromWidget)
         settingsGraph(navigationState)
     }

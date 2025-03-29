@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val coreDataModule = module {
     single { provideSharedPreferences(androidContext()) }
-    single<SessionRepository> { SessionRepositoryImpl(get(), get()) }
+    single<SessionRepository> { SessionRepositoryImpl(get()) }
 }
 
 fun provideSharedPreferences(context: Context): SharedPreferences {

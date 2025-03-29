@@ -75,7 +75,6 @@ class TransactionsSharedViewModel(
     private var userId: Long? = null
 
     init {
-        sessionRepository.startSession()
         if (isLaunchedFromWidget) {
             toggleCreateTransactionSheet()
         }
@@ -152,6 +151,7 @@ class TransactionsSharedViewModel(
             userRepository.getFlowUser(username = username).collectLatest { user ->
                 user?.let {
                     userId = user.id
+                    sessionRepository.startSession(user.settings.sessionExpiryDuration)
                     setAmountSettings(user)
                     setTransactionsAnalytics()
                 }

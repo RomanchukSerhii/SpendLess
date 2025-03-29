@@ -75,7 +75,7 @@ class PinPromptViewModel(
                 ?: throw IllegalArgumentException("User with the provided username does not exist")
 
             if (enteredPin == user.pin) {
-                sessionRepository.startSession()
+                sessionRepository.startSession(user.settings.sessionExpiryDuration)
                 _actions.send(PinPromptAction.NavigateNavigateBack)
             } else {
                 resetEnteredPin()

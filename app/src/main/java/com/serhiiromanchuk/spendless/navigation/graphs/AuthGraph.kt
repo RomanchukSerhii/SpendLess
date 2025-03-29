@@ -16,10 +16,10 @@ import com.serhiiromanchuk.spendless.navigation.sharedViewModel
 
 fun NavGraphBuilder.authGraph(
     navigationState: NavigationState,
-    isUserLoggedIng: Boolean
+    isUserSessionExpired: Boolean
 ) {
     navigation(
-        startDestination = if (isUserLoggedIng) Screen.PinPrompt.route else Screen.Login.route,
+        startDestination = if (isUserSessionExpired) Screen.PinPrompt.route else Screen.Login.route,
         route = Feature.Auth.route
     ) {
         composable(

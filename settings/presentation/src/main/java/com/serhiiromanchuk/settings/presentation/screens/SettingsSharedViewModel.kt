@@ -196,6 +196,7 @@ class SettingsSharedViewModel(
                 if (sessionRepository.isSessionExpired()) {
                     _securityActions.send(SecurityAction.NavigateToPinPrompt)
                 } else {
+                    sessionRepository.startSession(user.settings.sessionExpiryDuration)
                     _securityActions.send(SecurityAction.NavigateBack)
                 }
             }

@@ -4,19 +4,16 @@ import android.content.SharedPreferences
 import android.os.SystemClock
 import com.serhiiromanchuk.core.domain.entity.LockedOutDuration
 import com.serhiiromanchuk.core.domain.entity.SessionExpiryDuration
-import com.serhiiromanchuk.core.domain.entity.User
-import com.serhiiromanchuk.core.domain.exception.UserNotLoggedInException
 import com.serhiiromanchuk.core.domain.repository.SessionRepository
-import com.serhiiromanchuk.core.domain.repository.UserRepository
 
 class SessionRepositoryImpl(
-    private val preferences: SharedPreferences,
-    private val  userRepository: UserRepository
+    private val preferences: SharedPreferences
 ) : SessionRepository {
 
     companion object {
         private const val KEY_SESSION_TIMESTAMP = "session_timestamp"
         private const val KEY_USERNAME = "username"
+        private const val KEY_SESSION_EXPIRY_DURATION = "session_expiry_duration"
         private const val FIFTEEN_SEC_MILLIS = 15 * 1000L
         private const val THIRTY_SEC_MILLIS = 30 * 1000L
         private const val MINUTE_IN_MILLIS = 60 * 1000L
@@ -35,6 +32,7 @@ class SessionRepositoryImpl(
         preferences.edit()
             .remove(KEY_USERNAME)
             .remove(KEY_SESSION_TIMESTAMP)
+            .remove(KEY_SESSION_EXPIRY_DURATION)
             .apply()
     }
 
@@ -46,25 +44,26 @@ class SessionRepositoryImpl(
         return getLoggedInUsername() != null
     }
 
-    override fun startSession() {
-        preferences.edit()
-            .putLong(KEY_SESSION_TIMESTAMP, SystemClock.elapsedRealtime())
-            .apply()
-    }
-
-    override suspend fun isSessionExpired(): Boolean {
-        val currentTime = SystemClock.elapsedRealtime()
-        val lastAuthTime = preferences.getLong(KEY_SESSION_TIMESTAMP, 0L)
-        val user = getUser() ?: throw UserNotLoggedInException()
-
-        val sessionDurationLong = when (user.settings.sessionExpiryDuration) {
-            SessionExpiryDuration.FIVE_MIN -> 5000
+    override fun startSession(sessionExpiryDuration: SessionExpiryDuration) {
+        val duration = when (sessionExpiryDuration) {
+            SessionExpiryDuration.FIVE_MIN -> 5 * MINUTE_IN_MILLIS
             SessionExpiryDuration.FIFTEEN_MIN -> 15 * MINUTE_IN_MILLIS
             SessionExpiryDuration.THIRTY_MIN -> 30 * MINUTE_IN_MILLIS
             SessionExpiryDuration.HOUR -> HOUR_IN_MILLIS
         }
 
-        return (currentTime - lastAuthTime) > sessionDurationLong
+        preferences.edit()
+            .putLong(KEY_SESSION_TIMESTAMP, SystemClock.elapsedRealtime())
+            .putLong(KEY_SESSION_EXPIRY_DURATION, duration)
+            .apply()
+    }
+
+    override fun isSessionExpired(): Boolean {
+        val currentTime = SystemClock.elapsedRealtime()
+        val lastAuthTime = preferences.getLong(KEY_SESSION_TIMESTAMP, 0L)
+        val sessionExpiryDuration = preferences.getLong(KEY_SESSION_EXPIRY_DURATION, 0L)
+
+        return (currentTime - lastAuthTime) > sessionExpiryDuration
     }
 
     override fun setPinLockTimestamp(lockedOutDuration: LockedOutDuration) {
@@ -97,12 +96,5 @@ class SessionRepositoryImpl(
             .remove(KEY_PIN_LOCK_TIMESTAMP)
             .remove(KEY_PIN_LOCK_DURATION)
             .apply()
-    }
-
-    private suspend fun getUser(): User? {
-        val username = preferences.getString(KEY_USERNAME, null)
-        if (username.isNullOrEmpty()) return null
-
-        return userRepository.getUser(username)
     }
 }
