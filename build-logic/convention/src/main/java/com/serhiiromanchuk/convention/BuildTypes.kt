@@ -4,8 +4,6 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.variant.BuildConfigField
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
@@ -18,16 +16,12 @@ internal fun Project.configureBuildTypes(
             buildConfig = true
         }
 
-        val apiKey = gradleLocalProperties(rootDir, rootProject.providers).getProperty("API_KEY")
         when(extensionType) {
             ExtensionType.APPLICATION -> {
                 extensions.configure<ApplicationExtension> {
                     buildTypes {
-                        debug {
-                            configureDebugBuildType(apiKey)
-                        }
                         release {
-                            configureReleaseBuildType(commonExtension, apiKey)
+                            configureReleaseBuildType(commonExtension)
                         }
                     }
                 }
@@ -35,11 +29,8 @@ internal fun Project.configureBuildTypes(
             ExtensionType.LIBRARY -> {
                 extensions.configure<LibraryExtension> {
                     buildTypes {
-                        debug {
-                            configureDebugBuildType(apiKey)
-                        }
                         release {
-                            configureReleaseBuildType(commonExtension, apiKey)
+                            configureReleaseBuildType(commonExtension)
                         }
                     }
                 }
@@ -49,16 +40,9 @@ internal fun Project.configureBuildTypes(
     }
 }
 
-private fun BuildType.configureDebugBuildType(apiKey: String) {
-    BuildConfigField("String","API_KEY", "\"$apiKey\"")
-}
-
 private fun BuildType.configureReleaseBuildType(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
-    apiKey: String
+    commonExtension: CommonExtension<*, *, *, *, *, *>
 ) {
-    BuildConfigField("String","API_KEY", "\"$apiKey\"")
-
     isMinifyEnabled = true
     proguardFiles(
         commonExtension.getDefaultProguardFile("proguard-android-optimize.txt"),

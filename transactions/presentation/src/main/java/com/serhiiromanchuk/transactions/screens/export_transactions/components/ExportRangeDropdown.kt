@@ -1,10 +1,10 @@
 package com.serhiiromanchuk.transactions.screens.export_transactions.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -50,13 +50,13 @@ fun ExportRangeDropdown(
     val density = LocalDensity.current
 
     Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = stringResource(R.string.export_range),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(bottom = 6.dp)
         )
 
         ExportRangeCard(
@@ -67,6 +67,8 @@ fun ExportRangeDropdown(
                 categoryWidth = with(density) { size.width.toDp() }
             }
         )
+
+        Spacer(modifier = Modifier.height(4.dp))
 
         ExportDropdown(
             expanded = expanded,
