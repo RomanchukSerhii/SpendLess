@@ -19,6 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val isLaunchedFromWidget = intent.getBooleanExtra(SpendLessWidget.KEY_WIDGET_INTENT, false)
+        sessionRepository.setLaunchedFromWidget(isLaunchedFromWidget)
 
         enableEdgeToEdge()
         setContent {
@@ -26,7 +27,6 @@ class MainActivity : ComponentActivity() {
                 val navigationState = rememberNavigationState()
                 NavigationRoot(
                     navigationState = navigationState,
-                    isLaunchedFromWidget = isLaunchedFromWidget,
                     sessionRepository = sessionRepository
                 )
             }

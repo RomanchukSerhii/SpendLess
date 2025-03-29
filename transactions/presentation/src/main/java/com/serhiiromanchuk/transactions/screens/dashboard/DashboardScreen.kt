@@ -54,7 +54,7 @@ fun DashboardScreenRoot(
     }
 
     if (!viewModel.dashboardState.isDataLoaded) {
-        EmptyScreen()
+        EmptyScreen(showLoadIndicator = true)
     } else {
         CompositionLocalProvider(
             LocalSystemIconsUiController provides SystemIconsUiController(

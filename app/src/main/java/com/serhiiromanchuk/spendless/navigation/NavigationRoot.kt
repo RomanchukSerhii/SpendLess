@@ -15,7 +15,6 @@ import com.serhiiromanchuk.spendless.navigation.routes.Feature
 @Composable
 fun NavigationRoot(
     navigationState: NavigationState,
-    isLaunchedFromWidget: Boolean,
     sessionRepository: SessionRepository
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -44,7 +43,7 @@ fun NavigationRoot(
         }
     ) {
         authGraph(navigationState, isUserSessionExpired)
-        transactionsGraph(navigationState, isLaunchedFromWidget)
+        transactionsGraph(navigationState)
         settingsGraph(navigationState)
     }
 }

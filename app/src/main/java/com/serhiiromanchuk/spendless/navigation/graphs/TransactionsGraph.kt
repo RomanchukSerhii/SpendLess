@@ -12,8 +12,7 @@ import com.serhiiromanchuk.transactions.screens.all_transactions.AllTransactions
 import com.serhiiromanchuk.transactions.screens.dashboard.DashboardScreenRoot
 
 fun NavGraphBuilder.transactionsGraph(
-    navigationState: NavigationState,
-    isLaunchedFromWidget: Boolean
+    navigationState: NavigationState
 ) {
     navigation(
         startDestination = Screen.Dashboard.route,
@@ -23,7 +22,7 @@ fun NavGraphBuilder.transactionsGraph(
             route = Screen.Dashboard.route
         ) { entry ->
             val transactionsSharedViewModel =
-                entry.sharedViewModel<TransactionsSharedViewModel>(navigationState.navController, isLaunchedFromWidget)
+                entry.sharedViewModel<TransactionsSharedViewModel>(navigationState.navController)
 
             DashboardScreenRoot(
                 navigateToSettings = { navigationState.navigateTo(Screen.Settings.route) },

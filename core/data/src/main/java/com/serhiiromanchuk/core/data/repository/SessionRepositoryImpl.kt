@@ -97,4 +97,12 @@ class SessionRepositoryImpl(
             .remove(KEY_PIN_LOCK_DURATION)
             .apply()
     }
+
+    override fun setLaunchedFromWidget(value: Boolean) {
+        preferences.edit().putBoolean("isLaunchedFromWidget", value).apply()
+    }
+
+    override fun isLaunchedFromWidget(): Boolean {
+        return preferences.getBoolean("isLaunchedFromWidget", false)
+    }
 }

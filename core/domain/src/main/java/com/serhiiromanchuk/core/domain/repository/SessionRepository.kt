@@ -13,4 +13,6 @@ interface SessionRepository {
     fun setPinLockTimestamp(lockedOutDuration: LockedOutDuration)
     fun getPinLockRemainingTime(): Int
     fun restorePinLockTimestamp()
+    fun setLaunchedFromWidget(value: Boolean)
+    fun isLaunchedFromWidget(): Boolean
 }

@@ -36,7 +36,9 @@ import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiEv
 import com.serhiiromanchuk.transactions.screens.dashboard.handling.DashboardUiState
 import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportRange
 import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportUiEvent
-import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportUiEvent.*
+import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportUiEvent.ExportButtonClicked
+import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportUiEvent.ExportRangeClicked
+import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportUiEvent.ExportSheetToggled
 import com.serhiiromanchuk.transactions.screens.export_transactions.handling.ExportUiState
 import com.serhiiromanchuk.transactions.utils.AmountFormatter
 import com.serhiiromanchuk.transactions.utils.TransactionAnalytics
@@ -51,7 +53,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class TransactionsSharedViewModel(
-    isLaunchedFromWidget: Boolean,
     private val userRepository: UserRepository,
     private val transactionRepository: TransactionRepository,
     private val sessionRepository: SessionRepository,
@@ -75,8 +76,9 @@ class TransactionsSharedViewModel(
     private var userId: Long? = null
 
     init {
-        if (isLaunchedFromWidget) {
+        if (sessionRepository.isLaunchedFromWidget()) {
             toggleCreateTransactionSheet()
+            sessionRepository.setLaunchedFromWidget(false)
         }
         setDashboardInfo()
         observeTextFields()

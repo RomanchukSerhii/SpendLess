@@ -10,13 +10,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun EmptyScreen() {
+fun EmptyScreen(
+    showLoadIndicator: Boolean = false
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
-        LinearProgressIndicator()
+        if (showLoadIndicator) {
+            LinearProgressIndicator()
+        }
     }
 }
