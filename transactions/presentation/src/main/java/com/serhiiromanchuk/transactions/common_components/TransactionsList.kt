@@ -133,6 +133,7 @@ private fun TransactionItem(
                     amountSettings = amountSettings,
                     enforceTwoDecimalPlaces = true
                 )
+                val currencySymbol = amountSettings.currency.symbol
 
                 TransactionIcon(
                     transaction = transaction,
@@ -150,10 +151,10 @@ private fun TransactionItem(
                 Text(
                     text = when (transaction.transactionType) {
                         is Expense -> when (amountSettings.expensesFormat) {
-                            ExpensesFormatUi.MINUS -> "-\$$formattedAmount"
-                            ExpensesFormatUi.PARENTHESES -> "(\$$formattedAmount)"
+                            ExpensesFormatUi.MINUS -> "-$currencySymbol$formattedAmount"
+                            ExpensesFormatUi.PARENTHESES -> "($currencySymbol$formattedAmount)"
                         }
-                        is Income -> "\$$formattedAmount"
+                        is Income -> "$currencySymbol$formattedAmount"
                     },
                     modifier = Modifier.padding(end = 4.dp),
                     style = MaterialTheme.typography.titleLarge,

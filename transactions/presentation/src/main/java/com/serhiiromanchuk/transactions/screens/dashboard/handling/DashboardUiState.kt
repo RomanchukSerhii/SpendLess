@@ -13,10 +13,10 @@ data class DashboardUiState(
     val amountSettings: AmountSettings = AmountSettings(),
 ) {
     data class AccountInfoState(
-        val balance: String = "\$0",
+        val balance: String = "",
         val popularCategory: ExpenseCategory? = null,
         val largestTransaction: LargestTransaction? = null,
-        val previousWeekExpenseAmount: String = "\$0"
+        val previousWeekExpenseAmount: String = ""
     )
 
     data class LargestTransaction(

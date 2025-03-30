@@ -46,7 +46,7 @@ class SessionRepositoryImpl(
 
     override fun startSession(sessionExpiryDuration: SessionExpiryDuration) {
         val duration = when (sessionExpiryDuration) {
-            SessionExpiryDuration.FIVE_MIN -> 5 * MINUTE_IN_MILLIS
+            SessionExpiryDuration.FIVE_MIN -> 2 * MINUTE_IN_MILLIS
             SessionExpiryDuration.FIFTEEN_MIN -> 15 * MINUTE_IN_MILLIS
             SessionExpiryDuration.THIRTY_MIN -> 30 * MINUTE_IN_MILLIS
             SessionExpiryDuration.HOUR -> HOUR_IN_MILLIS

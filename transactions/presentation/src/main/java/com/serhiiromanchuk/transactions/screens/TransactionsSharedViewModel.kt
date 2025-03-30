@@ -198,7 +198,18 @@ class TransactionsSharedViewModel(
                     allTransactionsState = allTransactionsState.copy(
                         transactions = transactions
                             .reversed()
-                            .groupBy { InstantFormatter.convertInstantToLocalDate(it.transactionDate) }
+                            .groupBy { InstantFormatter.convertInstantToLocalDate(it.transactionDate) },
+                        amountSettings = dashboardState.amountSettings
+                    )
+                } else {
+                    val initAmount = "${dashboardState.amountSettings.currency.symbol}0"
+
+                    dashboardState = dashboardState.copy(
+                        isDataLoaded = true,
+                        accountInfoState = dashboardState.accountInfoState.copy(
+                            balance = initAmount,
+                            previousWeekExpenseAmount = initAmount
+                        )
                     )
                 }
             }
@@ -208,14 +219,14 @@ class TransactionsSharedViewModel(
     private fun createTransaction() {
         userId?.let {
             val transactionsFields = createTransactionState.transactionFieldsState
-            val title = transactionsFields.title.text.toString()
+            val title = transactionsFields.title.text.toString().trim()
             val amount = AmountFormatter.parseAmountToFloat(
                 amountText = transactionsFields.amount.text,
                 amountSettings = dashboardState.amountSettings,
                 isExpense = createTransactionState.isExpense
             )
             val note = if (transactionsFields.note.text.isNotBlank()) {
-                transactionsFields.note.text.toString()
+                transactionsFields.note.text.toString().trim()
             } else null
 
             val transactionType = if (createTransactionState.isExpense) {
@@ -241,7 +252,7 @@ class TransactionsSharedViewModel(
 
     private fun resetCreateTransactionState() {
         val transactionFieldsState = createTransactionState.transactionFieldsState
-        transactionFieldsState.amount.clearText()
+        transactionFieldsState.title.clearText()
         transactionFieldsState.amount.clearText()
         transactionFieldsState.note.clearText()
 
@@ -270,7 +281,7 @@ class TransactionsSharedViewModel(
     private fun handleCounterpartyInput(newText: CharSequence) {
         val counterpartyState = createTransactionState.transactionFieldsState.title
 
-        val filteredText = newText.filter { it.isLetterOrDigit() }
+        val filteredText = newText.filter { it.isLetterOrDigit() ||  it.isWhitespace() }
         val limitedText = filteredText.take(MAX_COUNTERPARTY_LENGTH)
 
         if (limitedText != counterpartyState.text) {

@@ -170,12 +170,13 @@ object TransactionAnalytics {
             amountSettings = amountSettings,
             enforceTwoDecimalPlaces = true
         )
+        val currency = amountSettings.currency.symbol
         return if (amount < 0) {
             when (amountSettings.expensesFormat) {
-                ExpensesFormatUi.MINUS -> "-\$$formattedAmount"
-                ExpensesFormatUi.PARENTHESES -> "(\$$formattedAmount)"
+                ExpensesFormatUi.MINUS -> "-$currency$formattedAmount"
+                ExpensesFormatUi.PARENTHESES -> "($currency$formattedAmount)"
             }
-        } else "\$$formattedAmount"
+        } else "$currency$formattedAmount"
     }
 
     private fun requireNonEmptyTransactions(transactions: List<Transaction>) {
