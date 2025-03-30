@@ -7,4 +7,5 @@ interface TransactionRepository {
     fun getTransactionsByUser(userId: Long): Flow<List<Transaction>>
     suspend fun upsertTransaction(transaction: Transaction)
     suspend fun delete(transaction: Transaction)
+    suspend fun checkAndCreateRecurringTransactions()
 }

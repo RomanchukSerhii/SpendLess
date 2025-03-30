@@ -32,4 +32,15 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        val isLaunchedFromWidget = intent.getBooleanExtra(SpendLessWidget.KEY_WIDGET_INTENT, false)
+        sessionRepository.setLaunchedFromWidget(isLaunchedFromWidget)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sessionRepository.setLaunchedFromWidget(false)
+    }
 }

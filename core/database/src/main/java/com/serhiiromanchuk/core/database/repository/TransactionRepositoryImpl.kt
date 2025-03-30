@@ -7,6 +7,7 @@ import com.serhiiromanchuk.core.domain.entity.Transaction
 import com.serhiiromanchuk.core.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.Instant
 
 class TransactionRepositoryImpl(
     private val transactionDao: TransactionDao
@@ -21,5 +22,17 @@ class TransactionRepositoryImpl(
 
     override suspend fun delete(transaction: Transaction) {
         transactionDao.delete(transaction.toEntity())
+    }
+
+    override suspend fun checkAndCreateRecurringTransactions() {
+        val recurringTransactions = transactionDao.getRecurringTransactions().map { it.toDomain() }
+        val today = Instant.now().toEpochMilli()
+
+        for (transaction in recurringTransactions) {
+            if (transaction.shouldRepeat(today)) {
+                val newTransaction = transaction.copy(transactionDate = today)
+                transactionDao.upsertTransaction(newTransaction.toEntity())
+            }
+        }
     }
 }
